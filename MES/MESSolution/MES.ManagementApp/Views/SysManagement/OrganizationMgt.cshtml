@@ -1,0 +1,154 @@
+﻿@{
+    ViewBag.Title = "部门信息";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+    div #rMenu {
+        position: absolute;
+        visibility: hidden;
+        top: 0;
+        background-color: #555;
+        text-align: left;
+        padding: 2px;
+    }
+
+        div #rMenu a {
+            cursor: pointer;
+            list-style: none outside none;
+        }
+</style>  
+
+<div class="easyui-layout" fit="true">
+    <div style="width: 200px;" region="west" split="true" >
+        <ul id="treeOrg" class="easyui-tree"></ul>
+    </div>
+    <div region="center">
+            <table id="tbForm" class="tbForm">
+                <tr>
+                    <td colspan="6">
+                        <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">保存</a>
+                        @*<a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>*@
+                    </td>
+                </tr>
+                <tr style="height:20px;">
+                  <td></td>
+                </tr>
+                <tr>
+                    <td class="form-head">
+                        <span class="sp-require">*</span>部门名称：
+                    </td>
+                    <td><input class="easyui-textbox" id="E_OrgName" style="width:250px;" /></td>
+                </tr>
+            </table>
+    </div>
+</div>
+<div id="divRightMenu" class="easyui-menu div-right-menu">
+    <div id="divMenuAdd" data-options="iconCls:'icon-add'">新增子节点</div>
+     <div id="divMenuEdit" data-options="iconCls:'icon-edit'">修改当前节点</div>
+    <div id="divMenuDelete" data-options="iconCls:'icon-remove'">删除当前节点</div>
+    
+</div>
+
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    var _curOrgId = 0;
+
+    $(document).ready(function () {
+        $("#divMenuAdd").click(function () { showForm(1); })
+        $("#divMenuEdit").click(function () { showForm(2); })
+        $("#divMenuDelete").click(function () { deleteRecord(); })
+        $("#btnOk").click(function () { saveForm(); })
+
+        initTree();
+    });
+
+    //加载部门树
+    function initTree() {
+        $('#treeOrg').tree({
+            url: '/SysManagement/OrganizationMgt_GetList',
+            method: 'get',
+            loadMsg: '数据加载中，请稍后……',
+            animate: false,
+            onClick: function (node) {//单击事件
+                //nodeId = node.id;
+               
+            },
+            onContextMenu: function(e,node){
+                $('#divRightMenu').menu('show', { left: e.pageX, top: e.pageY });
+                e.preventDefault();
+            }
+        });
+    }
+
+    function showForm(optType) {
+        var selNode = $("#treeOrg").tree('getSelected');
+        if (!selNode) return;
+
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        _OptType = optType;
+
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            $("#E_OrgName").val(selNode.text);
+        }
+    }
+
+    function saveForm() {
+        var selNode = $("#treeOrg").tree('getSelected');
+        if (!selNode) return;
+
+        var orgName = $("#E_OrgName").val();
+        if (orgName.length == 0) {
+            $.messager.alert('提示', "请输入部门名称！", "info");
+            return;
+        }
+
+        var data = {};
+        data.OrgName = orgName;
+        if (_OptType == 1) {
+            data.ParentID = selNode.id;
+            data.OrgLevel = $('#treeOrg').tree('getLevel', selNode.target) + 1;
+        } else {
+            data.ID = selNode.id;
+        }
+
+        doPostAjaxRequest("/SysManagement/OrganizationMgt_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#treeOrg').tree('reload');
+            });
+        });
+    }
+
+    //删除记录
+    function deleteRecord() {
+        var selNode = $("#treeOrg").tree('getSelected');
+        if (!selNode) return;
+
+        var data = { ID: selNode.id };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/SysManagement/OrganizationMgt_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#treeOrg').tree('reload');
+                });
+            });
+        });
+    }
+
+
+</script>
+

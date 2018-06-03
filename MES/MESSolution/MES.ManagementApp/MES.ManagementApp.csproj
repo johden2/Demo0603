@@ -1,0 +1,1304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{11896101-004A-4149-8954-A42FD3E4CA6E}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MES.ManagementApp</RootNamespace>
+    <AssemblyName>MES.ManagementApp</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells">
+      <HintPath>..\packages\Aspose\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words">
+      <HintPath>..\packages\Aspose\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="Dos.Common">
+      <HintPath>..\packages\DosORM.1.10\Dos.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Dos.ORM">
+      <HintPath>..\packages\DosORM.1.10\Dos.ORM.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.30506.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.30506.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Providers">
+      <HintPath>..\packages\Microsoft.AspNet.Providers.Core.1.2\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Auth\AuthorizeFilterAttribute.cs" />
+    <Compile Include="Controllers\Auth\BaseController.cs" />
+    <Compile Include="Controllers\BaseManagement\Alibrary.cs" />
+    <Compile Include="Controllers\BaseManagement\BaseManagementController.cs" />
+    <Compile Include="Controllers\BaseManagement\Customer.cs" />
+    <Compile Include="Controllers\BaseManagement\DataCollectPoint.cs" />
+    <Compile Include="Controllers\BaseManagement\ProductInfo.cs" />
+    <Compile Include="Controllers\BaseManagement\Stock.cs" />
+    <Compile Include="Controllers\BaseManagement\Supplier.cs" />
+    <Compile Include="Controllers\BaseManagement\WorkShop.cs" />
+    <Compile Include="Controllers\Common\ComboxController.cs" />
+    <Compile Include="Controllers\Common\SysConfigHelper.cs" />
+    <Compile Include="Controllers\Common\SysNumberUtil.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\PersonnelManagement\PersonnelManagementController.cs" />
+    <Compile Include="Controllers\PersonnelManagement\EmployeeMgt.cs" />
+    <Compile Include="Controllers\PlanManagement\PlanManagementController.cs" />
+    <Compile Include="Controllers\PlanManagement\PlanMgt.cs" />
+    <Compile Include="Controllers\PlanManagement\SaleOrderMgt.cs" />
+    <Compile Include="Controllers\ProcessManagement\ProcessBomMgt.cs" />
+    <Compile Include="Controllers\ProcessManagement\ProcessMgt.cs" />
+    <Compile Include="Controllers\ProcessManagement\ProcessManagementController.cs" />
+    <Compile Include="Controllers\ProcessManagement\TestDataPosition.cs" />
+    <Compile Include="Controllers\SysManagement\RightConfig.cs" />
+    <Compile Include="Controllers\SysManagement\SysManagementController.cs" />
+    <Compile Include="Controllers\SysManagement\RoleMgt.cs" />
+    <Compile Include="Controllers\SysManagement\OrganizationMgt.cs" />
+    <Compile Include="Controllers\SysManagement\UserMgt.cs" />
+    <Compile Include="Controllers\SysManagement\SysMoudle.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\css\mycustom.css" />
+    <Content Include="Content\Easyui\api\accordion.html" />
+    <Content Include="Content\Easyui\api\api\Base\Documentation.html" />
+    <Content Include="Content\Easyui\api\api\Base\draggable.html" />
+    <Content Include="Content\Easyui\api\api\Base\droppable.html" />
+    <Content Include="Content\Easyui\api\api\Base\easyloader.html" />
+    <Content Include="Content\Easyui\api\api\Base\pagination.html" />
+    <Content Include="Content\Easyui\api\api\Base\parser.html" />
+    <Content Include="Content\Easyui\api\api\Base\progressbar.html" />
+    <Content Include="Content\Easyui\api\api\Base\resizable.html" />
+    <Content Include="Content\Easyui\api\api\Base\searchbox.html" />
+    <Content Include="Content\Easyui\api\api\Base\tooltip.html" />
+    <Content Include="Content\Easyui\api\api\Base\~%24aggable.html" />
+    <Content Include="Content\Easyui\api\api\Base\~%24cumentation.html" />
+    <Content Include="Content\Easyui\api\api\Base\~%24gination.html" />
+    <Content Include="Content\Easyui\api\api\Base\~%24ooltip.html" />
+    <Content Include="Content\Easyui\api\api\Base\~%24oppable.html" />
+    <Content Include="Content\Easyui\api\api\Base\~%24parser.html" />
+    <Content Include="Content\Easyui\api\api\Base\~%24sizable.html" />
+    <Content Include="Content\Easyui\api\api\Base\~%24syloader.html" />
+    <Content Include="Content\Easyui\api\api\DataGrid and Tree\datagrid.html" />
+    <Content Include="Content\Easyui\api\api\DataGrid and Tree\propertygrid.html" />
+    <Content Include="Content\Easyui\api\api\DataGrid and Tree\tree.html" />
+    <Content Include="Content\Easyui\api\api\DataGrid and Tree\treegrid.html" />
+    <Content Include="Content\Easyui\api\api\Form\calendar.html" />
+    <Content Include="Content\Easyui\api\api\Form\combo.html" />
+    <Content Include="Content\Easyui\api\api\Form\combobox.html" />
+    <Content Include="Content\Easyui\api\api\Form\combogrid.html" />
+    <Content Include="Content\Easyui\api\api\Form\combotree.html" />
+    <Content Include="Content\Easyui\api\api\Form\datebox.html" />
+    <Content Include="Content\Easyui\api\api\Form\datetimebox.html" />
+    <Content Include="Content\Easyui\api\api\Form\form.html" />
+    <Content Include="Content\Easyui\api\api\Form\numberbox.html" />
+    <Content Include="Content\Easyui\api\api\Form\numberspinner.html" />
+    <Content Include="Content\Easyui\api\api\Form\slider.html" />
+    <Content Include="Content\Easyui\api\api\Form\spinner.html" />
+    <Content Include="Content\Easyui\api\api\Form\timespinner.html" />
+    <Content Include="Content\Easyui\api\api\Form\validatebox.html" />
+    <Content Include="Content\Easyui\api\api\Layout\accordion.html" />
+    <Content Include="Content\Easyui\api\api\Layout\layout.html" />
+    <Content Include="Content\Easyui\api\api\Layout\panel.html" />
+    <Content Include="Content\Easyui\api\api\Layout\tabs.html" />
+    <Content Include="Content\Easyui\api\api\Menu and Button\linkbutton.html" />
+    <Content Include="Content\Easyui\api\api\Menu and Button\menu.html" />
+    <Content Include="Content\Easyui\api\api\Menu and Button\menubutton.html" />
+    <Content Include="Content\Easyui\api\api\Menu and Button\splitbutton.html" />
+    <Content Include="Content\Easyui\api\api\Window\dialog.html" />
+    <Content Include="Content\Easyui\api\api\Window\messager.html" />
+    <Content Include="Content\Easyui\api\api\Window\window.html" />
+    <Content Include="Content\Easyui\api\calendar.html" />
+    <Content Include="Content\Easyui\api\combo.html" />
+    <Content Include="Content\Easyui\api\combobox.html" />
+    <Content Include="Content\Easyui\api\combogrid.html" />
+    <Content Include="Content\Easyui\api\combotree.html" />
+    <Content Include="Content\Easyui\api\css\main.css" />
+    <Content Include="Content\Easyui\api\css\prettify.css" />
+    <Content Include="Content\Easyui\api\datagrid.html" />
+    <Content Include="Content\Easyui\api\datebox.html" />
+    <Content Include="Content\Easyui\api\datetimebox.html" />
+    <Content Include="Content\Easyui\api\dialog.html" />
+    <Content Include="Content\Easyui\api\Documentation.html" />
+    <Content Include="Content\Easyui\api\draggable.html" />
+    <Content Include="Content\Easyui\api\droppable.html" />
+    <Content Include="Content\Easyui\api\easyloader.html" />
+    <Content Include="Content\Easyui\api\form.html" />
+    <Content Include="Content\Easyui\api\images\accordion.png" />
+    <Content Include="Content\Easyui\api\images\calendar.png" />
+    <Content Include="Content\Easyui\api\images\combo.png" />
+    <Content Include="Content\Easyui\api\images\combobox.png" />
+    <Content Include="Content\Easyui\api\images\combogrid.png" />
+    <Content Include="Content\Easyui\api\images\combotree.png" />
+    <Content Include="Content\Easyui\api\images\datagrid.png" />
+    <Content Include="Content\Easyui\api\images\datebox.png" />
+    <Content Include="Content\Easyui\api\images\datetimebox.png" />
+    <Content Include="Content\Easyui\api\images\dialog.png" />
+    <Content Include="Content\Easyui\api\images\jquery-tabs-error.jpg" />
+    <Content Include="Content\Easyui\api\images\jquery-tabs-error2.jpg" />
+    <Content Include="Content\Easyui\api\images\layout.png" />
+    <Content Include="Content\Easyui\api\images\linkbutton.png" />
+    <Content Include="Content\Easyui\api\images\menu.png" />
+    <Content Include="Content\Easyui\api\images\menubutton.png" />
+    <Content Include="Content\Easyui\api\images\messager.png" />
+    <Content Include="Content\Easyui\api\images\numberbox.png" />
+    <Content Include="Content\Easyui\api\images\numberspinner.png" />
+    <Content Include="Content\Easyui\api\images\pagination.png" />
+    <Content Include="Content\Easyui\api\images\panel.png" />
+    <Content Include="Content\Easyui\api\images\progressbar.png" />
+    <Content Include="Content\Easyui\api\images\propertygrid.png" />
+    <Content Include="Content\Easyui\api\images\searchbox.png" />
+    <Content Include="Content\Easyui\api\images\slider.png" />
+    <Content Include="Content\Easyui\api\images\splitbutton.png" />
+    <Content Include="Content\Easyui\api\images\tabs.png" />
+    <Content Include="Content\Easyui\api\images\timespinner.png" />
+    <Content Include="Content\Easyui\api\images\tooltip.png" />
+    <Content Include="Content\Easyui\api\images\tree.png" />
+    <Content Include="Content\Easyui\api\images\treegrid2.png" />
+    <Content Include="Content\Easyui\api\images\validatebox.png" />
+    <Content Include="Content\Easyui\api\images\window.png" />
+    <Content Include="Content\Easyui\api\js\prettify.js" />
+    <Content Include="Content\Easyui\api\layout.html" />
+    <Content Include="Content\Easyui\api\linkbutton.html" />
+    <Content Include="Content\Easyui\api\menu.html" />
+    <Content Include="Content\Easyui\api\menubutton.html" />
+    <Content Include="Content\Easyui\api\messager.html" />
+    <Content Include="Content\Easyui\api\numberbox.html" />
+    <Content Include="Content\Easyui\api\numberspinner.html" />
+    <Content Include="Content\Easyui\api\pagination.html" />
+    <Content Include="Content\Easyui\api\panel.html" />
+    <Content Include="Content\Easyui\api\parser.html" />
+    <Content Include="Content\Easyui\api\progressbar.html" />
+    <Content Include="Content\Easyui\api\propertygrid.html" />
+    <Content Include="Content\Easyui\api\resizable.html" />
+    <Content Include="Content\Easyui\api\searchbox.html" />
+    <Content Include="Content\Easyui\api\slider.html" />
+    <Content Include="Content\Easyui\api\spinner.html" />
+    <Content Include="Content\Easyui\api\splitbutton.html" />
+    <Content Include="Content\Easyui\api\tabs.html" />
+    <Content Include="Content\Easyui\api\themes\default\accordion.css" />
+    <Content Include="Content\Easyui\api\themes\default\calendar.css" />
+    <Content Include="Content\Easyui\api\themes\default\combo.css" />
+    <Content Include="Content\Easyui\api\themes\default\combobox.css" />
+    <Content Include="Content\Easyui\api\themes\default\datagrid.css" />
+    <Content Include="Content\Easyui\api\themes\default\datebox.css" />
+    <Content Include="Content\Easyui\api\themes\default\dialog.css" />
+    <Content Include="Content\Easyui\api\themes\default\easyui.css" />
+    <Content Include="Content\Easyui\api\themes\default\images\accordion_collapse.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\accordion_expand.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\blank.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\button_a_bg.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\button_plain_hover.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\button_span_bg.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\calendar_nextmonth.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\calendar_nextyear.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\calendar_prevmonth.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\calendar_prevyear.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\combo_arrow.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\datagrid_header_bg.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\datagrid_row_collapse.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\datagrid_row_expand.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\datagrid_sort_asc.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\datagrid_sort_desc.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\datagrid_title_bg.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\datebox_arrow.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\layout_button_down.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\layout_button_left.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\layout_button_right.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\layout_button_up.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\menu.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\menu_downarrow.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\menu_rightarrow.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\menu_sep.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\menu_split_downarrow.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\messager_error.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\messager_info.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\messager_question.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\messager_warning.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\pagination_first.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\pagination_last.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\pagination_load.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\pagination_loading.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\pagination_next.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\pagination_prev.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\panel_loading.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\panel_title.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\panel_tools.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\panel_tool_collapse.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\panel_tool_expand.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\searchbox_button.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\slider_handle.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\spinner_arrow_down.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\spinner_arrow_up.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\tabs_active.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\tabs_close.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\tabs_enabled.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\tabs_leftarrow.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\tabs_rightarrow.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_arrows.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_checkbox_0.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_checkbox_1.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_checkbox_2.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_dnd_no.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_dnd_yes.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_elbow.png" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_file.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_folder.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_folder_open.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\tree_loading.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\validatebox_pointer.gif" />
+    <Content Include="Content\Easyui\api\themes\default\images\validatebox_warning.png" />
+    <Content Include="Content\Easyui\api\themes\default\layout.css" />
+    <Content Include="Content\Easyui\api\themes\default\linkbutton.css" />
+    <Content Include="Content\Easyui\api\themes\default\menu.css" />
+    <Content Include="Content\Easyui\api\themes\default\menubutton.css" />
+    <Content Include="Content\Easyui\api\themes\default\messager.css" />
+    <Content Include="Content\Easyui\api\themes\default\pagination.css" />
+    <Content Include="Content\Easyui\api\themes\default\panel.css" />
+    <Content Include="Content\Easyui\api\themes\default\progressbar.css" />
+    <Content Include="Content\Easyui\api\themes\default\propertygrid.css" />
+    <Content Include="Content\Easyui\api\themes\default\searchbox.css" />
+    <Content Include="Content\Easyui\api\themes\default\slider.css" />
+    <Content Include="Content\Easyui\api\themes\default\spinner.css" />
+    <Content Include="Content\Easyui\api\themes\default\splitbutton.css" />
+    <Content Include="Content\Easyui\api\themes\default\tabs.css" />
+    <Content Include="Content\Easyui\api\themes\default\tree.css" />
+    <Content Include="Content\Easyui\api\themes\default\validatebox.css" />
+    <Content Include="Content\Easyui\api\themes\default\window.css" />
+    <Content Include="Content\Easyui\api\themes\gray\accordion.css" />
+    <Content Include="Content\Easyui\api\themes\gray\calendar.css" />
+    <Content Include="Content\Easyui\api\themes\gray\combo.css" />
+    <Content Include="Content\Easyui\api\themes\gray\combobox.css" />
+    <Content Include="Content\Easyui\api\themes\gray\datagrid.css" />
+    <Content Include="Content\Easyui\api\themes\gray\datebox.css" />
+    <Content Include="Content\Easyui\api\themes\gray\dialog.css" />
+    <Content Include="Content\Easyui\api\themes\gray\easyui.css" />
+    <Content Include="Content\Easyui\api\themes\gray\images\accordion_collapse.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\accordion_expand.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\blank.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\button_a_bg.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\button_plain_hover.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\button_span_bg.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\calendar_nextmonth.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\calendar_nextyear.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\calendar_prevmonth.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\calendar_prevyear.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\combo_arrow.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\datagrid_header_bg.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\datagrid_row_collapse.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\datagrid_row_expand.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\datagrid_sort_asc.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\datagrid_sort_desc.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\datagrid_title_bg.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\datebox_arrow.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\header_bg.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\layout_arrows.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\layout_button_down.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\layout_button_left.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\layout_button_right.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\layout_button_up.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\menu.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\menu_downarrow.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\menu_rightarrow.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\menu_sep.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\menu_split_downarrow.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\messager_error.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\messager_info.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\messager_question.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\messager_warning.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\pagination_first.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\pagination_last.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\pagination_load.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\pagination_loading.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\pagination_next.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\pagination_prev.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\panel_loading.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\panel_title.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\panel_tools.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\panel_tool_collapse.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\panel_tool_expand.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\searchbox_button.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\slider_handle.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\spinner_arrow_down.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\spinner_arrow_up.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tabs_close.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tabs_enabled.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tabs_leftarrow.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tabs_rightarrow.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_arrows.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_checkbox_0.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_checkbox_1.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_checkbox_2.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_dnd_no.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_dnd_yes.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_elbow.png" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_file.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_folder.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_folder_open.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\tree_loading.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\validatebox_pointer.gif" />
+    <Content Include="Content\Easyui\api\themes\gray\images\validatebox_warning.png" />
+    <Content Include="Content\Easyui\api\themes\gray\layout.css" />
+    <Content Include="Content\Easyui\api\themes\gray\linkbutton.css" />
+    <Content Include="Content\Easyui\api\themes\gray\menu.css" />
+    <Content Include="Content\Easyui\api\themes\gray\menubutton.css" />
+    <Content Include="Content\Easyui\api\themes\gray\messager.css" />
+    <Content Include="Content\Easyui\api\themes\gray\pagination.css" />
+    <Content Include="Content\Easyui\api\themes\gray\panel.css" />
+    <Content Include="Content\Easyui\api\themes\gray\progressbar.css" />
+    <Content Include="Content\Easyui\api\themes\gray\propertygrid.css" />
+    <Content Include="Content\Easyui\api\themes\gray\searchbox.css" />
+    <Content Include="Content\Easyui\api\themes\gray\slider.css" />
+    <Content Include="Content\Easyui\api\themes\gray\spinner.css" />
+    <Content Include="Content\Easyui\api\themes\gray\splitbutton.css" />
+    <Content Include="Content\Easyui\api\themes\gray\tabs.css" />
+    <Content Include="Content\Easyui\api\themes\gray\tree.css" />
+    <Content Include="Content\Easyui\api\themes\gray\validatebox.css" />
+    <Content Include="Content\Easyui\api\themes\gray\window.css" />
+    <Content Include="Content\Easyui\api\themes\icon.css" />
+    <Content Include="Content\Easyui\api\themes\icons\back.png" />
+    <Content Include="Content\Easyui\api\themes\icons\blank.gif" />
+    <Content Include="Content\Easyui\api\themes\icons\cancel.png" />
+    <Content Include="Content\Easyui\api\themes\icons\cut.png" />
+    <Content Include="Content\Easyui\api\themes\icons\edit_add.png" />
+    <Content Include="Content\Easyui\api\themes\icons\edit_remove.png" />
+    <Content Include="Content\Easyui\api\themes\icons\filesave.png" />
+    <Content Include="Content\Easyui\api\themes\icons\help.png" />
+    <Content Include="Content\Easyui\api\themes\icons\mini_add.png" />
+    <Content Include="Content\Easyui\api\themes\icons\mini_edit.png" />
+    <Content Include="Content\Easyui\api\themes\icons\mini_refresh.png" />
+    <Content Include="Content\Easyui\api\themes\icons\no.png" />
+    <Content Include="Content\Easyui\api\themes\icons\ok.png" />
+    <Content Include="Content\Easyui\api\themes\icons\pencil.png" />
+    <Content Include="Content\Easyui\api\themes\icons\print.png" />
+    <Content Include="Content\Easyui\api\themes\icons\redo.png" />
+    <Content Include="Content\Easyui\api\themes\icons\reload.png" />
+    <Content Include="Content\Easyui\api\themes\icons\search.png" />
+    <Content Include="Content\Easyui\api\themes\icons\sum.png" />
+    <Content Include="Content\Easyui\api\themes\icons\tip.png" />
+    <Content Include="Content\Easyui\api\themes\icons\undo.png" />
+    <Content Include="Content\Easyui\api\timespinner.html" />
+    <Content Include="Content\Easyui\api\tooltip.html" />
+    <Content Include="Content\Easyui\api\tree.html" />
+    <Content Include="Content\Easyui\api\treegrid.html" />
+    <Content Include="Content\Easyui\api\validatebox.html" />
+    <Content Include="Content\Easyui\api\window.html" />
+    <Content Include="Content\Easyui\changelog.txt" />
+    <Content Include="Content\Easyui\demo\accordion\actions.html" />
+    <Content Include="Content\Easyui\demo\accordion\ajax.html" />
+    <Content Include="Content\Easyui\demo\accordion\basic.html" />
+    <Content Include="Content\Easyui\demo\accordion\tools.html" />
+    <Content Include="Content\Easyui\demo\accordion\_content.html" />
+    <Content Include="Content\Easyui\demo\calendar\basic.html" />
+    <Content Include="Content\Easyui\demo\calendar\firstday.html" />
+    <Content Include="Content\Easyui\demo\combobox\actions.html" />
+    <Content Include="Content\Easyui\demo\combobox\basic.html" />
+    <Content Include="Content\Easyui\demo\combobox\customformat.html" />
+    <Content Include="Content\Easyui\demo\combobox\dynamicdata.html" />
+    <Content Include="Content\Easyui\demo\combobox\group.html" />
+    <Content Include="Content\Easyui\demo\combobox\multiple.html" />
+    <Content Include="Content\Easyui\demo\combobox\navigation.html" />
+    <Content Include="Content\Easyui\demo\combobox\remotedata.html" />
+    <Content Include="Content\Easyui\demo\combobox\remotejsonp.html" />
+    <Content Include="Content\Easyui\demo\combogrid\actions.html" />
+    <Content Include="Content\Easyui\demo\combogrid\basic.html" />
+    <Content Include="Content\Easyui\demo\combogrid\initvalue.html" />
+    <Content Include="Content\Easyui\demo\combogrid\multiple.html" />
+    <Content Include="Content\Easyui\demo\combogrid\navigation.html" />
+    <Content Include="Content\Easyui\demo\combotree\actions.html" />
+    <Content Include="Content\Easyui\demo\combotree\basic.html" />
+    <Content Include="Content\Easyui\demo\combotree\initvalue.html" />
+    <Content Include="Content\Easyui\demo\combotree\multiple.html" />
+    <Content Include="Content\Easyui\demo\combo\basic.html" />
+    <Content Include="Content\Easyui\demo\datagrid\aligncolumns.html" />
+    <Content Include="Content\Easyui\demo\datagrid\basic.html" />
+    <Content Include="Content\Easyui\demo\datagrid\cellediting.html" />
+    <Content Include="Content\Easyui\demo\datagrid\cellstyle.html" />
+    <Content Include="Content\Easyui\demo\datagrid\checkbox.html" />
+    <Content Include="Content\Easyui\demo\datagrid\clientpagination.html" />
+    <Content Include="Content\Easyui\demo\datagrid\columngroup.html" />
+    <Content Include="Content\Easyui\demo\datagrid\complextoolbar.html" />
+    <Content Include="Content\Easyui\demo\datagrid\contextmenu.html" />
+    <Content Include="Content\Easyui\demo\datagrid\custompager.html" />
+    <Content Include="Content\Easyui\demo\datagrid\footer.html" />
+    <Content Include="Content\Easyui\demo\datagrid\formatcolumns.html" />
+    <Content Include="Content\Easyui\demo\datagrid\frozencolumns.html" />
+    <Content Include="Content\Easyui\demo\datagrid\frozenrows.html" />
+    <Content Include="Content\Easyui\demo\datagrid\mergecells.html" />
+    <Content Include="Content\Easyui\demo\datagrid\multisorting.html" />
+    <Content Include="Content\Easyui\demo\datagrid\rowborder.html" />
+    <Content Include="Content\Easyui\demo\datagrid\rowediting.html" />
+    <Content Include="Content\Easyui\demo\datagrid\rowstyle.html" />
+    <Content Include="Content\Easyui\demo\datagrid\selection.html" />
+    <Content Include="Content\Easyui\demo\datagrid\simpletoolbar.html" />
+    <Content Include="Content\Easyui\demo\datagrid\transform.html" />
+    <Content Include="Content\Easyui\demo\datebox\basic.html" />
+    <Content Include="Content\Easyui\demo\datebox\dateformat.html" />
+    <Content Include="Content\Easyui\demo\datebox\events.html" />
+    <Content Include="Content\Easyui\demo\datebox\validate.html" />
+    <Content Include="Content\Easyui\demo\datetimebox\basic.html" />
+    <Content Include="Content\Easyui\demo\datetimebox\initvalue.html" />
+    <Content Include="Content\Easyui\demo\datetimebox\showseconds.html" />
+    <Content Include="Content\Easyui\demo\demo.css" />
+    <Content Include="Content\Easyui\demo\dialog\basic.html" />
+    <Content Include="Content\Easyui\demo\dialog\complextoolbar.html" />
+    <Content Include="Content\Easyui\demo\dialog\toolbarbuttons.html" />
+    <Content Include="Content\Easyui\demo\draggable\basic.html" />
+    <Content Include="Content\Easyui\demo\draggable\constain.html" />
+    <Content Include="Content\Easyui\demo\draggable\snap.html" />
+    <Content Include="Content\Easyui\demo\droppable\accept.html" />
+    <Content Include="Content\Easyui\demo\droppable\basic.html" />
+    <Content Include="Content\Easyui\demo\droppable\sort.html" />
+    <Content Include="Content\Easyui\demo\easyloader\basic.html" />
+    <Content Include="Content\Easyui\demo\form\basic.html" />
+    <Content Include="Content\Easyui\demo\form\load.html" />
+    <Content Include="Content\Easyui\demo\layout\addremove.html" />
+    <Content Include="Content\Easyui\demo\layout\autoheight.html" />
+    <Content Include="Content\Easyui\demo\layout\basic.html" />
+    <Content Include="Content\Easyui\demo\layout\complex.html" />
+    <Content Include="Content\Easyui\demo\layout\full.html" />
+    <Content Include="Content\Easyui\demo\layout\nestedlayout.html" />
+    <Content Include="Content\Easyui\demo\layout\nocollapsible.html" />
+    <Content Include="Content\Easyui\demo\layout\_content.html" />
+    <Content Include="Content\Easyui\demo\linkbutton\basic.html" />
+    <Content Include="Content\Easyui\demo\linkbutton\group.html" />
+    <Content Include="Content\Easyui\demo\linkbutton\iconalign.html" />
+    <Content Include="Content\Easyui\demo\linkbutton\plain.html" />
+    <Content Include="Content\Easyui\demo\linkbutton\toggle.html" />
+    <Content Include="Content\Easyui\demo\menubutton\actions.html" />
+    <Content Include="Content\Easyui\demo\menubutton\basic.html" />
+    <Content Include="Content\Easyui\demo\menu\basic.html" />
+    <Content Include="Content\Easyui\demo\menu\customitem.html" />
+    <Content Include="Content\Easyui\demo\menu\events.html" />
+    <Content Include="Content\Easyui\demo\messager\alert.html" />
+    <Content Include="Content\Easyui\demo\messager\basic.html" />
+    <Content Include="Content\Easyui\demo\messager\interactive.html" />
+    <Content Include="Content\Easyui\demo\messager\position.html" />
+    <Content Include="Content\Easyui\demo\numberbox\basic.html" />
+    <Content Include="Content\Easyui\demo\numberbox\format.html" />
+    <Content Include="Content\Easyui\demo\numberbox\range.html" />
+    <Content Include="Content\Easyui\demo\numberspinner\basic.html" />
+    <Content Include="Content\Easyui\demo\numberspinner\increment.html" />
+    <Content Include="Content\Easyui\demo\numberspinner\range.html" />
+    <Content Include="Content\Easyui\demo\pagination\basic.html" />
+    <Content Include="Content\Easyui\demo\pagination\custombuttons.html" />
+    <Content Include="Content\Easyui\demo\pagination\simple.html" />
+    <Content Include="Content\Easyui\demo\panel\basic.html" />
+    <Content Include="Content\Easyui\demo\panel\customtools.html" />
+    <Content Include="Content\Easyui\demo\panel\loadcontent.html" />
+    <Content Include="Content\Easyui\demo\panel\nestedpanel.html" />
+    <Content Include="Content\Easyui\demo\panel\paneltools.html" />
+    <Content Include="Content\Easyui\demo\panel\_content.html" />
+    <Content Include="Content\Easyui\demo\progressbar\basic.html" />
+    <Content Include="Content\Easyui\demo\propertygrid\basic.html" />
+    <Content Include="Content\Easyui\demo\propertygrid\customcolumns.html" />
+    <Content Include="Content\Easyui\demo\propertygrid\groupformat.html" />
+    <Content Include="Content\Easyui\demo\resizable\basic.html" />
+    <Content Include="Content\Easyui\demo\searchbox\basic.html" />
+    <Content Include="Content\Easyui\demo\searchbox\category.html" />
+    <Content Include="Content\Easyui\demo\slider\basic.html" />
+    <Content Include="Content\Easyui\demo\slider\formattip.html" />
+    <Content Include="Content\Easyui\demo\slider\rule.html" />
+    <Content Include="Content\Easyui\demo\slider\vertical.html" />
+    <Content Include="Content\Easyui\demo\splitbutton\actions.html" />
+    <Content Include="Content\Easyui\demo\splitbutton\basic.html" />
+    <Content Include="Content\Easyui\demo\tabs\autoheight.html" />
+    <Content Include="Content\Easyui\demo\tabs\basic.html" />
+    <Content Include="Content\Easyui\demo\tabs\fixedwidth.html" />
+    <Content Include="Content\Easyui\demo\tabs\hover.html" />
+    <Content Include="Content\Easyui\demo\tabs\images\modem.png" />
+    <Content Include="Content\Easyui\demo\tabs\images\pda.png" />
+    <Content Include="Content\Easyui\demo\tabs\images\scanner.png" />
+    <Content Include="Content\Easyui\demo\tabs\images\tablet.png" />
+    <Content Include="Content\Easyui\demo\tabs\nestedtabs.html" />
+    <Content Include="Content\Easyui\demo\tabs\striptools.html" />
+    <Content Include="Content\Easyui\demo\tabs\tabimage.html" />
+    <Content Include="Content\Easyui\demo\tabs\tabposition.html" />
+    <Content Include="Content\Easyui\demo\tabs\tabstools.html" />
+    <Content Include="Content\Easyui\demo\tabs\_content.html" />
+    <Content Include="Content\Easyui\demo\timespinner\actions.html" />
+    <Content Include="Content\Easyui\demo\timespinner\basic.html" />
+    <Content Include="Content\Easyui\demo\timespinner\range.html" />
+    <Content Include="Content\Easyui\demo\tooltip\ajax.html" />
+    <Content Include="Content\Easyui\demo\tooltip\basic.html" />
+    <Content Include="Content\Easyui\demo\tooltip\customcontent.html" />
+    <Content Include="Content\Easyui\demo\tooltip\customstyle.html" />
+    <Content Include="Content\Easyui\demo\tooltip\position.html" />
+    <Content Include="Content\Easyui\demo\tooltip\toolbar.html" />
+    <Content Include="Content\Easyui\demo\tooltip\tooltipdialog.html" />
+    <Content Include="Content\Easyui\demo\tooltip\_content.html" />
+    <Content Include="Content\Easyui\demo\tooltip\_dialog.html" />
+    <Content Include="Content\Easyui\demo\treegrid\actions.html" />
+    <Content Include="Content\Easyui\demo\treegrid\basic.html" />
+    <Content Include="Content\Easyui\demo\treegrid\clientpagination.html" />
+    <Content Include="Content\Easyui\demo\treegrid\contextmenu.html" />
+    <Content Include="Content\Easyui\demo\treegrid\editable.html" />
+    <Content Include="Content\Easyui\demo\treegrid\footer.html" />
+    <Content Include="Content\Easyui\demo\treegrid\reports.html" />
+    <Content Include="Content\Easyui\demo\tree\actions.html" />
+    <Content Include="Content\Easyui\demo\tree\animation.html" />
+    <Content Include="Content\Easyui\demo\tree\basic.html" />
+    <Content Include="Content\Easyui\demo\tree\checkbox.html" />
+    <Content Include="Content\Easyui\demo\tree\contextmenu.html" />
+    <Content Include="Content\Easyui\demo\tree\dnd.html" />
+    <Content Include="Content\Easyui\demo\tree\editable.html" />
+    <Content Include="Content\Easyui\demo\tree\icons.html" />
+    <Content Include="Content\Easyui\demo\tree\lines.html" />
+    <Content Include="Content\Easyui\demo\validatebox\basic.html" />
+    <Content Include="Content\Easyui\demo\validatebox\customtooltip.html" />
+    <Content Include="Content\Easyui\demo\window\basic.html" />
+    <Content Include="Content\Easyui\demo\window\customtools.html" />
+    <Content Include="Content\Easyui\demo\window\inlinewindow.html" />
+    <Content Include="Content\Easyui\demo\window\modalwindow.html" />
+    <Content Include="Content\Easyui\demo\window\windowlayout.html" />
+    <Content Include="Content\Easyui\easyloader.js" />
+    <Content Include="Content\Easyui\index-api.html" />
+    <Content Include="Content\Easyui\index-demo.html" />
+    <Content Include="Content\Easyui\jquery-1.8.0.min.js" />
+    <Content Include="Content\Easyui\jquery.easyui.min.js" />
+    <Content Include="Content\Easyui\jquery.min.js" />
+    <Content Include="Content\Easyui\jquerysession.js" />
+    <Content Include="Content\Easyui\licence_gpl.txt" />
+    <Content Include="Content\Easyui\license_commercial.txt" />
+    <Content Include="Content\Easyui\locale\easyui-lang-af.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-ar.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-bg.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-ca.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-cs.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-cz.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-da.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-de.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-el.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-en.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-es.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-fr.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-it.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-jp.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-nl.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-pl.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-pt_BR.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-ru.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-sv_SE.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-tr.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-zh_CN.js" />
+    <Content Include="Content\Easyui\locale\easyui-lang-zh_TW.js" />
+    <Content Include="Content\Easyui\plugins\jquery.accordion.js" />
+    <Content Include="Content\Easyui\plugins\jquery.calendar.js" />
+    <Content Include="Content\Easyui\plugins\jquery.combo.js" />
+    <Content Include="Content\Easyui\plugins\jquery.combobox.js" />
+    <Content Include="Content\Easyui\plugins\jquery.combogrid.js" />
+    <Content Include="Content\Easyui\plugins\jquery.combotree.js" />
+    <Content Include="Content\Easyui\plugins\jquery.datagrid.js" />
+    <Content Include="Content\Easyui\plugins\jquery.datebox.js" />
+    <Content Include="Content\Easyui\plugins\jquery.datetimebox.js" />
+    <Content Include="Content\Easyui\plugins\jquery.dialog.js" />
+    <Content Include="Content\Easyui\plugins\jquery.draggable.js" />
+    <Content Include="Content\Easyui\plugins\jquery.droppable.js" />
+    <Content Include="Content\Easyui\plugins\jquery.edatagrid.js" />
+    <Content Include="Content\Easyui\plugins\jquery.form.js" />
+    <Content Include="Content\Easyui\plugins\jquery.layout.js" />
+    <Content Include="Content\Easyui\plugins\jquery.linkbutton.js" />
+    <Content Include="Content\Easyui\plugins\jquery.menu.js" />
+    <Content Include="Content\Easyui\plugins\jquery.menubutton.js" />
+    <Content Include="Content\Easyui\plugins\jquery.messager.js" />
+    <Content Include="Content\Easyui\plugins\jquery.numberbox.js" />
+    <Content Include="Content\Easyui\plugins\jquery.numberspinner.js" />
+    <Content Include="Content\Easyui\plugins\jquery.pagination.js" />
+    <Content Include="Content\Easyui\plugins\jquery.panel.js" />
+    <Content Include="Content\Easyui\plugins\jquery.parser.js" />
+    <Content Include="Content\Easyui\plugins\jquery.progressbar.js" />
+    <Content Include="Content\Easyui\plugins\jquery.propertygrid.js" />
+    <Content Include="Content\Easyui\plugins\jquery.resizable.js" />
+    <Content Include="Content\Easyui\plugins\jquery.searchbox.js" />
+    <Content Include="Content\Easyui\plugins\jquery.slider.js" />
+    <Content Include="Content\Easyui\plugins\jquery.spinner.js" />
+    <Content Include="Content\Easyui\plugins\jquery.splitbutton.js" />
+    <Content Include="Content\Easyui\plugins\jquery.tabs.js" />
+    <Content Include="Content\Easyui\plugins\jquery.timespinner.js" />
+    <Content Include="Content\Easyui\plugins\jquery.tooltip.js" />
+    <Content Include="Content\Easyui\plugins\jquery.tree.js" />
+    <Content Include="Content\Easyui\plugins\jquery.treegrid.js" />
+    <Content Include="Content\Easyui\plugins\jquery.validatebox.js" />
+    <Content Include="Content\Easyui\plugins\jquery.window.js" />
+    <Content Include="Content\Easyui\readme.txt" />
+    <Content Include="Content\Easyui\src\easyloader.js" />
+    <Content Include="Content\Easyui\src\jquery.accordion.js" />
+    <Content Include="Content\Easyui\src\jquery.calendar.js" />
+    <Content Include="Content\Easyui\src\jquery.combobox.js" />
+    <Content Include="Content\Easyui\src\jquery.datebox.js" />
+    <Content Include="Content\Easyui\src\jquery.draggable.js" />
+    <Content Include="Content\Easyui\src\jquery.droppable.js" />
+    <Content Include="Content\Easyui\src\jquery.form.js" />
+    <Content Include="Content\Easyui\src\jquery.linkbutton.js" />
+    <Content Include="Content\Easyui\src\jquery.menu.js" />
+    <Content Include="Content\Easyui\src\jquery.parser.js" />
+    <Content Include="Content\Easyui\src\jquery.progressbar.js" />
+    <Content Include="Content\Easyui\src\jquery.propertygrid.js" />
+    <Content Include="Content\Easyui\src\jquery.resizable.js" />
+    <Content Include="Content\Easyui\src\jquery.slider.js" />
+    <Content Include="Content\Easyui\src\jquery.tabs.js" />
+    <Content Include="Content\Easyui\src\jquery.window.js" />
+    <Content Include="Content\Easyui\themes\black\accordion.css" />
+    <Content Include="Content\Easyui\themes\black\calendar.css" />
+    <Content Include="Content\Easyui\themes\black\combo.css" />
+    <Content Include="Content\Easyui\themes\black\combobox.css" />
+    <Content Include="Content\Easyui\themes\black\datagrid.css" />
+    <Content Include="Content\Easyui\themes\black\datebox.css" />
+    <Content Include="Content\Easyui\themes\black\dialog.css" />
+    <Content Include="Content\Easyui\themes\black\easyui.css" />
+    <Content Include="Content\Easyui\themes\black\images\accordion_arrows.png" />
+    <Content Include="Content\Easyui\themes\black\images\blank.gif" />
+    <Content Include="Content\Easyui\themes\black\images\calendar_arrows.png" />
+    <Content Include="Content\Easyui\themes\black\images\combo_arrow.png" />
+    <Content Include="Content\Easyui\themes\black\images\datagrid_icons.png" />
+    <Content Include="Content\Easyui\themes\black\images\datebox_arrow.png" />
+    <Content Include="Content\Easyui\themes\black\images\layout_arrows.png" />
+    <Content Include="Content\Easyui\themes\black\images\linkbutton_bg.png" />
+    <Content Include="Content\Easyui\themes\black\images\loading.gif" />
+    <Content Include="Content\Easyui\themes\black\images\menu_arrows.png" />
+    <Content Include="Content\Easyui\themes\black\images\messager_icons.png" />
+    <Content Include="Content\Easyui\themes\black\images\pagination_icons.png" />
+    <Content Include="Content\Easyui\themes\black\images\panel_tools.png" />
+    <Content Include="Content\Easyui\themes\black\images\searchbox_button.png" />
+    <Content Include="Content\Easyui\themes\black\images\slider_handle.png" />
+    <Content Include="Content\Easyui\themes\black\images\spinner_arrows.png" />
+    <Content Include="Content\Easyui\themes\black\images\tabs_icons.png" />
+    <Content Include="Content\Easyui\themes\black\images\tree_icons.png" />
+    <Content Include="Content\Easyui\themes\black\images\validatebox_warning.png" />
+    <Content Include="Content\Easyui\themes\black\layout.css" />
+    <Content Include="Content\Easyui\themes\black\linkbutton.css" />
+    <Content Include="Content\Easyui\themes\black\menu.css" />
+    <Content Include="Content\Easyui\themes\black\menubutton.css" />
+    <Content Include="Content\Easyui\themes\black\messager.css" />
+    <Content Include="Content\Easyui\themes\black\pagination.css" />
+    <Content Include="Content\Easyui\themes\black\panel.css" />
+    <Content Include="Content\Easyui\themes\black\progressbar.css" />
+    <Content Include="Content\Easyui\themes\black\propertygrid.css" />
+    <Content Include="Content\Easyui\themes\black\searchbox.css" />
+    <Content Include="Content\Easyui\themes\black\slider.css" />
+    <Content Include="Content\Easyui\themes\black\spinner.css" />
+    <Content Include="Content\Easyui\themes\black\splitbutton.css" />
+    <Content Include="Content\Easyui\themes\black\tabs.css" />
+    <Content Include="Content\Easyui\themes\black\tooltip.css" />
+    <Content Include="Content\Easyui\themes\black\tree.css" />
+    <Content Include="Content\Easyui\themes\black\validatebox.css" />
+    <Content Include="Content\Easyui\themes\black\window.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\accordion.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\calendar.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\combo.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\combobox.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\datagrid.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\datebox.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\dialog.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\easyui.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\accordion_arrows.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\blank.gif" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\calendar_arrows.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\combo_arrow.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\datagrid_icons.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\datebox_arrow.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\layout_arrows.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\linkbutton_bg.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\loading.gif" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\menu_arrows.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\messager_icons.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\pagination_icons.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\panel_tools.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\searchbox_button.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\slider_handle.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\spinner_arrows.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\tabs_icons.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\tree_icons.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\images\validatebox_warning.png" />
+    <Content Include="Content\Easyui\themes\bootstrap\layout.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\linkbutton.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\menu.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\menubutton.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\messager.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\pagination.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\panel.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\progressbar.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\propertygrid.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\searchbox.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\slider.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\spinner.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\splitbutton.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\tabs.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\tooltip.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\tree.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\validatebox.css" />
+    <Content Include="Content\Easyui\themes\bootstrap\window.css" />
+    <Content Include="Content\Easyui\themes\default\accordion.css" />
+    <Content Include="Content\Easyui\themes\default\calendar.css" />
+    <Content Include="Content\Easyui\themes\default\combo.css" />
+    <Content Include="Content\Easyui\themes\default\combobox.css" />
+    <Content Include="Content\Easyui\themes\default\datagrid.css" />
+    <Content Include="Content\Easyui\themes\default\datebox.css" />
+    <Content Include="Content\Easyui\themes\default\dialog.css" />
+    <Content Include="Content\Easyui\themes\default\easyui.css" />
+    <Content Include="Content\Easyui\themes\default\images\accordion_arrows.png" />
+    <Content Include="Content\Easyui\themes\default\images\blank.gif" />
+    <Content Include="Content\Easyui\themes\default\images\calendar_arrows.png" />
+    <Content Include="Content\Easyui\themes\default\images\combo_arrow.png" />
+    <Content Include="Content\Easyui\themes\default\images\datagrid_icons.png" />
+    <Content Include="Content\Easyui\themes\default\images\datebox_arrow.png" />
+    <Content Include="Content\Easyui\themes\default\images\layout_arrows.png" />
+    <Content Include="Content\Easyui\themes\default\images\linkbutton_bg.png" />
+    <Content Include="Content\Easyui\themes\default\images\loading.gif" />
+    <Content Include="Content\Easyui\themes\default\images\menu_arrows.png" />
+    <Content Include="Content\Easyui\themes\default\images\messager_icons.png" />
+    <Content Include="Content\Easyui\themes\default\images\pagination_icons.png" />
+    <Content Include="Content\Easyui\themes\default\images\panel_tools.png" />
+    <Content Include="Content\Easyui\themes\default\images\searchbox_button.png" />
+    <Content Include="Content\Easyui\themes\default\images\slider_handle.png" />
+    <Content Include="Content\Easyui\themes\default\images\spinner_arrows.png" />
+    <Content Include="Content\Easyui\themes\default\images\tabs_icons.png" />
+    <Content Include="Content\Easyui\themes\default\images\tree_icons.png" />
+    <Content Include="Content\Easyui\themes\default\images\validatebox_warning.png" />
+    <Content Include="Content\Easyui\themes\default\layout.css" />
+    <Content Include="Content\Easyui\themes\default\linkbutton.css" />
+    <Content Include="Content\Easyui\themes\default\menu.css" />
+    <Content Include="Content\Easyui\themes\default\menubutton.css" />
+    <Content Include="Content\Easyui\themes\default\messager.css" />
+    <Content Include="Content\Easyui\themes\default\pagination.css" />
+    <Content Include="Content\Easyui\themes\default\panel.css" />
+    <Content Include="Content\Easyui\themes\default\progressbar.css" />
+    <Content Include="Content\Easyui\themes\default\propertygrid.css" />
+    <Content Include="Content\Easyui\themes\default\searchbox.css" />
+    <Content Include="Content\Easyui\themes\default\slider.css" />
+    <Content Include="Content\Easyui\themes\default\spinner.css" />
+    <Content Include="Content\Easyui\themes\default\splitbutton.css" />
+    <Content Include="Content\Easyui\themes\default\tabs.css" />
+    <Content Include="Content\Easyui\themes\default\tooltip.css" />
+    <Content Include="Content\Easyui\themes\default\tree.css" />
+    <Content Include="Content\Easyui\themes\default\validatebox.css" />
+    <Content Include="Content\Easyui\themes\default\window.css" />
+    <Content Include="Content\Easyui\themes\gray\accordion.css" />
+    <Content Include="Content\Easyui\themes\gray\calendar.css" />
+    <Content Include="Content\Easyui\themes\gray\combo.css" />
+    <Content Include="Content\Easyui\themes\gray\combobox.css" />
+    <Content Include="Content\Easyui\themes\gray\datagrid.css" />
+    <Content Include="Content\Easyui\themes\gray\datebox.css" />
+    <Content Include="Content\Easyui\themes\gray\dialog.css" />
+    <Content Include="Content\Easyui\themes\gray\easyui.css" />
+    <Content Include="Content\Easyui\themes\gray\images\accordion_arrows.png" />
+    <Content Include="Content\Easyui\themes\gray\images\blank.gif" />
+    <Content Include="Content\Easyui\themes\gray\images\calendar_arrows.png" />
+    <Content Include="Content\Easyui\themes\gray\images\combo_arrow.png" />
+    <Content Include="Content\Easyui\themes\gray\images\datagrid_icons.png" />
+    <Content Include="Content\Easyui\themes\gray\images\datebox_arrow.png" />
+    <Content Include="Content\Easyui\themes\gray\images\layout_arrows.png" />
+    <Content Include="Content\Easyui\themes\gray\images\linkbutton_bg.png" />
+    <Content Include="Content\Easyui\themes\gray\images\loading.gif" />
+    <Content Include="Content\Easyui\themes\gray\images\logo.gif" />
+    <Content Include="Content\Easyui\themes\gray\images\logo.png" />
+    <Content Include="Content\Easyui\themes\gray\images\menu_arrows.png" />
+    <Content Include="Content\Easyui\themes\gray\images\messager_icons.png" />
+    <Content Include="Content\Easyui\themes\gray\images\pagination_icons.png" />
+    <Content Include="Content\Easyui\themes\gray\images\panel_tools.png" />
+    <Content Include="Content\Easyui\themes\gray\images\searchbox_button.png" />
+    <Content Include="Content\Easyui\themes\gray\images\slider_handle.png" />
+    <Content Include="Content\Easyui\themes\gray\images\spinner_arrows.png" />
+    <Content Include="Content\Easyui\themes\gray\images\tabs_icons.png" />
+    <Content Include="Content\Easyui\themes\gray\images\tree_icons.png" />
+    <Content Include="Content\Easyui\themes\gray\images\validatebox_warning.png" />
+    <Content Include="Content\Easyui\themes\gray\layout.css" />
+    <Content Include="Content\Easyui\themes\gray\linkbutton.css" />
+    <Content Include="Content\Easyui\themes\gray\menu.css" />
+    <Content Include="Content\Easyui\themes\gray\menubutton.css" />
+    <Content Include="Content\Easyui\themes\gray\messager.css" />
+    <Content Include="Content\Easyui\themes\gray\pagination.css" />
+    <Content Include="Content\Easyui\themes\gray\panel.css" />
+    <Content Include="Content\Easyui\themes\gray\progressbar.css" />
+    <Content Include="Content\Easyui\themes\gray\propertygrid.css" />
+    <Content Include="Content\Easyui\themes\gray\searchbox.css" />
+    <Content Include="Content\Easyui\themes\gray\slider.css" />
+    <Content Include="Content\Easyui\themes\gray\spinner.css" />
+    <Content Include="Content\Easyui\themes\gray\splitbutton.css" />
+    <Content Include="Content\Easyui\themes\gray\tabs.css" />
+    <Content Include="Content\Easyui\themes\gray\tooltip.css" />
+    <Content Include="Content\Easyui\themes\gray\tree.css" />
+    <Content Include="Content\Easyui\themes\gray\validatebox.css" />
+    <Content Include="Content\Easyui\themes\gray\window.css" />
+    <Content Include="Content\Easyui\themes\icon.css" />
+    <Content Include="Content\Easyui\themes\icons\back.png" />
+    <Content Include="Content\Easyui\themes\icons\basket_put.png" />
+    <Content Include="Content\Easyui\themes\icons\blank.gif" />
+    <Content Include="Content\Easyui\themes\icons\cancel.png" />
+    <Content Include="Content\Easyui\themes\icons\circle.png" />
+    <Content Include="Content\Easyui\themes\icons\cut.png" />
+    <Content Include="Content\Easyui\themes\icons\dataechange.png" />
+    <Content Include="Content\Easyui\themes\icons\data_folder.png" />
+    <Content Include="Content\Easyui\themes\icons\download.png" />
+    <Content Include="Content\Easyui\themes\icons\edit_add.png" />
+    <Content Include="Content\Easyui\themes\icons\edit_remove.png" />
+    <Content Include="Content\Easyui\themes\icons\excel.png" />
+    <Content Include="Content\Easyui\themes\icons\fileManager.jpg" />
+    <Content Include="Content\Easyui\themes\icons\filesave.png" />
+    <Content Include="Content\Easyui\themes\icons\finger_point.png" />
+    <Content Include="Content\Easyui\themes\icons\help.png" />
+    <Content Include="Content\Easyui\themes\icons\log-manage.png" />
+    <Content Include="Content\Easyui\themes\icons\marker.png" />
+    <Content Include="Content\Easyui\themes\icons\mini_add.png" />
+    <Content Include="Content\Easyui\themes\icons\mini_edit.png" />
+    <Content Include="Content\Easyui\themes\icons\mini_refresh.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-analyze.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-analyze1.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-audit.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-config.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-excel.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-history.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-menuItem.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-monitor.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-publish.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-report.png" />
+    <Content Include="Content\Easyui\themes\icons\nagiv-search.png" />
+    <Content Include="Content\Easyui\themes\icons\newfolder.png" />
+    <Content Include="Content\Easyui\themes\icons\no.png" />
+    <Content Include="Content\Easyui\themes\icons\ok.png" />
+    <Content Include="Content\Easyui\themes\icons\pencil.png" />
+    <Content Include="Content\Easyui\themes\icons\print.png" />
+    <Content Include="Content\Easyui\themes\icons\redo.png" />
+    <Content Include="Content\Easyui\themes\icons\reload.png" />
+    <Content Include="Content\Easyui\themes\icons\reportbrain.png" />
+    <Content Include="Content\Easyui\themes\icons\search.png" />
+    <Content Include="Content\Easyui\themes\icons\share.png" />
+    <Content Include="Content\Easyui\themes\icons\statistics.png" />
+    <Content Include="Content\Easyui\themes\icons\sum.png" />
+    <Content Include="Content\Easyui\themes\icons\system-manage.png" />
+    <Content Include="Content\Easyui\themes\icons\tip.png" />
+    <Content Include="Content\Easyui\themes\icons\undo.png" />
+    <Content Include="Content\Easyui\themes\icons\upload.png" />
+    <Content Include="Content\Easyui\themes\metro\accordion.css" />
+    <Content Include="Content\Easyui\themes\metro\calendar.css" />
+    <Content Include="Content\Easyui\themes\metro\combo.css" />
+    <Content Include="Content\Easyui\themes\metro\combobox.css" />
+    <Content Include="Content\Easyui\themes\metro\datagrid.css" />
+    <Content Include="Content\Easyui\themes\metro\datebox.css" />
+    <Content Include="Content\Easyui\themes\metro\dialog.css" />
+    <Content Include="Content\Easyui\themes\metro\easyui.css" />
+    <Content Include="Content\Easyui\themes\metro\images\accordion_arrows.png" />
+    <Content Include="Content\Easyui\themes\metro\images\blank.gif" />
+    <Content Include="Content\Easyui\themes\metro\images\calendar_arrows.png" />
+    <Content Include="Content\Easyui\themes\metro\images\combo_arrow.png" />
+    <Content Include="Content\Easyui\themes\metro\images\datagrid_icons.png" />
+    <Content Include="Content\Easyui\themes\metro\images\datebox_arrow.png" />
+    <Content Include="Content\Easyui\themes\metro\images\layout_arrows.png" />
+    <Content Include="Content\Easyui\themes\metro\images\linkbutton_bg.png" />
+    <Content Include="Content\Easyui\themes\metro\images\loading.gif" />
+    <Content Include="Content\Easyui\themes\metro\images\menu_arrows.png" />
+    <Content Include="Content\Easyui\themes\metro\images\messager_icons.png" />
+    <Content Include="Content\Easyui\themes\metro\images\pagination_icons.png" />
+    <Content Include="Content\Easyui\themes\metro\images\panel_tools.png" />
+    <Content Include="Content\Easyui\themes\metro\images\searchbox_button.png" />
+    <Content Include="Content\Easyui\themes\metro\images\slider_handle.png" />
+    <Content Include="Content\Easyui\themes\metro\images\spinner_arrows.png" />
+    <Content Include="Content\Easyui\themes\metro\images\tabs_icons.png" />
+    <Content Include="Content\Easyui\themes\metro\images\tree_icons.png" />
+    <Content Include="Content\Easyui\themes\metro\images\validatebox_warning.png" />
+    <Content Include="Content\Easyui\themes\metro\layout.css" />
+    <Content Include="Content\Easyui\themes\metro\linkbutton.css" />
+    <Content Include="Content\Easyui\themes\metro\menu.css" />
+    <Content Include="Content\Easyui\themes\metro\menubutton.css" />
+    <Content Include="Content\Easyui\themes\metro\messager.css" />
+    <Content Include="Content\Easyui\themes\metro\pagination.css" />
+    <Content Include="Content\Easyui\themes\metro\panel.css" />
+    <Content Include="Content\Easyui\themes\metro\progressbar.css" />
+    <Content Include="Content\Easyui\themes\metro\propertygrid.css" />
+    <Content Include="Content\Easyui\themes\metro\searchbox.css" />
+    <Content Include="Content\Easyui\themes\metro\slider.css" />
+    <Content Include="Content\Easyui\themes\metro\spinner.css" />
+    <Content Include="Content\Easyui\themes\metro\splitbutton.css" />
+    <Content Include="Content\Easyui\themes\metro\tabs.css" />
+    <Content Include="Content\Easyui\themes\metro\tooltip.css" />
+    <Content Include="Content\Easyui\themes\metro\tree.css" />
+    <Content Include="Content\Easyui\themes\metro\validatebox.css" />
+    <Content Include="Content\Easyui\themes\metro\window.css" />
+    <Content Include="Content\zTree_v3\jquery.ztree.core.min.js" />
+    <Content Include="Content\zTree_v3\jquery.ztree.excheck.min.js" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\1_close.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\1_open.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\2.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\3.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\4.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\5.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\6.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\7.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\8.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\diy\9.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\line_conn.gif" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\loading.gif" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\zTreeStandard.gif" />
+    <Content Include="Content\zTree_v3\zTreeStyle\img\zTreeStandard.png" />
+    <Content Include="Content\zTree_v3\zTreeStyle\zTreeStyle.css" />
+    <Content Include="layui\build\css\app.css" />
+    <Content Include="layui\build\css\doc.css" />
+    <Content Include="layui\build\css\message.css" />
+    <Content Include="layui\build\css\nprogress.css" />
+    <Content Include="layui\build\css\themes\blue.1.css" />
+    <Content Include="layui\build\css\themes\blue.css" />
+    <Content Include="layui\build\css\themes\default.css" />
+    <Content Include="layui\build\css\themes\green.css" />
+    <Content Include="layui\build\css\themes\light.css" />
+    <Content Include="layui\build\css\themes\orange.css" />
+    <Content Include="layui\build\css\themes\pink.css" />
+    <Content Include="layui\build\css\themes\red.css" />
+    <Content Include="layui\build\images\pay.png" />
+    <Content Include="layui\build\js\app.js" />
+    <Content Include="layui\build\js\loader.js" />
+    <Content Include="layui\build\js\message.js" />
+    <Content Include="layui\build\js\navbar.js" />
+    <Content Include="layui\build\js\nprogress.js" />
+    <Content Include="layui\build\js\onelevel.js" />
+    <Content Include="layui\build\js\pjax.js" />
+    <Content Include="layui\build\js\tab.js" />
+    <Content Include="layui\css\layui.css" />
+    <Content Include="layui\css\layui.mobile.css" />
+    <Content Include="layui\css\modules\code.css" />
+    <Content Include="layui\css\modules\laydate\default\laydate.css" />
+    <Content Include="layui\css\modules\layer\default\icon-ext.png" />
+    <Content Include="layui\css\modules\layer\default\icon.png" />
+    <Content Include="layui\css\modules\layer\default\layer.css" />
+    <Content Include="layui\css\modules\layer\default\loading-0.gif" />
+    <Content Include="layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="layui\font\iconfont.svg" />
+    <Content Include="layui\images\face\0.gif" />
+    <Content Include="layui\images\face\1.gif" />
+    <Content Include="layui\images\face\10.gif" />
+    <Content Include="layui\images\face\11.gif" />
+    <Content Include="layui\images\face\12.gif" />
+    <Content Include="layui\images\face\13.gif" />
+    <Content Include="layui\images\face\14.gif" />
+    <Content Include="layui\images\face\15.gif" />
+    <Content Include="layui\images\face\16.gif" />
+    <Content Include="layui\images\face\17.gif" />
+    <Content Include="layui\images\face\18.gif" />
+    <Content Include="layui\images\face\19.gif" />
+    <Content Include="layui\images\face\2.gif" />
+    <Content Include="layui\images\face\20.gif" />
+    <Content Include="layui\images\face\21.gif" />
+    <Content Include="layui\images\face\22.gif" />
+    <Content Include="layui\images\face\23.gif" />
+    <Content Include="layui\images\face\24.gif" />
+    <Content Include="layui\images\face\25.gif" />
+    <Content Include="layui\images\face\26.gif" />
+    <Content Include="layui\images\face\27.gif" />
+    <Content Include="layui\images\face\28.gif" />
+    <Content Include="layui\images\face\29.gif" />
+    <Content Include="layui\images\face\3.gif" />
+    <Content Include="layui\images\face\30.gif" />
+    <Content Include="layui\images\face\31.gif" />
+    <Content Include="layui\images\face\32.gif" />
+    <Content Include="layui\images\face\33.gif" />
+    <Content Include="layui\images\face\34.gif" />
+    <Content Include="layui\images\face\35.gif" />
+    <Content Include="layui\images\face\36.gif" />
+    <Content Include="layui\images\face\37.gif" />
+    <Content Include="layui\images\face\38.gif" />
+    <Content Include="layui\images\face\39.gif" />
+    <Content Include="layui\images\face\4.gif" />
+    <Content Include="layui\images\face\40.gif" />
+    <Content Include="layui\images\face\41.gif" />
+    <Content Include="layui\images\face\42.gif" />
+    <Content Include="layui\images\face\43.gif" />
+    <Content Include="layui\images\face\44.gif" />
+    <Content Include="layui\images\face\45.gif" />
+    <Content Include="layui\images\face\46.gif" />
+    <Content Include="layui\images\face\47.gif" />
+    <Content Include="layui\images\face\48.gif" />
+    <Content Include="layui\images\face\49.gif" />
+    <Content Include="layui\images\face\5.gif" />
+    <Content Include="layui\images\face\50.gif" />
+    <Content Include="layui\images\face\51.gif" />
+    <Content Include="layui\images\face\52.gif" />
+    <Content Include="layui\images\face\53.gif" />
+    <Content Include="layui\images\face\54.gif" />
+    <Content Include="layui\images\face\55.gif" />
+    <Content Include="layui\images\face\56.gif" />
+    <Content Include="layui\images\face\57.gif" />
+    <Content Include="layui\images\face\58.gif" />
+    <Content Include="layui\images\face\59.gif" />
+    <Content Include="layui\images\face\6.gif" />
+    <Content Include="layui\images\face\60.gif" />
+    <Content Include="layui\images\face\61.gif" />
+    <Content Include="layui\images\face\62.gif" />
+    <Content Include="layui\images\face\63.gif" />
+    <Content Include="layui\images\face\64.gif" />
+    <Content Include="layui\images\face\65.gif" />
+    <Content Include="layui\images\face\66.gif" />
+    <Content Include="layui\images\face\67.gif" />
+    <Content Include="layui\images\face\68.gif" />
+    <Content Include="layui\images\face\69.gif" />
+    <Content Include="layui\images\face\7.gif" />
+    <Content Include="layui\images\face\70.gif" />
+    <Content Include="layui\images\face\71.gif" />
+    <Content Include="layui\images\face\8.gif" />
+    <Content Include="layui\images\face\9.gif" />
+    <Content Include="layui\layui.all.js" />
+    <Content Include="layui\layui.js" />
+    <Content Include="layui\lay\modules\carousel.js" />
+    <Content Include="layui\lay\modules\code.js" />
+    <Content Include="layui\lay\modules\element.js" />
+    <Content Include="layui\lay\modules\flow.js" />
+    <Content Include="layui\lay\modules\form.js" />
+    <Content Include="layui\lay\modules\jquery.js" />
+    <Content Include="layui\lay\modules\laydate.js" />
+    <Content Include="layui\lay\modules\layedit.js" />
+    <Content Include="layui\lay\modules\layer.js" />
+    <Content Include="layui\lay\modules\laypage.js" />
+    <Content Include="layui\lay\modules\laytpl.js" />
+    <Content Include="layui\lay\modules\mobile.js" />
+    <Content Include="layui\lay\modules\table.js" />
+    <Content Include="layui\lay\modules\tree.js" />
+    <Content Include="layui\lay\modules\upload.js" />
+    <Content Include="layui\lay\modules\util.js" />
+    <Content Include="Content\login\base.css" />
+    <Content Include="Content\login\login.css" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Easyui\api\themes\gray\easyui.css.bak" />
+    <Content Include="Content\Easyui\demo\accordion\datagrid_data1.json" />
+    <Content Include="Content\Easyui\demo\combobox\combobox_data1.json" />
+    <Content Include="Content\Easyui\demo\combobox\combobox_data2.json" />
+    <Content Include="Content\Easyui\demo\combogrid\datagrid_data1.json" />
+    <Content Include="Content\Easyui\demo\combotree\tree_data1.json" />
+    <Content Include="Content\Easyui\demo\datagrid\datagrid_data1.json" />
+    <Content Include="Content\Easyui\demo\datagrid\datagrid_data2.json" />
+    <Content Include="Content\Easyui\demo\datagrid\products.json" />
+    <Content Include="Content\Easyui\demo\form\form_data1.json" />
+    <Content Include="Content\Easyui\demo\layout\datagrid_data1.json" />
+    <Content Include="Content\Easyui\demo\layout\propertygrid_data1.json" />
+    <Content Include="Content\Easyui\demo\layout\tree_data1.json" />
+    <Content Include="Content\Easyui\demo\propertygrid\propertygrid_data1.json" />
+    <Content Include="Content\Easyui\demo\tabs\tree_data1.json" />
+    <Content Include="Content\Easyui\demo\treegrid\treegrid_data1.json" />
+    <Content Include="Content\Easyui\demo\treegrid\treegrid_data2.json" />
+    <Content Include="Content\Easyui\demo\treegrid\treegrid_data3.json" />
+    <Content Include="Content\Easyui\demo\tree\tree_data1.json" />
+    <Content Include="Content\Easyui\demo\tree\tree_data2.json" />
+    <Content Include="layui\font\iconfont.eot" />
+    <Content Include="layui\font\iconfont.ttf" />
+    <Content Include="layui\font\iconfont.woff" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Images\administrator.png" />
+    <Content Include="Images\Ltrypk.png" />
+    <Content Include="Images\LoginName.ico" />
+    <Content Include="Images\LoginUser.ico" />
+    <Content Include="Images\login_logo_w.png" />
+    <Content Include="Images\Lpassword.ico" />
+    <Content Include="Scripts\Common\ajaxfileupload.js" />
+    <Content Include="Scripts\Common\base64 - 复制.js" />
+    <Content Include="Scripts\Common\common_control.js" />
+    <Content Include="Scripts\Common\common_search.js" />
+    <Content Include="Scripts\Common\common_util.js" />
+    <Content Include="Scripts\Common\DESEncrypt.js" />
+    <Content Include="Scripts\Common\md5.js" />
+    <Content Include="Scripts\Common\processtree.js" />
+    <Content Include="Scripts\Common\orgtree.js" />
+    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Layout_Non.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Home\Main.cshtml" />
+    <Content Include="Views\SysManagement\UserMgt.cshtml" />
+    <Content Include="Views\SysManagement\UserMgt - 复制.cshtml" />
+    <Content Include="Views\SysManagement\RoleMgt.cshtml" />
+    <Content Include="Views\SysManagement\OrganizationMgt.cshtml" />
+    <Content Include="Views\SysManagement\RightConfig.cshtml" />
+    <Content Include="Views\PersonnelManagement\EmployeeMgt.cshtml" />
+    <Content Include="Views\ProcessManagement\ProcessBomMgt.cshtml" />
+    <Content Include="Views\PlanManagement\SaleOrderMgt.cshtml" />
+    <Content Include="Views\PlanManagement\SaleOrderItemMgt.cshtml" />
+    <Content Include="Views\PlanManagement\PlanMgt.cshtml" />
+    <Content Include="Views\BaseManagement\Alibrary.cshtml" />
+    <Content Include="Views\BaseManagement\Customer.cshtml" />
+    <Content Include="Views\BaseManagement\DataCollectPoint.cshtml" />
+    <Content Include="Views\BaseManagement\ProductInfo.cshtml" />
+    <Content Include="Views\BaseManagement\Stock.cshtml" />
+    <Content Include="Views\BaseManagement\Supplier.cshtml" />
+    <Content Include="Views\BaseManagement\WorkShop.cshtml" />
+    <Content Include="Views\ProcessManagement\Process.cshtml" />
+    <Content Include="Views\ProcessManagement\TestDataPosition.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sys.Tools\Sys.Tools.csproj">
+      <Project>{2eed0b3e-8f6d-4c9f-8aa5-07c80625d2dc}</Project>
+      <Name>Sys.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sys\Sys.csproj">
+      <Project>{af021d26-5a54-439b-ae2e-40a2adb92a67}</Project>
+      <Name>Sys</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>44835</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:44835/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

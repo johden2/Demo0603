@@ -1,0 +1,285 @@
+﻿@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+    #divForm .tbForm td {
+        padding-left: 5px;
+        padding-top:5px;
+    }
+
+    .float-tree {
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        border: 1px solid #808080;
+        background-color: #DDDDDD;
+        /*height:220px;*/
+    }
+
+    .tree-close {
+        text-align: right;
+        padding-right: 10px;
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td>
+                登录账号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_UserID" style="width: 150px;" />
+            </td>
+            <td>
+                用户名：<input class="easyui-textbox" id="Q_UserName" style="width: 150px;" />
+            </td>
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                <a id="btnResetPass" class="easyui-linkbutton" iconcls="icon-edit" plain="true">密码重置</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="用户信息" style="width: 600px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+        <table id="tbForm" class="tbForm">
+            <tr>
+                <td colspan="6">
+                    <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                    <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                    <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
+                </td>
+            </tr>
+            <tr>
+                <td class="form-head">
+                    <span class="sp-require">*</span>工号：
+                </td>
+                <td><input class="easyui-textbox" id="E_UserID" /></td>
+                <td class="form-head">
+                    <span class="sp-require">*</span>用户名：
+                </td>
+                <td><input class="easyui-textbox" id="E_UserName" /></td>
+            </tr>
+            <tr>
+                <td class="form-head">
+                    <span class="sp-require">*</span>所在部门：
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_OrgName" />
+                    <input id="E_OrgID" type="hidden" />
+                    <img id="btnShowOrg" class="select-icon" src="/images/select_icon.png" title="点击选择部门" />
+                    <div id="divTreeOrg" class="float-tree">
+                        <div id="btnTreeClose" class="tree-close" title="点击关闭窗口">关闭</div>
+                        <ul id="treeOrg" class="ztree" style="height: 210px; overflow:auto;"></ul>
+                    </div>
+                </td>
+                <td class="form-head">
+                    <span class="sp-require">*</span>是否管理员：
+                </td>
+                <td><input class="easyui-combobox" id="E_IsAdmin" 
+                           data-options="valueField:'Value', textField:'Text', panelHeight:'auto',editable : false" /></td>
+            </tr>
+            <tr>
+                <td class="form-head">
+                    <span class="sp-require">*</span>用户角色：
+                </td>
+                <td colspan="3">
+                    <input type="text" class="easyui-textbox" id="Select_RoleName" />
+                    <input type="hidden" class="easyui-textbox" id="E_RoleID" maxlength="50" name="RoleID" />
+                </td>
+            </tr>
+        </table>
+</div>
+
+<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
+@*<script src="/Scripts/Common/common_util.js?v=2"></script>
+<script src="/Scripts/Common/common_control.js?v=2"></script>*@
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script src="@Url.Content("~/Scripts/Common/orgtree.js?v=" + new Random().NextDouble())"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    $(document).ready(function () {
+        common_bindCommonCombox("E_IsAdmin", { headerType: 3, statusType: "YesNoEnum" });
+        $("#btnQuery").click(function () { PageListObj.queryList(); })
+        $("#btnAdd").click(function () { showForm(1); })
+        $("#btnEdit").click(function () { showForm(2); })
+        $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnOk").click(function () { saveForm(); })
+        $("#btnClose").click(function () { FormUitl.close(_divFormName); })
+        $("#btnShowOrg").click(function () { $("#divTreeOrg").show(); })
+        $("#btnTreeClose").click(function () { $("#divTreeOrg").hide(); })
+        $("#btnResetPass").click(function () { resetPassword(); })
+
+        CtrlCommonUtil.BindRoleListLike("Select_RoleName", { PanelWidth: 170, PanelHeight: 250 },
+               function (rowIndex, row) { //点击事件
+                   $("#Select_RoleName").combogrid("setText", row.RoleName);
+                   $("#E_RoleID").val(row.ID);
+               });
+
+        initGrid();
+
+        initTree();
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'UserID', title: '工号', width: 100,align:'center' },
+               { field: 'UserName', title: '用户名', width: 120, align: 'center' },
+               { field: 'Show_IsAdmin', title: '是否管理员', width: 100, align: 'center' },
+               { field: 'RoleName', title: '角色名称', width: 150, align: 'center' },
+               { field: 'OrgName', title: '所在部门', width: 100, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 100, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' },
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            singleSelect: true,
+            url: "/SysManagement/UserMgt_FindByPage"
+        };
+        
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+    function getQueryParms() {
+        return {
+            UserID: $.trim($("#Q_UserID").val()),
+            UserName: $.trim($("#Q_UserName").val())
+        };
+    }
+
+    //加载部门树
+    function initTree() {
+        var param = {
+            TreeId: "treeOrg"
+        };
+        param.onClick = function (event, treeId, treeNode) {
+            onTreeClick(event, treeId, treeNode);
+        }
+
+        loadOrgTree(param);
+    }
+
+    //树控件的节点点击事件
+    function onTreeClick(event, treeId, treeNode) {
+        if (!treeNode) return;
+
+        $("#E_OrgID").val(treeNode.id);
+        $("#E_OrgName").val(treeNode.name);
+        $("#divTreeOrg").hide();
+    }
+ 
+    function showForm(optType) {
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        $("#E_ID").val("");
+        $("#E_UserID").removeAttr("disabled");
+        $("#E_OrgName").removeAttr("disabled");
+
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#E_ID").val(row.ID);
+            $("#E_UserID").val(row.UserID);
+            $("#E_UserName").val(row.UserName);
+            $("#E_IsAdmin").combobox("setValue", row.IsAdmin);
+            $("#E_OrgID").val(row.OrgID);
+            $("#E_OrgName").val(row.OrgName);
+            $("#Select_RoleName").combogrid("setText", row.RoleName);
+            $("#E_RoleID").val(row.RoleID);
+
+            $("#E_UserID").attr("disabled", "disabled");
+            $("#E_OrgName").attr("disabled", "disabled");
+        }
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _OptType = optType;
+    }
+
+    //保存记录
+    function saveForm() {
+        var data = FormUitl.getFormData(_formName);
+        data.OptType = _OptType;
+        doPostAjaxRequest("/SysManagement/UserMgt_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ids: row.ID };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/SysManagement/UserMgt_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    //重置密码
+    function resetPassword() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ID: row.ID };
+        doPostAjaxRequest("/SysManagement/UserMgt_ResetPassword", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+
+            $.messager.alert('提示', '操作成功！', "info");
+        });
+    }
+
+
+    </script>

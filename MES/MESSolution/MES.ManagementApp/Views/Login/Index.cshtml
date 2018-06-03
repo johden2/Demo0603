@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "用户登录";
+    Layout = null;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=GBK">
+    <title>用户登录</title>
+    <script src="/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="/Content/Easyui/jquery.easyui.min.js"></script>
+    <link href="/Content/login/base.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/login/login.css?v=2" rel="stylesheet" type="text/css" />
+</head>
+@*<body class="white">*@
+<body class="white">
+    <div class="login-hd">
+        <div class="left-bg"></div>
+        <div class="right-bg"></div>
+        <div class="hd-inner">
+            <span class="logo"></span>
+            @*<span class="split"></span>*@
+            <label class="sys-name" style="color: #1296DB; font-size:28px;"> 生产管理系统</label>
+        </div>
+    </div>
+    <div class="login-bd">
+        <div class="bd-inner">
+            <div class="inner-wrap">
+                <div class="lg-zone">
+                    <div class="lg-box">
+                        <div class="lg-label"><h4>用户登录</h4></div>
+                        <div class="alert alert-error" id="InfoMessage">
+                            <i class="iconfont">&#xe62e;</i>
+                            <span id="lblMessage">请输入用户账号！</span>
+                        </div>
+                        <form>
+                            <div class="lg-username input-item clearfix">
+
+
+                                <i class="iconfont"> <img src="~/Images/LoginName.ico" style="margin-top:8px;" /></i>
+
+
+                                <input type="text" id="txtLoginName" placeholder="请输入用户账号">
+                            </div>
+                            <div class="lg-password input-item clearfix">
+                                <i class="iconfont">
+                                    <img src="~/Images/Lpassword.ico" style="margin-top:8px;" />
+                                </i>
+                                <input type="password" id="txtPassword" placeholder="请输入密码">
+                            </div>
+                            <div class="lg-check clearfix">
+                                @*<div class="input-item">
+                                        <i class="iconfont">&#xe633;</i>
+                                        <input type="text" placeholder="验证码">
+                                    </div>
+                                    <span class="check-code">XD34F</span>*@
+                            </div>
+                            <div class="tips clearfix">
+                                <input id="ck_rmbUser" type="checkbox" style="margin-left:35px;" />&nbsp;&nbsp;
+                                <span style="font-size:12px; color:blue;" onclick="pwdCheck()">记住密码</span>
+                                @*<a href="javascript:;" class="register">生成快捷方式</a>*@
+                                @*<a href="javascript:;" class="forget-pwd">忘记密码？</a>*@
+                            </div>
+                            <div class="enter">
+                                <a href="javascript:;" class="supplier" id="btnLogin">登&nbsp;&nbsp;录</a>
+                            </div>
+                        </form>
+                        <div class="line line-y"></div>
+                        <div class="line line-g"></div>
+                    </div>
+                </div>
+                <div class="lg-poster"></div>
+            </div>
+        </div>
+    </div>
+    <div class="login-ft">
+        <div class="ft-inner">
+            <div class="about-us">
+                <a href="javascript:;">关于我们</a>
+                @*<a href="javascript:;">法律声明</a>
+                    <a href="javascript:;">服务条款</a>*@
+                <a href="javascript:;">联系方式</a>
+            </div>
+            <div class="other-info">浏览器请选择IE11以上、360浏览器(极速模式)、火狐浏览器</div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="/Scripts/Common/common_util.js?v=4"></script>
+<script src="/Scripts/Common/common_control.js?v=4"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#txtLoginName").focus();
+    });
+    $("#btnLogin").click(function () {
+        doLogin();
+    });
+    $("#txtPassword").bind('keypress', function (event) {
+        if (event.keyCode == "13") {
+            doLogin();
+        }
+    });
+    function pwdCheck() {
+        if ($("#ck_rmbUser").attr('checked')) {
+            $("#ck_rmbUser").attr('checked', false);
+        }
+        else {
+            $("#ck_rmbUser").attr('checked', true);
+        }
+    }
+    //记住用户名密码
+    function save() {
+        //if ($("#ck_rmbUser").prop("checked")) {
+        //    var username = $("#txtLoginName").val();
+        //    var password = $("#txtPassword").val();
+        //    $.cookie("rmbUser", "true", { expires: 1 }); //存储一个带7天期限的cookie
+        //    $.cookie("usr", username, { expires: 1 });
+        //    $.cookie("pwd", password, { expires: 1 });
+        //} else {
+        //    $.cookie("rmbUser", "false", { expire: -1 });
+        //    $.cookie("usr", "", { expires: -1 });
+        //    $.cookie("pwd", "", { expires: -1 });
+        //}
+    };
+    function doLogin() {
+ 
+        $("#lblMessage").hide();
+        var loginName = $.trim($("#txtLoginName").val());
+        var password = $.trim($("#txtPassword").val());
+        if (loginName.length == 0) {
+            $("#InfoMessage").show();
+            $("#lblMessage").text("请输入用户账号！");
+            $("#lblMessage").show();
+            return;
+        }
+        if (password.length == 0) {
+          
+            $("#InfoMessage").show();
+            $("#lblMessage").text("请输入密码！");
+            $("#lblMessage").show();
+            return;
+        }
+
+        //校验用户名和密码
+        var data = {
+            UserID: loginName,
+            Pass: password
+        };
+        doPostAjaxRequest("/Login/CheckLogin", data, function (msg) {
+            if (!msg.IsSuccess) {
+                //$.messager.alert('提示', msg.Message, "info");
+                //alert(msg.Message);
+                //$("#InfoMessage").show();
+                //$("#lblMessage").show();
+                $("#lblMessage").text(msg.Message);
+                return;
+            }
+            
+            //window.location.href = "/Home/Index";
+            window.location.href = "/";
+        });
+
+    }
+
+
+
+</script>

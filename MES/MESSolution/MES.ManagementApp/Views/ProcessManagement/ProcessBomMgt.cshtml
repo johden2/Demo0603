@@ -1,0 +1,470 @@
+﻿@{
+    ViewBag.Title = "配套明细管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+    div #rMenu {
+        position: absolute;
+        visibility: hidden;
+        top: 0;
+        background-color: #555;
+        text-align: left;
+        padding: 2px;
+    }
+
+    .float-tree {
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        border: 1px solid #808080;
+        background-color: #DDDDDD;
+        /*height:220px;*/
+    }
+
+    .tree-ok {
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+        text-align: right;
+        padding-right: 20px;
+        padding-top: 5px;
+    }
+
+    .tree-close {
+        text-align: right;
+        padding-right: 10px;
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+div #rMenu a {
+    cursor: pointer;
+    list-style: none outside none;
+}
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div style="width: 180px;" region="west" split="true">
+        <ul id="treeList" class="easyui-tree"></ul>
+    </div>
+    <div region="center">
+        <div id="divQuery" style="padding:5px;height:auto">
+            <table id="tbQuery">
+                <tr>
+                    <td>
+                        物料编码：
+                    </td>
+                    <td>
+                        <input class="easyui-textbox" id="Q_SubMaterialProNo" style="width: 150px;" />
+                    </td>
+                    <td>
+                        物料简称：
+                    </td>
+                    <td>
+                        <input class="easyui-textbox" id="Q_SubMaterialCode" style="width: 150px;" />
+                    </td>
+                    <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                        <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                        <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                        <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                        <a id="btnImport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导入</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="配套明细" style="width: 560px; height: 340px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <table id="tbForm" class="tbForm">
+        <tr>
+            <td colspan="6">
+                <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
+                <input class="easyui-textbox" id="E_ItemID" type="hidden" clearflag="0" />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>产品编码：
+            </td>
+            <td><input class="easyui-textbox" id="E_MaterialProNo" disabled /></td>
+            <td class="form-head">
+                <span class="sp-require">*</span>产品简称：
+            </td>
+            <td><input class="easyui-textbox" id="E_MaterialCode" disabled /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>产品版本：
+            </td>
+            <td><input class="easyui-textbox" id="E_Version" disabled /></td>
+        </tr>
+        <tr>
+            <td colspan="4"><hr /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>工艺：
+            </td>
+            <td colspan="3">
+                <input class="easyui-textbox" id="E_ProcessName" style="width:380px;" />
+                <input id="E_ProcessCode" type="hidden" />
+                <img id="btnShowProcess" class="select-icon" src="/images/select_icon.png" title="点击选择工艺" />
+                <div id="divTreeProcess" class="float-tree" style="width:280px;">
+                    <div class="tree-ok">
+                        <a title="点击关闭窗口" id="btnTreeProcessClose">关闭</a>
+                    </div>
+                    <ul id="treeProcess" class="ztree" style="height: 180px; overflow:auto;"></ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>物料编码：
+            </td>
+            <td><input class="easyui-textbox" id="E_SubMaterialProNo" /></td>
+            <td class="form-head">
+                <span class="sp-require">*</span>物料简称：
+            </td>
+            <td><input class="easyui-textbox" id="E_SubMaterialCode" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>数量：
+            </td>
+            <td><input class="easyui-textbox" id="E_Num" /></td>
+            <td class="form-head">
+                <span class="sp-require">*</span>单位：
+            </td>
+            <td><input class="easyui-textbox" id="E_Unit" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">备注：</td>
+            <td colspan="3">
+                <textarea rows="5" cols="55" id="E_Memo" maxlength="500"></textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divMenuForm" class="easyui-window" closed="true" modal="true"
+     title="产品信息" style="width: 320px; height: 220px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <table id="tbMenuForm" class="tbForm">
+        <tr>
+            <td colspan="6">
+                <a id="btnMenuOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                <a id="btnMenuClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                <input class="easyui-textbox" id="E_MenuID" type="hidden" clearflag="0" />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>产品编码：
+            </td>
+            <td><input class="easyui-textbox" id="E_MenuMaterialProNo" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>产品简称：
+            </td>
+            <td><input class="easyui-textbox" id="E_MenuMaterialCode" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>产品版本：
+            </td>
+            <td><input class="easyui-textbox" id="E_MenuVersion" /></td>
+        </tr>
+    </table>
+</div>
+<div id="divRightMenu" class="easyui-menu div-right-menu">
+    <div id="divMenuAdd" data-options="iconCls:'icon-add'">新增子节点</div>
+    <div id="divMenuEdit" data-options="iconCls:'icon-edit'">修改当前节点</div>
+    <div id="divMenuDelete" data-options="iconCls:'icon-remove'">删除当前节点</div>
+</div>
+<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script src="@Url.Content("~/Scripts/Common/processtree.js?v=" + new Random().NextDouble())"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    var _curNode = { MaterialProNo: "", Version: "" };
+
+    $(document).ready(function () {
+        $("#btnAdd").click(function () { showForm(1); })
+        $("#btnEdit").click(function () { showForm(2); })
+        $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnImport").click(function () { importExcel(); })
+        $("#btnOk").click(function () { saveForm(); })
+        $("#btnClose").click(function () { FormUitl.close(_divFormName); })
+        $("#btnShowProcess").click(function () { $("#divTreeProcess").show(); })
+        $("#btnTreeProcessClose").click(function () { $("#divTreeProcess").hide(); })
+        
+        $("#divMenuAdd").click(function () { showMenuForm(1); })
+        $("#divMenuEdit").click(function () { showMenuForm(2); })
+        $("#divMenuDelete").click(function () { deleteMenuRecord(); })
+        $("#btnMenuOk").click(function () { saveMenuForm(); })
+        $("#btnMenuClose").click(function () { FormUitl.close("divMenuForm"); })
+
+        initTree();
+
+        initGrid();
+
+        initProcessTree();
+    });
+
+    //加载部门树
+    function initTree() {
+        $('#treeList').tree({
+            url: '/ProcessManagement/ProcessBomMgt_FindTree',
+            method: 'get',
+            loadMsg: '数据加载中，请稍后……',
+            animate: false,
+            onClick: function (node) {//单击事件
+                //nodeId = node.id;
+                PageListObj.queryList();
+            },
+            onContextMenu: function (e, node) {
+                $('#divRightMenu').menu('show', { left: e.pageX, top: e.pageY });
+                e.preventDefault();
+            },
+            onLoadError: function (arguments) {
+           
+            }
+        });
+    }
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'MaterialProNo', title: '产品编码', width: 150, align: 'center' },
+               { field: 'MaterialCode', title: '产品简称', width: 130, align: 'center' },
+               { field: 'Version', title: '版本', width: 60, align: 'center' },
+               { field: 'ProcessName', title: '工艺', width: 140, align: 'center' },
+               { field: 'SubMaterialProNo', title: '物料编码', width: 150, align: 'center' },
+               { field: 'SubMaterialCode', title: '物料简称', width: 140, align: 'center' },
+               { field: 'Num', title: '数量', width: 60, align: 'center' },
+               { field: 'Unit', title: '单位', width: 60, align: 'center' }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            singleSelect: true,
+            pageList:[20,50],
+            url: "/ProcessManagement/ProcessBomMgt_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+        PageListObj.init();
+    }
+
+    function getQueryParms() {
+        var sMaterialProNo = "";
+        var sVersion = "";
+        var node = $("#treeList").tree('getSelected');
+        if (node) {
+            sMaterialProNo = node.attributes.MaterialProNo;
+            sVersion = node.attributes.Version;
+        }
+
+        return {
+            SubMaterialProNo: $.trim($("#Q_SubMaterialProNo").val()),
+            SubMaterialCode: $.trim($("#Q_SubMaterialCode").val()),
+            MaterialProNo: sMaterialProNo,
+            Version: sVersion
+        };
+    }
+
+    //加载部门树
+    function initProcessTree() {
+        var param = {
+            TreeId: "treeProcess",
+            IsCheck: 0
+        };
+
+        param.onClick = function (event, treeId, treeNode) {
+            onProcessTreeClick(event, treeId, treeNode);
+        }
+
+        loadProcessTree(param);
+    }
+
+    //选择工序
+    function onProcessTreeClick(event, treeId, treeNode) {
+        if (!treeNode) return;
+
+        $("#E_ProcessCode").val(treeNode.id);
+        $("#E_ProcessName").val(treeNode.name);
+        $("#divTreeProcess").hide();
+    }
+
+    function showForm(optType) {
+        if (optType == 1) { //新增
+            var node = $("#treeList").tree('getSelected');
+            if (!node) {
+                $.messager.alert('提示', "请先选择产品版本", "info");
+                return false;
+            }
+            var version = node.attributes.Version;
+            if (version <= 0) {
+                $.messager.alert('提示', "请先选择产品版本", "info");
+                return false;
+            }
+        }
+
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        _OptType = optType;
+
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#E_ID").val(row.ID);
+            $("#E_ItemID").val(row.ItemID);
+            $("#E_MaterialProNo").val(row.MaterialProNo);
+            $("#E_MaterialCode").val(row.MaterialCode);
+            $("#E_Version").val(row.Version);
+            $("#E_Num").val(row.Num);
+            $("#E_SubMaterialProNo").val(row.SubMaterialProNo);
+            $("#E_SubMaterialCode").val(row.SubMaterialCode);
+            $("#E_Unit").val(row.Unit);
+            $("#E_Unit").val(row.Unit);
+            $("#E_Memo").val(row.Memo);
+            $("#E_ProcessName").val(row.ProcessName);
+            $("#E_ProcessCode").val(row.ProcessCode);
+
+            $("#E_ProcessName").attr("disabled", "disabled");
+        } else if (optType == 1) { //新增
+            var node = $("#treeList").tree('getSelected');
+            if (node) {
+                $("#E_MaterialProNo").val(node.attributes.MaterialProNo);
+                $("#E_MaterialCode").val(node.attributes.MaterialCode);
+                $("#E_Version").val(node.attributes.Version);
+            }
+        }
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _OptType = optType;
+    }
+
+    function saveForm() {
+        var data = FormUitl.getFormData(_formName);
+        data.OptType = _OptType;
+        doPostAjaxRequest("/ProcessManagement/ProcessBomMgt_SaveBomItem", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ItemID: row.ItemID };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/ProcessManagement/ProcessBomMgt_DeleteBomItem", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    function showMenuForm(optType) {
+        //1.清理窗体数据
+        FormUitl.reset("tbMenuForm");
+
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var node = $("#treeList").tree('getSelected');
+            if (node) {
+                $("#E_MenuMaterialProNo").val(node.attributes.MaterialProNo);
+                $("#E_MenuMaterialCode").val(node.attributes.MaterialCode);
+                $("#E_MenuVersion").val(node.attributes.Version);
+            }
+        } 
+
+        //3.显示窗体
+        $('#divMenuForm').show();
+        FormUitl.open("divMenuForm");
+    }
+
+    function saveMenuForm() {
+        var data = {
+            ID: $("#E_MenuID").val(),
+            MaterialProNo: $("#E_MenuMaterialProNo").val(),
+            MaterialCode: $("#E_MenuMaterialCode").val(),
+            Version: $("#E_MenuVersion").val()
+        };
+        data.OptType = _OptType;
+        doPostAjaxRequest("/ProcessManagement/ProcessBomMgt_SaveBom", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#treeList').tree('reload');
+            });
+        });
+    }
+
+    //删除记录
+    function deleteMenuRecord() {
+        var selNode = $("#treeList").tree('getSelected');
+        if (!selNode) return;
+
+        var data = {
+            MaterialProNo: selNode.attributes.MaterialProNo,
+            Version: selNode.attributes.Version
+        };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/ProcessManagement/ProcessBomMgt_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#treeList').tree('reload');
+                });
+            });
+        });
+    }
+
+</script>
+

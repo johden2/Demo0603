@@ -1,0 +1,343 @@
+﻿@{
+    ViewBag.Title = "订单明细管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+@model Sys.Model.PageModel
+
+<style type="text/css">
+    
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="divMainForm" style="padding:5px;height:auto">
+            <table id="tbMainForm">
+                <tr>
+                    <td colspan="2">
+                        <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">保存主订单</a>
+                    </td>
+                    <td class="form-head">
+                        订单状态：
+                    </td>
+                    <td>
+                        <span class="sp-require"><label id="lblOrderStatus"></label></span>
+                    </td>
+                </tr>
+                <tr>
+                   
+                    <td class="form-head">
+                        <span class="sp-require">*</span>订单单别：
+                    </td>
+                    <td>
+                        <input type="text" style="width: 120px;" class="easyui-combobox" id="E_OrderType"
+                               data-options="valueField:'Value', textField:'Text',editable : false" />
+                    </td>
+                    <td class="form-head">
+                        <span class="sp-require">*</span>订单单号：
+                    </td>
+                    <td>
+                    <input class="easyui-textbox" id="E_OrderNo" disabled /></td>
+                    <td class="form-head">
+                        创建人：
+                    </td>
+                    <td style="width:130px">
+                        <label id="lblCreater"></label>
+                    </td>
+                    <td class="form-head">
+                        关单人：
+                    </td>
+                    <td style="width:130px">
+                        <label id="lblCloser"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-head">
+                        <span class="sp-require">*</span>下单日期：
+                    </td>
+                    <td>
+                        <input type="text" class="easyui-datebox" id="E_OrderDate" style="width: 120px;" maxlength="50" />
+                    </td>
+                    <td class="form-head">
+                        <span class="sp-require">*</span>订单金额：
+                    </td>
+                    <td><input class="easyui-textbox" id="E_OrderAmount" style="width: 120px;" /><span class="sp-require">(万)</span></td>
+                    <td class="form-head">
+                        创建时间：
+                    </td>
+                    <td>
+                        <label id="lblCreatedTime"></label>
+                    </td>
+                    <td class="form-head">
+                        关单时间：
+                    </td>
+                    <td>
+                        <label id="lblCloseTime"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-head">
+                        <span class="sp-require">*</span>下单客户：
+                    </td>
+                    <td><input class="easyui-textbox" id="E_CustomerID" /></td>
+                </tr>
+                <tr>
+                    <td class="form-head">
+                       备注：
+                    </td>
+                    <td colspan="3"><textarea id="E_Memo" style="width:400px; height:60px;"></textarea></td>
+                </tr>
+            </table>
+        </div>
+        <div style="width:98%;padding-left:5px;padding-top:10px;">
+            <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+            <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+            <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+
+            @*<div class="easyui-panel my-panel" title="订单明细列表" data-options="fit:true,collapsed:false,collapsible:false"
+                 style="height:40px;width:98%; border-bottom:0px;">
+                <div style="vertical-align:bottom;padding-top:5px;">
+                   
+                </div>
+            </div>*@
+        </div>
+        <div style="width:98%;padding-left:5px;height:320px;">
+            <div id="dgList"></div>
+        </div>
+
+      </div>
+</div>
+
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="订单明细" style="width: 620px; height: 330px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <table id="tbForm" class="tbForm">
+        <tr>
+            <td colspan="6">
+                <a id="btnItemOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                <a id="btnItemClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                <input class="easyui-textbox" id="EI_ID" type="hidden" clearflag="0" />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>订单行号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="EI_ResNum" disabled style="width:60px;" />
+                <span class="sp-require">(自动生成)</span>
+            </td>
+            <td class="form-head">
+                <span class="sp-require">*</span>订单数量：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Num" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>产品编码：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="EI_MaterialProNo" />
+            </td>
+            <td class="form-head">
+                产品简称：
+            </td>
+            <td><input class="easyui-textbox" id="EI_MaterialCode"  /></td>
+            <td class="form-head">
+                版本：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Version" style="width:60px;" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                发货日期：
+            </td>
+            <td>
+                <input type="text" class="easyui-datebox" id="EI_ShipDate" style="width:90px;" maxlength="50" />
+            </td>
+            <td class="form-head">
+                已发数量：
+            </td>
+            <td><input class="easyui-textbox" id="EI_AlNum" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                备注：
+            </td>
+            <td colspan="5"><textarea id="EI_Memo" style="width:400px; height:60px;"></textarea></td>
+        </tr>
+    </table>
+</div>
+
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    var _OrderID = 0;
+    var _ItemOptType = 0;
+    $(document).ready(function () {
+        _OrderID = "@Model.KeyID";
+        _OptType = parseInt("@Model.OptType");
+        $("#btnOk").click(function () { saveForm(); })
+        //订单明细
+        $("#btnAdd").click(function () { showItemForm(1); })
+        $("#btnEdit").click(function () { showItemForm(2); })
+        $("#btnDelete").click(function () { deleteItemRecord(); })
+        $("#btnItemOk").click(function () { saveItemForm(); })
+        $("#btnItemClose").click(function () { FormUitl.close(_divFormName); })
+
+        //绑定下拉框
+        common_bindCommonCombox("E_OrderType", { headerType: 1, statusType: "OrderType" });
+        common_bindCommonCombox("E_OrderStatus", { headerType: 1, statusType: "OrderStatus" });
+        //加载主订单信息
+        loadData();
+
+        initGrid();
+    });
+
+    function loadData() {
+        if(_OptType == 2){
+            var data = {ID: _OrderID};
+            doPostAjaxRequest("/PlanManagement/SaleOrderMgt_Find", data, function (msg) {
+                if (!msg.IsSuccess) return;
+                var dataObj = $.parseJSON(msg.Message);
+                if (!dataObj) return;
+
+                $("#lblOrderStatus").text(dataObj.Show_OrderStatus);
+                $("#E_OrderType").combobox("setValue", dataObj.OrderType);
+                $("#E_OrderNo").val(dataObj.OrderNo);
+                $("#lblCreater").text(dataObj.Creater);
+                $("#lblCloser").text(dataObj.Closer ? dataObj.Closer : "");
+                $("#E_OrderDate").datebox('setValue', dataObj.Show_OrderDate);
+                $("#E_OrderAmount").val(dataObj.OrderAmount);
+                $("#lblCreatedTime").text(dataObj.Show_CreatedTime);
+                $("#lblCloseTime").text(dataObj.Show_CloseTime);
+                $("#E_CustomerID").val(dataObj.CustomerID);
+                $("#E_Memo").val(dataObj.Memo);
+            });
+        }
+    }
+
+    //保存主订单
+    function saveForm() {
+        var data = FormUitl.getFormData("tbMainForm");
+        data.OptType = _OptType;
+        data.ID = _OrderID;
+        doPostAjaxRequest("/PlanManagement/SaleOrderMgt_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info");
+            if (_OptType == 1) {//新增完成后，变为修改
+                _OrderID = msg.Message;
+                _OptType = 2;
+            }
+        });
+    }
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'ResNum', title: '订单行号', width: 70, align: 'center' },
+               { field: 'MaterialProNo', title: '产品编码', width: 120, align: 'center' },
+               { field: 'MaterialCode', title: '产品简称', width: 120, align: 'center' },
+               { field: 'Version', title: '版本', width: 80, align: 'center' },
+               { field: 'Num', title: '订单数量', width: 80, align: 'center' },
+               { field: 'AlNum', title: '已发数量', width: 80, align: 'center' },
+               { field: 'Show_ShipDate', title: '发货日期', width: 120, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 80, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            singleSelect: true,
+            url: "/PlanManagement/SaleOrderItemMgt_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return {
+                OrderID: _OrderID
+            };
+        }
+
+        PageListObj.init();
+    }
+
+    function showItemForm(optType) {
+        //1.清理窗体数据
+        FormUitl.resetMain(_formName, "EI_");
+        $("#EI_ID").val("");
+
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#EI_ID").val(row.ID);
+            $("#EI_ResNum").val(row.ResNum);
+            $("#EI_MaterialProNo").val(row.MaterialProNo);
+            $("#EI_MaterialCode").val(row.MaterialCode);
+            $("#EI_Version").val(row.Version);
+            $("#EI_Num").val(row.Num);
+            $("#EI_ShipDate").datebox('setValue', row.Show_ShipDate);
+            $("#EI_AlNum").val(row.AlNum);
+            $("#EI_Memo").val(row.Memo);
+        }
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _ItemOptType = optType;
+    }
+
+    //保存明细
+    function saveItemForm() {
+        var data = {};
+        data.OptType = _ItemOptType;
+        data.OrderID = _OrderID;
+        data.ID = $("#EI_ID").val();
+        data.ResNum = $("#EI_ResNum").val();
+        data.MaterialProNo = $("#EI_MaterialProNo").val();
+        data.MaterialCode = $("#EI_MaterialCode").val();
+        data.Version = $("#EI_Version").val();
+        data.Num = $("#EI_Num").val();
+        data.ShipDate = $("#EI_ShipDate").datebox("getValue");
+        data.AlNum = $("#EI_AlNum").val();
+        data.Memo = $("#EI_Memo").val();
+        doPostAjaxRequest("/PlanManagement/SaleOrderItemMgt_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteItemRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ID: row.ID };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/PlanManagement/SaleOrderItemMgt_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('reload');
+                });
+            });
+        });
+    }
+
+</script>

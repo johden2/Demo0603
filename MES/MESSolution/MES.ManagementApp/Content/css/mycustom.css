@@ -1,0 +1,23 @@
+ /* 定义必填字段样式*/
+ .sp-require{color:red;font-size:14px;}
+
+ #divForm .tbForm td{ margin:20px; }
+ .form-head{ text-align:right; }
+
+  /* 选择图标*/
+ .select-icon{ 
+     vertical-align:bottom;
+     cursor:pointer;
+ }
+
+  .td-query-title {
+        /*width:90px;*/
+        /*padding:5px;*/
+        text-align:right;
+    }
+
+  #divForm .tbForm td {
+        padding-left: 5px;
+        padding-top: 5px;
+    }
+

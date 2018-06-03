@@ -1,0 +1,208 @@
+﻿@{
+    ViewBag.Title = "角色管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+    #divForm .tbForm td {
+        padding-left: 5px;
+        padding-top:5px;
+    }
+
+    .float-tree {
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        border: 1px solid #808080;
+        background-color: #DDDDDD;
+        /*height:220px;*/
+    }
+
+    .tree-close {
+        text-align: right;
+        padding-right: 10px;
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td>
+                角色名称：<input class="easyui-textbox" id="Q_RoleName" style="width:150px;" />
+            </td>
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                <a id="btnConfigRight" class="easyui-linkbutton" iconcls="icon-edit" plain="true">权限配置</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="角色信息" style="width: 550px; height: 250px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+        <table id="tbForm" class="tbForm">
+            <tr>
+                <td colspan="6">
+                    <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                    <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                    <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
+                </td>
+            </tr>
+            <tr>
+                <td class="form-head">
+                    <span class="sp-require">*</span>角色名称：
+                </td>
+                <td><input class="easyui-textbox" id="E_RoleName" /></td>
+            </tr>
+            <tr>
+                <td class="form-head">
+                    <span class="sp-require">*</span>用户描述：
+                </td>
+                <td colspan="3"><textarea id="E_RoleDescription" style="width:400px; height:60px;"></textarea></td>
+            </tr>
+        </table>
+</div>
+
+<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
+@*<script src="/Scripts/Common/common_util.js?v=2"></script>
+<script src="/Scripts/Common/common_control.js?v=2"></script>*@
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script src="@Url.Content("~/Scripts/Common/orgtree.js?v=" + new Random().NextDouble())"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    $(document).ready(function () {
+        common_bindCommonCombox("E_IsAdmin", { headerType: 3, statusType: "YesNoEnum" });
+        $("#btnQuery").click(function () { PageListObj.queryList(); })
+        $("#btnAdd").click(function () { showForm(1); })
+        $("#btnEdit").click(function () { showForm(2); })
+        $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnOk").click(function () { saveForm(); })
+        $("#btnClose").click(function () { FormUitl.close(_divFormName); })
+        $("#btnConfigRight").click(function () { configRight(); })
+
+        initGrid();
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'RoleName', title: '角色名称', width: 150, align: 'center' },
+               { field: 'RoleDescription', title: '角色描述', width: 200, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 100, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            singleSelect: true,
+            url: "/SysManagement/RoleMgt_FindByPage"
+        };
+        
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+    function getQueryParms() {
+        return {
+            RoleName: $.trim($("#Q_RoleName").val())
+        };
+    }
+
+    function showForm(optType) {
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        $("#E_ID").val("");
+
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#E_ID").val(row.ID);
+            $("#E_RoleDescription").val(row.RoleDescription);
+            $("#E_RoleName").val(row.RoleName);
+        }
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _OptType = optType;
+    }
+
+    //保存记录
+    function saveForm() {
+        var data = FormUitl.getFormData(_formName);
+        data.OptType = _OptType;
+        doPostAjaxRequest("/SysManagement/RoleMgt_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ID: row.ID };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/SysManagement/RoleMgt_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    //权限配置
+    function configRight() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) {
+            $.messager.alert('提示', "请选择一条记录！", "info");
+            return;
+        }
+
+        if (!window.parent || !window.parent.addTabDifferent) {
+            $.messager.alert('提示', '页面已超时，请在浏览器中刷新界面或重新登录！', "info");
+            return;
+        }
+
+        window.parent.addTabDifferent('角色权限配置', "/SysManagement/RightConfig?RoleID=" + row.ID, { });
+    }
+
+
+    </script>

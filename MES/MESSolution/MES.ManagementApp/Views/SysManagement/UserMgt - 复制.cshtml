@@ -1,0 +1,397 @@
+﻿@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="tbQuery" style="padding:5px;height:auto">
+    <div>
+        <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+        <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+        <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+        <a id="btnRightConfig" class="easyui-linkbutton" iconcls="icon-edit" plain="true">权限配置</a>
+        <a id="PasswordReset" class="easyui-linkbutton" iconcls="icon-edit" plain="true">密码重置</a>
+    </div>
+    <table>
+        <tr>
+            <td>
+                登录账号：
+            </td>
+            <td colspan="3">
+                <input class="easyui-textbox" id="LoginName" style="width:100px;" />
+                用户名：<input class="easyui-textbox" id="UsrName" style="width:100px;" />
+            </td>
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a href="#" onclick="queryData()" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="用户信息" style="width: 600px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <div id="divFormInner" region="center" border="false" style="padding: 10px;">
+        <table id="tbForm">
+            <tr>
+                <td colspan="6">
+                    <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                    <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                    <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="sp-require">*</span>工号：
+                </td>
+                <td><input class="easyui-textbox" id="E_UserID" /></td>
+                <td>
+                    <span class="sp-require">*</span>用户名：
+                </td>
+                <td><input class="easyui-textbox" id="E_UserName" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="sp-require">*</span>所在部门：
+                </td>
+                <td><input class="easyui-combotree " id="E_OrgID" name="E_OrgID" /></td>
+                <td>
+                    <span class="sp-require">*</span>是否管理员：
+                </td>
+                <td><input class="easyui-combobox" id="E_IsAdmin" 
+                           data-options="valueField:'Value', textField:'Text', panelHeight:'auto',editable : false" /></td>
+            </tr>
+            <tr>
+                <td>
+                    用户角色：
+                </td>
+                <td colspan="3">
+                    <input type="text" class="easyui-textbox" id="Select_RoleName" />
+                    <input type="hidden" class="easyui-textbox" id="E_RoleID" maxlength="50" name="RoleID" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="divConfig" class="easyui-window" closed="true" modal="true"
+     title="权限配置" style="width: 700px; height: 450px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <div>
+        <a id="btnOk1" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+        <a id="btnClose2" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+        <span style="padding-left:15px;">用户名：<label id="LE_UserInfo"></label></span>
+    </div>
+    <table id="tbConfig" class="tbFormLine">
+        <tr>
+            <td colspan="4">
+                <div id="treeRight"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script src="/Scripts/Common/common_util.js?v=9"></script>
+<script src="/Scripts/Common/common_control.js?v=10"></script>
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _IsAdd = false;
+    $(document).ready(function () {
+        initGrid();
+        common_bindCommonCombox("E_IsAdmin", { headerType: 3, statusType: "YesNoEnum" });
+        $("#btnAdd").click(function () { showForm(true); })
+        $("#btnEdit").bind("click", function () { showForm(false); })
+        $("#btnDelete").bind("click", function () { deleteRecord(); })
+        $("#btnOk").bind("click", function () { saveForm(); })
+        $("#btnClose").bind("click", function () { FormUitl.close(_divFormName); })
+        $("#PasswordReset").bind("click", function () { PasswordReset(); })
+        $("#btnRightConfig").bind("click", function () { RightConfig.RshowForm(); })
+        //RightConfig.init(); //初始化
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'UserID', title: '工号', width: 100,align:'center' },
+               { field: 'UserName', title: '用户名', width: 120, align: 'center' },
+               { field: 'Show_IsAdmin', title: '是否管理员', width: 100, align: 'center' },
+               { field: 'RoleName', title: '角色', width: 100 },
+               { field: 'OrgName', title: '所在部门', width: 100 },
+               { field: 'Creater', title: '创建人', width: 100, },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150 }
+        ]];
+        var qParms = getQueryParms();
+        $('#dgList').datagrid({
+            singleSelect: true,
+            fit: true,
+            cache: false,
+            height: $(window).height() - 10,
+            striped: true,
+            loadMsg: '数据加载中，请稍后……',
+            collapsible: true,
+            remoteSort: false,
+            showFooter: true,
+            pagination: true,
+            pageList: [20, 50],
+            rownumbers: true,
+            columns: cols,
+            queryParams: qParms, //搜索条件的json参数
+            url: "/SysManagement/UserMgt_FindByPage",
+            toolbar: '#tbQuery',
+            onBeforeLoad: function (param) {
+                //如果返回 false 加载动作就会取消
+                if (param.IsLoad != undefined && !param.IsLoad) {
+                    return false;
+                }
+            }
+        });
+    }
+    function getQueryParms() {
+        return {
+            UserID: $.trim($("#UserID").val()),
+            UserName: $.trim($("#UsrName").val())
+        };
+    }
+    function queryData() {
+        var parms = getQueryParms();
+        $('#dgList').datagrid('load', parms);
+    }
+
+    function showForm(isAdd) {
+        debugger
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        $("#E_OrgID").combotree("setValue", '');
+        $("#E_ID").val("");
+
+        //2.加载窗体数据
+        if (!isAdd) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#E_ID").val(row.ID);
+            $("#E_UserId").val(row.UserId);
+            $("#E_UserName").val(row.UserName);
+            $("#E_IsAdmin").combobox("setValue", row.IsAdmin);
+            $("#E_OrgID").combotree("setValue", row.OrgID);
+            $("#Select_RoleName").combogrid("setText", row.RoleName);
+            $("#E_RoleID").val(row.RoleID);
+        }
+
+        CtrlCommonUtil.BindRoleListLike("Select_RoleName", { Width: 412 },
+               function (rowIndex, row) { //点击事件
+                   $("#Select_RoleName").combogrid("setText", row.RoleName);
+                   $("#E_RoleID").val(row.ID);
+               });
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _IsAdd = true;
+    }
+
+    /*
+    *保存数据
+    */
+    function saveForm() {
+        //var SortOrder = $('#E_SortOrder').val();
+        //var patrn = /^\d{n,}$/;
+        //if (!patrn.test(SortOrder)) {
+        //    $.messager.alert('提示', '请填写数字！', "info");
+        //    return;
+        //}
+        var data = FormUitl.getFormData(_formName);
+        data.IsAdd = _IsAdd;
+        //data.Sys_LoginName = $.session.get('loginUser')
+        data.DepartmentId = $("#E_DepartmentId").combotree("getValue");
+        doPostAjaxRequest("/SysManagement/User_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    /*
+    *删除记录
+    */
+    function deleteRecord() {
+        var rows = DataGridUitl.getSelectedRows("dgList");
+        if (!rows) return;
+
+        var idArray = new Array();
+        $.each(rows, function (i, row) {
+            idArray.push(row.UserId);
+        });
+        var data = { ids: idArray.join(",") };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/SysManagement/User_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    //权限配置
+    var RightConfig = {
+        DivName: "divConfig",
+        FormName: "tbConfig",
+        CurUserId: 0,
+        init: function () {
+            $("#btnOk1").bind("click", function () { RightConfig.RsaveForm(); })
+            $("#btnClose2").bind("click", function () { FormUitl.close(RightConfig.DivName); })
+
+        },
+        initTree: function () {
+            $('#treeRight').tree({
+                url: '/SysManagement/UserRight_GetRight?UserId=' + RightConfig.CurUserId + '&' + Math.random(),
+                method: 'post',
+                loadMsg: '数据加载中，请稍后……',
+                animate: false,
+                checkbox: true,
+                lines: true,
+                async: false
+            });
+        },
+        RshowForm: function () {
+
+            var rows = DataGridUitl.getSelectedRows("dgList");
+            if (rows.length <= 0) {
+                alert('请选择数据');
+                return;
+
+
+            }
+            if (!rows) return;
+
+            RightConfig.clearForm(); //先清理窗体数据
+
+            //显示窗体
+            FormUitl.open(RightConfig.DivName);
+            $("#" + RightConfig.DivName).show();
+
+            var row = rows[0];
+            RightConfig.CurUserId = row.UserId;
+            var html = row.LoginName + "(" + row.UserName + ")";
+            $("#LE_UserInfo").html(html);
+
+            RightConfig.initTree();
+        },
+        RsaveForm: function () {
+
+            var nodes = $('#treeRight').tree('getChecked', ['checked', 'indeterminate']);
+            var checkList = [];
+            var level = 0;
+            $.each(nodes, function (i, node) {
+                level = node.attributes.Level;
+                checkList.push({
+                    Id: node.id.replace(level + "_", ""),
+                    Level: level,
+                    ActionCode: node.attributes.ActionCode,
+                    ObjTypeId: node.attributes.ObjTypeId
+                });
+            });
+
+            var data = {
+                userId: RightConfig.CurUserId,
+                paramList: JSON.stringify(checkList)
+            };
+            doPostAjaxRequest("/SysManagement/UserRight_SaveRight", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', msg.Message, "info");
+            });
+        },
+
+        saveForm2: function () {
+
+            var nodes = $('#treeRight').tree('getChecked', ['checked', 'indeterminate']);
+            //
+            var checkList = [];
+            //var level = 0;
+            $.each(nodes, function (i, node) {
+                //level = node.attributes.Level;
+                checkList.push({
+                    Id: node.id,
+                    //第一个就是主表是id，行为表加了'2_'
+                    //Level: level,
+                    ActionCode: node.attributes.ActionCode,
+                    ParentId: node.attributes.ParentId
+                });
+            });
+
+            var data = {
+                userId: RightConfig.CurUserId,
+                paramList: JSON.stringify(checkList)
+            };
+            doPostAjaxRequest("/SysManagement/UserRight_SaveRight2", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', msg.Message, "info");
+            });
+        },
+        clearForm: function () {
+        }
+
+    };
+
+    function PasswordReset() {
+
+
+        FormUitl.reset(_formName);
+
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) {
+
+            alert("请选择正确的操作！！！")
+            return;
+
+        }
+
+
+        var data = {
+            UserId: row.UserId,
+
+        };
+        $.messager.confirm("提示", "确定密码重置吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/SysManagement/User_PasswordReset", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    </script>

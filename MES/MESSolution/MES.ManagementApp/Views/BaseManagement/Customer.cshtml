@@ -1,0 +1,243 @@
+﻿@{
+    ViewBag.Title = "客户管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+    #divForm .tbForm td {
+        padding-left: 5px;
+        padding-top:5px;
+    }
+
+    .float-tree {
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        border: 1px solid #808080;
+        background-color: #DDDDDD;
+        /*height:220px;*/
+    }
+
+    .tree-close {
+        text-align: right;
+        padding-right: 10px;
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td>
+                客户编码：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_CustomerCode" style="width: 150px;" />
+            </td>
+            <td>
+                &nbsp;&nbsp;客户名称：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_CustomerName" style="width: 150px;" />
+            </td>            
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="客户信息" style="width: 800px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+        <table id="tbForm" class="tbForm">
+            <tr>
+                <td colspan="3">
+                    <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                    <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                    <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
+                </td>
+            </tr>
+            <tr>
+                <td class="form-head">
+                    <span class="sp-require">*</span>客户编码：
+                </td>
+                <td><input class="easyui-textbox" id="E_CustomerCode" /></td>
+                <td class="form-head">
+                    <span class="sp-require">*</span>客户名称：
+                </td>
+                <td><input class="easyui-textbox" id="E_CustomerName" /></td>
+                <td class="form-head">
+                    电话:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_Phone" />
+                </td>
+            </tr>   
+            <tr>
+                <td>
+                    联系人：
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_Contacter">
+                </td>
+                <td>
+                    客户地址:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_Address" />
+                </td>
+                <td>
+                    邮政编码:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_PostCode">
+                </td>
+            </tr> 
+            <tr>                
+                <td>
+                    备注:
+                </td>
+                <td colspan="3">
+                    <input class="easyui-textbox" id="E_Memo">
+                </td>
+            </tr>       
+        </table>
+</div>
+
+<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script src="@Url.Content("~/Scripts/Common/orgtree.js?v=" + new Random().NextDouble())"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    $(document).ready(function () {       
+        $("#btnQuery").click(function () {      
+            PageListObj.queryList();
+        })
+        $("#btnAdd").click(function () { showForm(1); })
+        $("#btnEdit").click(function () { showForm(2); })
+        $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnOk").click(function () { saveForm(); })
+        $("#btnClose").click(function () { FormUitl.close(_divFormName); })
+        initGrid();
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'ID', title: 'ID', width: 100,align:'center',hidden:true},
+               { field: 'CustomerCode', title: '客户编码', width: 100, align: 'center' },
+               { field: 'CustomerName', title: '客户名称', width: 160, align: 'center' },
+               { field: 'Phone', title: '电话', width: 100, align: 'center' },
+               { field: 'Contacter', title: '联系人', width: 90, align: 'center' },
+               { field: 'Address', title: '地址', width: 200, align: 'center' },
+               { field: 'PostCode', title: '邮政编码', width: 80,align:'center' },               
+               { field: 'Memo', title: '备注', width: 160, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 100},
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
+               { field: 'Modifier', title: '修改人', width: 100 },
+               { field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            url: "/BaseManagement/Customer_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+    function getQueryParms() {
+        return {
+            CustomerCode: $.trim($("#Q_CustomerCode").val()),
+            CustomerName: $.trim($("#Q_CustomerName").val()),
+        };
+    }
+
+  
+    function showForm(optType) {
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        $("#E_ID").val("");
+       
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#E_ID").val(row.ID);
+            $("#E_CustomerCode").val(row.CustomerCode);
+            $("#E_CustomerName").val(row.CustomerName);
+            $("#E_Phone").val(row.Phone);
+            $("#E_Contacter").val(row.Contacter);
+            $("#E_Address").val(row.Address);
+            $("#E_PostCode").val(row.PostCode);
+            $("#E_Memo").val(row.Memo);
+        }
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _OptType = optType;
+    }
+
+    //保存记录
+    function saveForm() {
+        var data = FormUitl.getFormData(_formName);   
+        data.OptType = _OptType;
+        doPostAjaxRequest("/BaseManagement/Customer_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ids: row.ID };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/BaseManagement/Customer_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    </script>

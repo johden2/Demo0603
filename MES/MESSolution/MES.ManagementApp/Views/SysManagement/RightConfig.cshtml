@@ -1,0 +1,201 @@
+﻿@{
+    ViewBag.Title = "权限配置";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+@model Sys.Model.Mes_Sys_RoleMap
+
+<style type="text/css">
+    #divForm .tbForm td {
+        padding-left: 5px;
+        padding-top:5px;
+    }
+
+    .float-tree {
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        border: 1px solid #808080;
+        background-color: #DDDDDD;
+        /*height:220px;*/
+    }
+
+    .tree-close {
+        text-align: right;
+        padding-right: 10px;
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div style="padding:5px;">
+            <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">保存</a>
+        </div>
+       
+        <ul id="MenuTree" class="ztree" style="margin-top: 2px; margin-left:2px; width: 720px; height: 415px;"></ul>
+    </div>
+</div>
+
+<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
+<script type="text/javascript">
+    var _curRoleId = 0;
+
+    $(document).ready(function () {
+        $("#btnOk").click(function () { saveForm(); })
+
+        _curRoleId = "@Model.Sys_Role_ID";
+        loadTreeData(_curRoleId);
+    });
+
+    function saveForm() {
+        var treeObj = $.fn.zTree.getZTreeObj("MenuTree");
+        var nodes = treeObj.transformToArray(treeObj.getNodes());
+        var jsonArr = new Array();
+        $.each(nodes, function (i,item) {
+            if (item.IsParent != 1) {
+                jsonArr.push({
+                    Sys_ModuleItem_ID: item.id,
+                    IsParent: item.IsParent,
+                    ButtonRightFlag: item.ButtonRightFlag
+                });
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/SysManagement/RightConfig_Save",
+            data: { NodeItems: JSON.stringify(jsonArr), RoleID: _curRoleId },
+            dataType: "json",
+            success: function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+                $.messager.alert('提示', '保存成功', "info");
+            },
+            error: function () {
+                $.messager.alert('错误', '保存失败！', "error");
+            }
+        });
+    }
+
+
+    var zTreeObj;
+    var setting = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            autoCheckTrigger: true
+        },
+        view: {
+            dblClickExpand: false,
+            addDiyDom: addDiyDom
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: "0"
+            }
+        },
+        callback: {
+            onCheck: zTreeOnCheck
+        }
+    };
+
+
+    function addDiyDom(treeId, treeNode) {
+        if (treeNode.IsParent == 1) return;
+
+        var aObj = $("#" + treeNode.tId + "_a");
+        if ($("#diyBtn_" + treeNode.id).length > 0) return;
+        var editStr = "<label>   <input type='checkbox' id='diyCheckbox_" + treeNode.id + "-Add' value='1' style='vertical-align:middle;' />新增 </label>"
+        + "<label><input type='checkbox' id='diyCheckbox_" + treeNode.id + "-Del' value='2' style='vertical-align:middle;' />删除 </label>"
+        + "<label><input type='checkbox' id='diyCheckbox_" + treeNode.id + "-Edit' value='4' style='vertical-align:middle;' />编辑 </label>"
+        + "<label><input type='checkbox' id='diyCheckbox_" + treeNode.id + "-View' value='8' style='vertical-align:middle;' />查看 </label>"
+        + "<label><input type='checkbox' id='diyCheckbox_" + treeNode.id + "-Audit' value='16' style='vertical-align:middle;' />审核 </label>"
+        + "<label><input type='checkbox' id='diyCheckbox_" + treeNode.id + "-Inport' value='32' style='vertical-align:middle;' />导入 </label>"
+        + "<label><input type='checkbox' id='diyCheckbox_" + treeNode.id + "-Export' value='64' style='vertical-align:middle;' />导出 </label>"
+        + "<label><input type='checkbox' id='diyCheckbox_" + treeNode.id + "-Print' value='128' style='vertical-align:middle;' />打印 </label>";
+        //+ "<select id='diySelect_" + treeNode.id + "'><option value=1>有效</option><option value=2>无效</option></select>";
+        aObj.append(editStr);
+
+        //初始化按钮权限信息
+        $("input[id^='diyCheckbox_" + treeNode.id + "-']").each(function () {
+            //初始化加载权限选择
+            var chboxValue = $(this)[0].value;
+            if ((treeNode.ButtonRightFlag & chboxValue) == chboxValue) {
+                $(this).prop("checked", true)
+            };
+            //定义点击事件
+            $(this).bind("click", function () {
+                $(this).is(':checked') == true ? treeNode.ButtonRightFlag += Number(chboxValue) : treeNode.ButtonRightFlag -= Number(chboxValue);
+            });
+        });
+        if (treeNode.RuleMenuStatus == 1) {
+            $.fn.zTree.getZTreeObj("MenuTree").checkNode(treeNode, true, null);
+        }
+    };
+    /*
+    Example:var zNodes = [{id:18,pId:0,name:"凡谷电子技术股份有限公司"},{id:117,pId:18,name:"市场部"}];
+    */
+    var zNodes = null;
+
+    function zTreeonClick(e, treeId, treeNode) {
+        alert(treeNode.ButtonRightFlag);
+    }
+
+    function zTreeOnCheck(e, treeId, treeNode) {
+        $("input[id^='diyCheckbox_" + treeNode.id + "-']").each(function () {
+            $(this).prop("checked", treeNode.checked);
+        });
+        treeNode.checked ? treeNode.ButtonRightFlag = 255 : treeNode.ButtonRightFlag = 0;
+        treeNode.checked ? treeNode.RuleMenuStatus = 1 : treeNode.RuleMenuStatus = 2;
+    }
+
+    function showMenu() {
+        $("#menuContent").slideDown("fast");
+        $("body").bind("mousedown", onBodyDown);
+
+        /*Function(treeNode, expandFlag, sonSign, focus, callbackFlag)*/
+        var nodes = zTreeObj.getNodes();
+        if (nodes.length > 0) {
+            zTreeObj.expandNode(nodes[0], true, false, true);
+        }
+    }
+    function hideMenu() {
+        $("#menuContent").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
+    function onBodyDown(event) {
+        if (!(event.target.id == "menuBtn" || event.target.id == "ParentOrgCode" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length > 0)) {
+            hideMenu();
+        }
+    }
+    function loadTreeData(sysRoleId) {
+        $.ajax({
+            type: "GET",
+            url: "/SysManagement/RightConfig_FindTree",
+            data: "RoleID=" + sysRoleId + "&rnd=" + Math.random(),
+            dataType: "json",
+            async: false,
+            success: function (msg) {
+                if (msg.IsSuccess) {
+                    zNodes = $.parseJSON(msg.Message);
+                } else {
+                    $.messager.alert('提示', msg.Message, "info");
+                }
+            },
+            error: function () {
+                $.messager.alert('错误', '操作失败！', "error");
+            }
+        });
+        zTreeObj = $.fn.zTree.init($("#MenuTree"), setting, zNodes);
+        zTreeObj.expandAll(true);
+    }
+</script>

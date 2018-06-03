@@ -1,0 +1,386 @@
+﻿@{
+    ViewBag.Title = "物料信息管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+    #divForm .tbForm td {
+        padding-left: 5px;
+        padding-top:5px;
+    }
+
+    .float-tree {
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        border: 1px solid #808080;
+        background-color: #DDDDDD;
+        /*height:220px;*/
+    }
+
+    .tree-close {
+        text-align: right;
+        padding-right: 10px;
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td>
+                物料编码：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_MaterialProNo" style="width: 150px;" />
+            </td>
+            <td>
+                &nbsp;&nbsp;物料名称：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_MaterialCode" style="width: 150px;" />
+            </td>
+            <td>
+                &nbsp;&nbsp;类别:
+            </td>
+            <td>
+                <select id="Q_MaterialClass" class="easyui-combobox" style="width:150px;">
+                    <option value="0">物料</option>
+                    <option value="1">成品</option>
+                </select>
+            </td>
+            <td>
+                &nbsp;&nbsp;状态：
+            </td>
+            <td>
+                <select id="Q_MaterialStatus" class="easyui-combobox" style="width:150px;">
+                    <option value="0">在用</option>
+                    <option value="1">禁用</option>
+                </select>
+            </td>
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="物料信息" style="width: 800px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+        <table id="tbForm" class="tbForm">
+            <tr>
+                <td colspan="3">
+                    <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                    <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                    <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
+                </td>
+            </tr>
+            <tr>
+                <td class="form-head">
+                    <span class="sp-require">*</span>物料编号：
+                </td>
+                <td><input class="easyui-textbox" id="E_MaterialProNo" /></td>
+                <td class="form-head">
+                    <span class="sp-require">*</span>物料名称：
+                </td>
+                <td><input class="easyui-textbox" id="E_MaterialCode" /></td>
+                <td class="form-head">
+                    规格尺寸:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_MaterialSize" />
+                </td>
+            </tr>   
+            <tr>
+                <td class="form-head">
+                    批次属性：
+                </td>
+                <td>
+                    <input class="easyui-combobox" id="E_TraceProperty" 
+                           data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false" />                    
+                </td>
+                <td class="form-head">
+                    物料分类:
+                </td>
+                <td>
+                    <input class="easyui-combobox" id="E_MaterialClass" 
+                           data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false">                    
+                </td>
+                <td>
+                    仓库:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_StockCode" type="hidden">
+                    <input type="text" class="easyui-textbox" id="E_StockName" />
+                </td>
+            </tr> 
+            <tr>                
+                <td>
+                    库位:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_AlibrayCode" type="hidden">
+                    <input type="text" class="easyui-textbox" id="E_AlibraryName"/>
+                </td>
+                <td>
+                    安全库存:
+                </td>
+                <td>
+                    <input id="E_SafeNum" class="easyui-textbox" maxlength="50">
+                </td>
+                <td>
+                    单位:
+                </td>
+                <td>
+                    <input id="E_Unit" class="easyui-textbox" maxlength="50">
+                </td>
+            </tr>
+            <tr>
+                <td>替代物料:</td>
+                <td>
+                    <input id="E_ReplaceMaterialProNo" class="easyui-textbox" maxlength="50">
+                </td>         
+                <td>每箱数量:</td>  
+                <td>
+                    <input id="E_PackNumber" class="easyui-textbox" maxlength="50">
+                </td>            
+                <td>
+                    备注:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_Memo">
+                </td>
+            </tr>       
+        </table>
+</div>
+
+<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script src="@Url.Content("~/Scripts/Common/orgtree.js?v=" + new Random().NextDouble())"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    $(document).ready(function () {       
+        $("#btnQuery").click(function () {      
+            PageListObj.queryList();
+        })
+        $("#btnAdd").click(function () { showForm(1); })
+        $("#btnEdit").click(function () { showForm(2); })
+        $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnOk").click(function () { saveForm(); })
+        $("#btnClose").click(function () { FormUitl.close(_divFormName); })
+        initGrid();
+        //加载仓库信息
+        initStockInfo();
+        //加载库位信息
+        initAlibraryInfo();
+        //加载批次属性
+        common_bindCommonCombox("E_TraceProperty", { headerType: 3, statusType: "TracePropertyStatus" });
+        //加载物料分类属性
+        common_bindCommonCombox("E_MaterialClass", { headerType: 3, statusType: "MaterialClassStatus" });
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'ID', title: 'ID', width: 100,align:'center',hidden:true},
+               { field: 'MaterialProNo', title: '物料编号', width: 100, align: 'center' },
+               { field: 'MaterialCode', title: '物料名称', width: 160, align: 'center' },
+               { field: 'MaterialSize', title: '规格尺寸', width: 160, align: 'center' },
+               { field: 'TraceProperty', title: '批次属性', width: 160, align: 'center',hidden:true},
+               { field: 'Show_TraceProperty', title: '批次属性', width: 90, align: 'center' },
+               { field: 'Class', title: '物料分类', width: 200, align: 'center',hidden:true },
+               { field: 'Show_MaterialClass', title: '物料分类', width: 200, align: 'center' },
+               { field: 'StockCode', title: '仓库', width: 80,align:'center',hidden:true },
+               { field: 'Show_StockCode', title: '仓库', width: 80,align:'center'},
+               { field: 'AlibrayCode', title: '库位', width: 90, align: 'center',hidden:true },
+               { field: 'Show_AlibrayCode', title: '库位', width: 90, align: 'center' },
+               { field: 'SafeNum', title: '安全库存', width: 90, align: 'center' },
+               { field: 'Unit', title: '单位', width: 90, align: 'center' },
+               { field: 'ReplaceMaterialProNo', title: '替代物料', width: 90, align: 'center' },
+               { field: 'MaterialStatus', title: '物料状态', width: 90, align: 'center',hidden:true },
+               { field: 'Show_MaterialStatus', title: '物料状态', width: 90, align: 'center' },
+               { field: 'PackNumber', title: '每箱数量', width: 90, align: 'center' },
+               { field: 'Memo', title: '备注', width: 160, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 100},
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
+               { field: 'Modifier', title: '修改人', width: 100 },
+               { field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            url: "/BaseManagement/ProductInfo_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+
+
+    function initStockInfo() {
+        $("#E_StockName").combogrid({
+            width: 150,
+            height: 24,
+            panelWidth: 350,
+            panelHeight: 250,
+            idField: "StockCode",
+            textField: "StockName",
+            delay: 500,
+            mode: 'remote',
+            pagination: true,
+            rownumbers: true,
+            pageList: [10, 20, 30],
+            url: "/BaseManagement/Stock_FindByPage",
+            columns: [[
+                { field: 'StockCode', title: '仓库编码', width: 100 },
+                { field: 'StockName', title: '仓库名称', width: 140 },
+                { field: 'StockAddress', title: '仓库地址', width: 160 },
+                { field: 'Leader', title: '负责人', width: 80 },
+                { field: 'TelPhone', title: '联系电话', width: 80 }
+            ]],
+            onClickRow: function (rowIndex, rowData) {
+                $("#E_StockName").combogrid("setText", rowData.StockName);
+                $("#E_StockCode").val(rowData.StockCode);
+            },
+            onLoadError: function () {
+                $.messager.progress('close');
+                $.messager.alert('错误', "加载失败", "error");
+            }
+        })
+    };
+
+    function initAlibraryInfo() {
+        $("#E_AlibraryName").combogrid({
+            width: 150,
+            height: 24,
+            panelWidth: 350,
+            panelHeight: 250,
+            idField: "AlibraryCode",
+            textField: "AlibraryName",
+            delay: 500,
+            mode: 'remote',
+            pagination: true,
+            rownumbers: true,
+            pageList: [10, 20, 30],
+            url: "/BaseManagement/Alibrary_FindByPage",
+            columns: [[
+                { field: 'AlibraryCode', title: '库位编码', width: 100 },
+                { field: 'AlibraryName', title: '库位名称', width: 140 },
+                { field: 'Show_StockCode', title: '所属仓库', width: 160 }
+            ]],
+            onClickRow: function (rowIndex, rowData) {
+                $("#E_AlibraryName").combogrid("setText", rowData.AlibraryName);
+                $("#E_AlibrayCode").val(rowData.AlibrayCode);
+            },
+            onLoadError: function () {
+                $.messager.progress('close');
+                $.messager.alert('错误', "加载失败", "error");
+            }
+        })
+    };
+
+    function getQueryParms() {
+        return {
+            MaterialProNo: $.trim($("#Q_MaterialProNo").val()),
+            MaterialCode: $.trim($("#Q_MaterialCode").val()),
+            MaterialClass: $.trim($("#Q_Class").val()),
+            MaterialStatus: $.trim($("#Q_MaterialStatus").val())
+        };
+    }
+
+  
+    function showForm(optType) {
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        $("#E_ID").val("");
+       
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#E_ID").val(row.ID);
+            $("#E_MaterialProNo").val(row.MaterialProNo);
+            $("#E_MaterialCode").val(row.MaterialCode);
+            $("#E_MaterialSize").val(row.MaterialSize);
+            $("#E_TraceProperty").combobox('setValue', row.TraceProperty);
+            $("#E_MaterialClass").combobox('setValue', row.MaterialClass);            
+            $("#E_StockCode").val(row.Show_StockCode);
+            $("#E_StockName").combogrid("setText", row.StockName);
+            $("#E_AlibrayCode").val(row.AlibrayCode);
+            $("#E_AlibraryName").combogrid("setText", row.Show_AlibrayCode);
+            $("#E_SafeNum").val(row.SafeNum);
+            $("#E_Unit").val(row.Unit);
+            $("#E_ReplaceMaterialProNo").val(row.ReplaceMaterialProNo);
+            $("#E_PackNumber").val(row.PackNumber);
+            $("#E_Memo").val(row.Memo);
+        }
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _OptType = optType;
+    }
+
+    //保存记录
+    function saveForm() {
+        debugger;
+        var data = FormUitl.getFormData(_formName);
+        data.OptType = _OptType;
+        doPostAjaxRequest("/BaseManagement/ProductInfo_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ids: row.ID };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/BaseManagement/ProductInfo_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    </script>

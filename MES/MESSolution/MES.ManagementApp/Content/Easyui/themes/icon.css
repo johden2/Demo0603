@@ -1,0 +1,132 @@
+.icon-blank{
+	background:url('icons/blank.gif') no-repeat center center;
+}
+.icon-upload{
+    background:url('icons/upload.png') no-repeat center center;
+}
+.icon-newfolder{
+    background:url('icons/newfolder.png') no-repeat center center;
+}
+.icon-add{
+	background:url('icons/edit_add.png') no-repeat center center;
+}
+.icon-edit{
+	background:url('icons/pencil.png') no-repeat center center;
+}
+.icon-remove{
+	background:url('icons/edit_remove.png') no-repeat center center;
+}
+.icon-save{
+	background:url('icons/filesave.png') no-repeat center center;
+}
+.icon-cut{
+	background:url('icons/cut.png') no-repeat center center;
+}
+.icon-ok{
+	background:url('icons/ok.png') no-repeat center center;
+}
+.icon-no{
+	background:url('icons/no.png') no-repeat center center;
+}
+.icon-cancel{
+	background:url('icons/cancel.png') no-repeat center center;
+}
+.icon-reload{
+	background:url('icons/reload.png') no-repeat center center;
+}
+.icon-search{
+	background:url('icons/search.png') no-repeat center center;
+}
+.icon-print{
+	background:url('icons/print.png') no-repeat center center;
+}
+.icon-help{
+	background:url('icons/help.png') no-repeat center center;
+}
+.icon-undo{
+	background:url('icons/undo.png') no-repeat center center;
+}
+.icon-redo{
+	background:url('icons/redo.png') no-repeat center center;
+}
+.icon-back{
+	background:url('icons/back.png') no-repeat center center;
+}
+.icon-sum{
+	background:url('icons/sum.png') no-repeat center center;
+}
+.icon-tip{
+	background:url('icons/tip.png') no-repeat center center;
+}
+
+.icon-mini-add{
+	background:url('icons/mini_add.png') no-repeat center center;
+}
+.icon-mini-edit{
+	background:url('icons/mini_edit.png') no-repeat center center;
+}
+.icon-mini-refresh{
+	background:url('icons/mini_refresh.png') no-repeat center center;
+}
+.icon-nagiv-search{
+	background:url('icons/nagiv-search.png') no-repeat center center;
+}
+.icon-nagiv-monitor{
+	background:url('icons/nagiv-monitor.png') no-repeat center center;
+}
+.icon-nagiv-config{
+	background:url('icons/nagiv-config.png') no-repeat center center;
+}
+.icon-system-manage{
+	background:url('icons/system-manage.png') no-repeat center center;
+}
+.icon-log-manage{
+	background:url('icons/log-manage.png') no-repeat center center;
+}
+.icon-nagiv-analyze{
+	background:url('icons/nagiv-analyze.png') no-repeat center center;
+}
+.icon-nagiv-excel{
+	background:url('icons/nagiv-excel.png') no-repeat center center;
+}
+.icon-nagiv-report{
+	background:url('icons/nagiv-report.png') no-repeat center center;
+}
+.icon-nagiv-history{
+	background:url('icons/nagiv-history.png') no-repeat center center;
+}
+.icon-nagiv-publish{
+	background:url('icons/nagiv-publish.png') no-repeat center center;
+}
+.icon-nagiv-audit{
+	background:url('icons/nagiv-audit.png') no-repeat center center;
+}
+.icon-excel
+{ background:url('icons/excel.png') no-repeat center center;
+}
+.icon-circle{
+    background:url('icons/circle.png') no-repeat center center;
+    }
+.icon-fileManager {
+    background:url('icons/fileManager.jpg') no-repeat center center;
+}
+.icon-basket_put{background:url('icons/basket_put.png') no-repeat center center;}
+.icon-finger_point{background:url('icons/finger_point.png') no-repeat center center;}
+.icon-nagiv-statistics {
+    background:url('icons/statistics.png') no-repeat center center;
+}
+.icon-nagiv-marker{
+    background:url('icons/marker.png') no-repeat center center;
+}
+.icon-nagiv-datafolder {
+    background:url('icons/data_folder.png') no-repeat center center;
+}
+.icon-nagiv-datachange {
+    background:url('icons/dataechange.png') no-repeat center center;
+}
+.icon-nagiv-share {
+    background:url('icons/share.png') no-repeat center center;
+}
+.icon-nagiv-reportbrain {
+    background:url('icons/reportbrain.png') no-repeat center center;
+}

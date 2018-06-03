@@ -1,0 +1,276 @@
+﻿@{
+    ViewBag.Title = "计划管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+   
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td class="td-query-title">
+                订单单别：
+            </td>
+            <td>
+                <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_OrderType"
+                       data-options="valueField:'Value', textField:'Text',editable : false" />
+            </td>
+            <td class="td-query-title">
+                订单单号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_OrderNo" style="width: 150px;" />
+            </td>
+            <td class="td-query-title">
+                创建日期：
+            </td>
+            <td>
+                <input type="text" class="easyui-datebox" id="Q_CreatedTimeStart" style="width:90px;" maxlength="50" />
+                ~ <input type="text" class="easyui-datebox" id="Q_CreatedTimeEnd" style="width:90px;" maxlength="50" />
+            </td>
+        </tr>
+        <tr>
+            <td class="td-query-title">
+                计划状态：
+            </td>
+            <td>
+                <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_PlanStatus"
+                       data-options="valueField:'Value', textField:'Text',editable : false" />
+            </td>
+            <td class="td-query-title">
+                计划编号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_PlanCode" style="width: 150px;" />
+            </td>
+          
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="计划信息" style="width: 560px; height: 340px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <table id="tbForm" class="tbForm">
+        <tr>
+            <td colspan="6">
+                <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>计划状态：
+            </td>
+            <td><label id="lblPlanStatus"></label></td>
+            <td class="form-head">
+                <span class="sp-require">*</span>计划编号：
+            </td>
+            <td><input class="easyui-textbox" id="E_PlanCode" disabled /></td>
+            <td class="form-head">
+                <span class="sp-require">*</span>计划类别：
+            </td>
+            <td>
+                <input type="text" style="width: 90px;" class="easyui-combobox" id="E_PlanType"
+                       data-options="valueField:'Value', textField:'Text',editable : false" />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>产品编码：
+            </td>
+            <td><input class="easyui-textbox" id="E_MaterialProNo" disabled /></td>
+            <td class="form-head">
+               产品简称：
+            </td>
+            <td><input class="easyui-textbox" id="E_MaterialCode" disabled /></td>
+            <td class="form-head">
+                产品版本：
+            </td>
+            <td><input class="easyui-textbox" id="E_Version" disabled style="width:60px;" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>计划数量：
+            </td>
+            <td><input class="easyui-textbox" id="E_PlanNum" /></td>
+            <td class="form-head">
+                <span class="sp-require">*</span>完成数量：
+            </td>
+            <td><input class="easyui-textbox" id="E_CompleteNum" /></td>
+            <td class="form-head">
+                单位：
+            </td>
+            <td><input class="easyui-textbox" id="E_Unit" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>工厂：
+            </td>
+            <td><input class="easyui-textbox" id="E_Factory" /></td>
+            <td class="form-head">
+                计划开始时间：
+            </td>
+            <td>
+                <input type="text" class="easyui-datebox" id="E_BeginTime" style="width: 120px;" maxlength="50" />
+            </td>
+            <td class="form-head">
+                计划结束时间：
+            </td>
+            <td>
+                <input type="text" class="easyui-datebox" id="E_EndTime" style="width: 120px;" maxlength="50" />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                工作车间：
+            </td>
+            <td><input class="easyui-textbox" id="E_WorkShopID" /></td>
+        </tr>
+</table>
+</div>
+
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnQuery").click(function () { PageListObj.queryList(); })
+        $("#btnAdd").click(function () { showForm(1); })
+        $("#btnEdit").click(function () { showForm(2); })
+        $("#btnDelete").click(function () { deleteRecord(); })
+
+        //绑定下拉框
+        common_bindCommonCombox("Q_OrderType", { headerType: 1, statusType: "OrderType" });
+        //common_bindCommonCombox("Q_PlanType", { headerType: 1, statusType: "PlanType" });
+        common_bindCommonCombox("Q_PlanStatus", { headerType: 1, statusType: "PlanStatus" });
+
+        initGrid();
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'Show_PlanStatus', title: '计划状态', width: 80, align: 'center' },
+               { field: 'PlanCode', title: '计划编号', width: 120, align: 'center' },
+               { field: 'Show_OrderType', title: '订单单别', width: 80, align: 'center' },
+               { field: 'OrderNo', title: '订单单号', width: 120, align: 'center' },
+               { field: 'MaterialProNo', title: '产品名称', width: 120, align: 'center' },
+               { field: 'Version', title: '版本', width: 60, align: 'center' },
+               { field: 'PlanNum', title: '计划数量', width: 80, align: 'center' },
+               { field: 'CompleteNum', title: '完成数量', width: 80, align: 'center' },
+               { field: 'Show_BeginTime', title: '计划开始时间', width: 100, align: 'center' },
+               { field: 'Show_EndTime', title: '计划结束时间', width: 100, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 80, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            singleSelect: true,
+            url: "/PlanManagement/PlanMgt_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+    function getQueryParms() {
+        return {
+            OrderType: $("#Q_OrderType").combobox("getValue"),
+            OrderNo: $.trim($("#Q_OrderNo").val()),
+            PlanStatus: $("#Q_PlanStatus").combobox("getValue"),
+            PlanCode: $.trim($("#Q_PlanCode").val()),
+            CreatedTimeStart: $.trim($("#Q_CreatedTimeStart").val()),
+            CreatedTimeEnd: $.trim($("#Q_CreatedTimeEnd").val())
+        };
+    }
+
+    function showForm(optType) {
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        _OptType = optType;
+
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#E_ID").val(row.ID);
+            $("#lblPlanStatus").val(row.Show_PlanStatus);
+            $("#E_PlanCode").val(row.PlanCode);
+            $("#E_MaterialProNo").val(row.MaterialProNo);
+            $("#E_MaterialCode").val(row.MaterialCode);
+            $("#E_Version").val(row.Version);
+            $("#E_Num").val(row.Num);
+            $("#E_SubMaterialProNo").val(row.SubMaterialProNo);
+            $("#E_SubMaterialCode").val(row.SubMaterialCode);
+            $("#E_Unit").val(row.Unit);
+            $("#E_Unit").val(row.Unit);
+            $("#E_Memo").val(row.Memo);
+            $("#E_ProcessName").val(row.ProcessName);
+            $("#E_ProcessCode").val(row.ProcessCode);
+        } 
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _OptType = optType;
+    }
+
+    function saveForm() {
+        var data = FormUitl.getFormData(_formName);
+        data.OptType = _OptType;
+        doPostAjaxRequest("/PlanManagement/PlanMgt_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ID: row.ID };
+        $.messager.confirm("提示", "确定删除该计划吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/PlanManagement/PlanMgt_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+</script>
