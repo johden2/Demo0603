@@ -8,6 +8,8 @@ namespace Sys.Model
 {
     public partial class Mes_Plan_SaleOrderItem
     {
+        public string OrderNoLike { get; set; }
+
         public int OrderID { get; set; }
 
         public string Show_OrderType

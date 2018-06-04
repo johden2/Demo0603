@@ -13,6 +13,14 @@ namespace Sys.Model
 
         public string WorkShopName { get; set; }
 
+        public string Show_OrderType
+        {
+            get
+            {
+                return StatusHelper.GetConstStatus<OrderType>(this.OrderType);
+            }
+        }
+
         public string Show_PlanStatus
         {
             get

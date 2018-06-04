@@ -61,6 +61,7 @@
                 <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
                 <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导入</a>
             </td>
         </tr>
     </table>
@@ -101,9 +102,24 @@
         </tr>
         <tr>
             <td class="form-head">
+                <span class="sp-require">*</span>订单单号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Select_OrderNo" />
+            </td>
+            <td class="form-head">
+                <span class="sp-require">*</span>订单单别：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Show_OrderType" disabled />
+                <input type="hidden" class="easyui-textbox" id="E_OrderType" disabled />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
                 <span class="sp-require">*</span>产品编码：
             </td>
-            <td><input class="easyui-textbox" id="Select_MaterialProNo"  /></td>
+            <td><input class="easyui-textbox" id="E_MaterialProNo" disabled /></td>
             <td class="form-head">
                产品简称：
             </td>
@@ -159,6 +175,8 @@
         $("#btnAdd").click(function () { showForm(1); })
         $("#btnEdit").click(function () { showForm(2); })
         $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnOk").click(function () { saveForm(); })
+        $("#btnClose").click(function () { FormUitl.close(_divFormName); })
 
         //绑定下拉框
         common_bindCommonCombox("Q_OrderType", { headerType: 1, statusType: "OrderType" });
@@ -167,11 +185,14 @@
 
         initGrid();
 
-        CtrlCommonUtil.BindMaterialLike("Select_MaterialProNo", { Width: 150 },
+        CtrlCommonUtil.BindSaleOrderLike("Select_OrderNo", { Width: 150 },
          function (rowIndex, rowData) { //点击事件
-             $("#Select_MaterialProNo").combogrid("setText", rowData.MaterialProNo);
+             $("#Select_OrderNo").combogrid("setText", rowData.OrderNo);
+             $("#Show_OrderType").val(rowData.Show_OrderType);
+             $("#E_OrderType").val(rowData.OrderType);
+             $("#E_MaterialProNo").val(rowData.MaterialProNo);
              $("#E_MaterialCode").val(rowData.MaterialCode);
-             $("#Version").val(rowData.Version);
+             $("#E_Version").val(rowData.Version);
          });
 
         CtrlCommonUtil.BindWorkShopLike("Select_WorkShopID", { Width: 150 },
@@ -233,20 +254,23 @@
             if (!row) return;
 
             $("#E_ID").val(row.ID);
-            $("#lblPlanStatus").val(row.Show_PlanStatus);
+            $("#lblPlanStatus").text(row.Show_PlanStatus);
             $("#E_PlanCode").val(row.PlanCode);
-            $("#Select_ProjectName").combogrid("setText", row.MaterialProNo);
-            //$("#E_MaterialProNo").val(row.MaterialProNo);
+            $("#E_PlanType").combobox("setValue", row.PlanType);
+            $("#Select_OrderNo").combogrid("setText", row.OrderNo);
+            $("#Select_WorkShopID").combogrid("setText", row.WorkShopName);
+            $("#Select_WorkShopID").combogrid("setValue", row.WorkShopID);
+            $("#Show_OrderType").val(row.Show_OrderType);
+            $("#E_OrderType").val(row.OrderType);
+            $("#E_MaterialProNo").val(row.MaterialProNo);
             $("#E_MaterialCode").val(row.MaterialCode);
             $("#E_Version").val(row.Version);
-            $("#E_Num").val(row.Num);
-            $("#E_SubMaterialProNo").val(row.SubMaterialProNo);
-            $("#E_SubMaterialCode").val(row.SubMaterialCode);
+            $("#E_PlanNum").val(row.PlanNum);
+            $("#E_CompleteNum").val(row.CompleteNum);
             $("#E_Unit").val(row.Unit);
-            $("#E_Unit").val(row.Unit);
-            $("#E_Memo").val(row.Memo);
-            $("#E_ProcessName").val(row.ProcessName);
-            $("#E_ProcessCode").val(row.ProcessCode);
+            $("#E_BeginTime").datebox("setValue", row.Show_BeginTime);
+            $("#E_EndTime").datebox("setValue", row.Show_EndTime);
+            $("#E_Factory").val(row.Factory);
         } 
 
         //3.显示窗体
@@ -258,6 +282,8 @@
     function saveForm() {
         var data = FormUitl.getFormData(_formName);
         data.OptType = _OptType;
+        data.OrderNo = $("#Select_OrderNo").combogrid("getText");
+        data.WorkShopID = $("#Select_WorkShopID").combogrid("getValue");
         doPostAjaxRequest("/PlanManagement/PlanMgt_Save", data, function (msg) {
             if (!msg.IsSuccess) {
                 $.messager.alert('提示', msg.Message, "info");

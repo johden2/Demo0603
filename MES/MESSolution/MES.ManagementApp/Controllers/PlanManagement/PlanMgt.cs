@@ -72,7 +72,6 @@ namespace MES.ManagementApp.Controllers
             {
                 return Json(new { IsSuccess = false, Message = "计划信息有误，请刷新后重试！" });
             }
-
             plan.PlanType = obj.PlanType;
             plan.OrderType = obj.OrderType;
             plan.OrderNo = obj.OrderNo;
@@ -85,6 +84,7 @@ namespace MES.ManagementApp.Controllers
             plan.WorkShopID = obj.WorkShopID;
             plan.BeginTime = obj.BeginTime;
             plan.EndTime = obj.EndTime;
+            plan.Factory = obj.Factory;
             int id = MesPlanPlanInforDao.Instance.Save(plan);
             return Json(new { IsSuccess = true, Message = id.ToString() });
         }

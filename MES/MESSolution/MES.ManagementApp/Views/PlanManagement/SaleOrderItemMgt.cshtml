@@ -136,7 +136,7 @@
                 <span class="sp-require">*</span>产品编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="EI_MaterialProNo" />
+                <input class="easyui-textbox" id="Select_MaterialProNo" />
             </td>
             <td class="form-head">
                 产品简称：
@@ -193,6 +193,14 @@
         loadData();
 
         initGrid();
+
+        CtrlCommonUtil.BindMaterialLike("Select_MaterialProNo", { Width: 150 },
+       function (rowIndex, rowData) { //点击事件
+           $("#Select_MaterialProNo").combogrid("setText", rowData.MaterialProNo);
+           $("#EI_MaterialCode").val(rowData.MaterialCode);
+           $("#EI_Version").val(rowData.Version);
+       });
+
     });
 
     function loadData() {
@@ -300,7 +308,7 @@
         data.OrderID = _OrderID;
         data.ID = $("#EI_ID").val();
         data.ResNum = $("#EI_ResNum").val();
-        data.MaterialProNo = $("#EI_MaterialProNo").val();
+        data.MaterialProNo = $("#Select_MaterialProNo").combogrid("getText");
         data.MaterialCode = $("#EI_MaterialCode").val();
         data.Version = $("#EI_Version").val();
         data.Num = $("#EI_Num").val();

@@ -8,6 +8,7 @@ namespace Sys.Model
 {
     public partial class Mes_Plan_SaleOrder
     {
+
         public string OrderDateStart { get; set; }
         public string OrderDateEnd { get; set; }
         public string CreatedTimeStart { get; set; }

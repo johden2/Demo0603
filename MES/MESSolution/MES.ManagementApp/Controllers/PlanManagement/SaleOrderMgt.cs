@@ -134,6 +134,24 @@ namespace MES.ManagementApp.Controllers
             return Json(new { total = pager.TotalItemCount, rows = list }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult SaleOrderItemMgt_Select(int page, int rows, string q)
+        {
+            List<Mes_Plan_SaleOrderItem> list = null;
+            Mes_Plan_SaleOrderItem obj = new Mes_Plan_SaleOrderItem();
+            if (!string.IsNullOrEmpty(q))
+            {
+                obj.OrderNoLike = q;
+            }
+            var pager = new PagerBase() { CurrentPageIndex = page, PageSize = rows };
+            list = MesPlanSaleOrderDao.Instance.FindItemByPage(obj, ref pager);
+            if (list == null)
+            {
+                list = new List<Mes_Plan_SaleOrderItem>();
+            }
+
+            return Json(new { total = pager.TotalItemCount, rows = list, JsonRequestBehavior.AllowGet });
+        }
+
         public ActionResult SaleOrderItemMgt_Save(Mes_Plan_SaleOrderItem obj)
         {
             if (obj.OrderID <= 0)

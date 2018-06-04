@@ -123,12 +123,28 @@ namespace Sys.Dao
 
         public List<Mes_Plan_SaleOrderItem> FindItemByPage(Mes_Plan_SaleOrderItem obj, ref PagerBase pager)
         {
-            if (obj.OrderID <= 0) return null;
-            Mes_Plan_SaleOrder order = this.Find<Mes_Plan_SaleOrder, int>(obj.OrderID);
-            if (order == null) return null;
+            Mes_Plan_SaleOrder order = null;
+            if (obj.OrderID > 0){
+                  order = this.Find<Mes_Plan_SaleOrder, int>(obj.OrderID);
+            }
+            if (order == null)
+            {
+                order = new Mes_Plan_SaleOrder();
+            }
 
-            string sql = @"SELECT T1.* FROM Mes_Plan_SaleOrderItem T1 WITH(NOLOCK) WHERE T1.OrderType = '{0}' AND T1.OrderNo = '{1}'";
-            sql = string.Format(sql, order.OrderType, order.OrderNo);
+            string sql = @"SELECT T1.* FROM Mes_Plan_SaleOrderItem T1 WITH(NOLOCK) WHERE 1=1";
+            if (!string.IsNullOrEmpty(order.OrderType))
+            {
+                sql += string.Format(" AND T1.OrderType = '{0}'", order.OrderType);
+            }
+            if (!string.IsNullOrEmpty(order.OrderNo))
+            {
+                sql += string.Format(" AND T1.OrderNo = '{0}'", order.OrderNo);
+            }
+            if (!string.IsNullOrEmpty(obj.OrderNoLike))
+            {
+                sql += string.Format(" AND T1.OrderNoLike LIKE '%{0}%'", obj.OrderNoLike);
+            }
             string orderBy = pager.OrderBy;
             if (string.IsNullOrEmpty(orderBy))
             {

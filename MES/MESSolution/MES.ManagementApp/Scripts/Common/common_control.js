@@ -407,9 +407,9 @@ var CtrlCommonUtil = {
             { field: 'MaterialProNo', title: '产品编码', width: 130, align: 'center' },
             { field: 'MaterialCode', title: '产品简称', width: 130, align: 'center' },
             { field: 'TraceProperty', title: '批次属性', width: 90, align: 'center' },
-            { field: 'ID', title: 'ID', width: 100, hidden: true }
+            { field: 'ID', title: 'ID', width: 1, hidden: true }
         ]];
-        properties.PanelWidth = 300;
+        properties.PanelWidth = 400;
         properties.ID = "ID";
         properties.Name = "MaterialProNo";
 
@@ -420,7 +420,7 @@ var CtrlCommonUtil = {
         properties.columns = [[
             { field: 'CustomerName', title: '客户名称', width: 150, align: 'center' },
             { field: 'CustomerCode', title: '客户编码', width: 130, align: 'center' },
-            { field: 'ID', title: 'ID', width: 100, hidden: true }
+            { field: 'ID', title: 'ID', width: 1, hidden: true }
         ]];
         properties.PanelWidth = 300;
         properties.ID = "ID";
@@ -438,6 +438,26 @@ var CtrlCommonUtil = {
         properties.PanelWidth = 600;
         properties.ID = "ID";
         properties.Name = "WorkShopName";
+
+        bindCombogrid(ctrlId, properties, onClickRow, null);
+    },
+    BindSaleOrderLike: function (ctrlId, properties, onClickRow) {
+        properties.url = '/PlanManagement/SaleOrderItemMgt_Select';
+        properties.columns = [[
+              { field: 'ID', title: 'ID', width: 1, align: 'center', hidden: true },
+               { field: 'Show_OrderStatus', title: '订单状态', width: 80, align: 'center' },
+               { field: 'Show_OrderType', title: '订单单别', width: 80, align: 'center' },
+               { field: 'OrderNo', title: '订单单号', width: 120, align: 'center' },
+               { field: 'ResNum', title: '订单行号', width: 70, align: 'center' },
+               { field: 'MaterialProNo', title: '产品编码', width: 120, align: 'center' },
+               { field: 'MaterialCode', title: '产品简称', width: 120, align: 'center' },
+               { field: 'Version', title: '版本', width: 80, align: 'center' },
+               { field: 'Num', title: '订单数量', width: 80, align: 'center' },
+               { field: 'Show_ShipDate', title: '发货日期', width: 120, align: 'center' }
+        ]];
+        properties.PanelWidth = 600;
+        properties.ID = "ID";
+        properties.Name = "MaterialProNo";
 
         bindCombogrid(ctrlId, properties, onClickRow, null);
     }
