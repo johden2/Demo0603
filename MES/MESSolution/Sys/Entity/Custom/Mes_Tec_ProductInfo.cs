@@ -21,7 +21,7 @@ namespace Sys.Model
         {
             get
             {               
-                return TConvertHelper.FormatShortDateToString(this.ModifiedTime.Value);
+                return TConvertHelper.FormatShortDateToString(this.ModifiedTime);
             }
         }
 

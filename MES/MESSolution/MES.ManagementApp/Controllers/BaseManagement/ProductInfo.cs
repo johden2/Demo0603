@@ -84,5 +84,24 @@ namespace MES.ManagementApp.Controllers
             var list = MesTecProductInfoDao.Instance.FindByPage(obj, ref pager);
             return Json(new { total = pager.TotalItemCount, rows = list });
         }
+
+        public ActionResult ProductInfo_Select(int page, int rows, string q)
+        {
+            List<Mes_Tec_ProductInfo> list = null;
+            Mes_Tec_ProductInfo obj = new Mes_Tec_ProductInfo();
+            if (!string.IsNullOrEmpty(q))
+            {
+                obj.MaterialProNo = q;
+            }
+            var pager = new PagerBase() { CurrentPageIndex = page, PageSize = rows };
+            list = MesTecProductInfoDao.Instance.FindByPage(obj, ref pager);
+            if (list == null)
+            {
+                list = new List<Mes_Tec_ProductInfo>();
+            }
+
+            return Json(new { total = pager.TotalItemCount, rows = list, JsonRequestBehavior.AllowGet });
+        }
+
     }
 }

@@ -63,8 +63,10 @@ namespace Sys.Dao
         /// <returns></returns>
         public List<Mes_Tec_ProductInfo> FindByPage(Mes_Tec_ProductInfo obj, ref PagerBase pager)
         {
-            string sql = @"select T1.*,T2.StockName as Show_StockCode,T3.AlibraryName as Show_AlibraryCode from Mes_Tec_ProductInfo T1 Left join Mes_Sys_Stock T2 ON T1.StockCode=T2.StockCode left join Mes_Sys_Alibrary T3 ON T1.AlibraryCode=T3.AlibraryCode 
-WHERE   1=1 ";
+            string sql = @"select T1.*,T2.StockName as Show_StockCode,T3.AlibraryName as Show_AlibraryCode from Mes_Tec_ProductInfo T1 
+                        Left join Mes_Sys_Stock T2 ON T1.StockCode=T2.StockCode 
+                        left join Mes_Sys_Alibrary T3 ON T1.AlibrayCode=T3.AlibraryCode 
+                        WHERE   1=1 ";
 
             if (!string.IsNullOrEmpty(obj.MaterialProNo))
             {
@@ -79,7 +81,10 @@ WHERE   1=1 ";
             {
                 sql += string.Format(" AND T1.MaterialClass Like '%{0}%'", obj.MaterialClass);
             }
-            sql += string.Format(" AND T1.MaterialStatus={0}", obj.MaterialStatus);
+            if (obj.MaterialStatus.HasValue && obj.MaterialStatus.Value > 0)
+            {
+                sql += string.Format(" AND T1.MaterialStatus={0}", obj.MaterialStatus);
+            }
            
             string orderBy = pager.OrderBy;
             if (string.IsNullOrEmpty(orderBy))

@@ -72,5 +72,24 @@ namespace MES.ManagementApp.Controllers
             return Json(new { total = pager.TotalItemCount, rows = list });
 
         }
+
+        public ActionResult WorkShop_Select(int page, int rows, string q)
+        {
+            List<Mes_Sys_WorkShop> list = null;
+            Mes_Sys_WorkShop obj = new Mes_Sys_WorkShop();
+            if (!string.IsNullOrEmpty(q))
+            {
+                obj.WorkShopName = q;
+            }
+            var pager = new PagerBase() { CurrentPageIndex = page, PageSize = rows };
+            list = MesSysWorkShopDao.Instance.FindByPage(obj, ref pager);
+            if (list == null)
+            {
+                list = new List<Mes_Sys_WorkShop>();
+            }
+
+            return Json(new { total = pager.TotalItemCount, rows = list, JsonRequestBehavior.AllowGet });
+        }
+
     }
 }

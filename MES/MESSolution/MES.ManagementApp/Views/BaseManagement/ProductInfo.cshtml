@@ -52,19 +52,15 @@
                 &nbsp;&nbsp;类别:
             </td>
             <td>
-                <select id="Q_MaterialClass" class="easyui-combobox" style="width:150px;">
-                    <option value="0">物料</option>
-                    <option value="1">成品</option>
-                </select>
+                <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_MaterialClass"
+                       data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td>
                 &nbsp;&nbsp;状态：
             </td>
             <td>
-                <select id="Q_MaterialStatus" class="easyui-combobox" style="width:150px;">
-                    <option value="0">在用</option>
-                    <option value="1">禁用</option>
-                </select>
+                <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_MaterialStatus"
+                       data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                 <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
@@ -178,7 +174,11 @@
     var _divFormName = "divForm";
     var _formName = "tbForm";
     var _OptType = 0;
-    $(document).ready(function () {       
+    $(document).ready(function () {
+        common_bindCommonCombox("Q_MaterialClass", { headerType: 1, statusType: "MaterialClassStatus" });
+        common_bindCommonCombox("Q_MaterialStatus", { headerType: 1, statusType: "RecordStatus" });
+
+
         $("#btnQuery").click(function () {      
             PageListObj.queryList();
         })
@@ -347,7 +347,6 @@
 
     //保存记录
     function saveForm() {
-        debugger;
         var data = FormUitl.getFormData(_formName);
         data.OptType = _OptType;
         doPostAjaxRequest("/BaseManagement/ProductInfo_Save", data, function (msg) {

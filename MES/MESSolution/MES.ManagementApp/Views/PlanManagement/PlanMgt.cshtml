@@ -20,7 +20,7 @@
                 订单单别：
             </td>
             <td>
-                <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_OrderType"
+                <input type="text" style="width: 120px;" class="easyui-combobox" id="Q_OrderType"
                        data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td class="td-query-title">
@@ -42,7 +42,7 @@
                 计划状态：
             </td>
             <td>
-                <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_PlanStatus"
+                <input type="text" style="width: 120px;" class="easyui-combobox" id="Q_PlanStatus"
                        data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td class="td-query-title">
@@ -66,25 +66,25 @@
     </table>
 </div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="计划信息" style="width: 560px; height: 340px;display: none;" collapsible="false" minimizable="false"
+     title="计划信息" style="width: 780px; height: 300px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
     <table id="tbForm" class="tbForm">
         <tr>
-            <td colspan="6">
+            <td colspan="2">
                 <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
                 <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
                 <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
             </td>
-        </tr>
-        <tr>
             <td class="form-head">
                 <span class="sp-require">*</span>计划状态：
             </td>
             <td><label id="lblPlanStatus"></label></td>
+        </tr>
+        <tr>
             <td class="form-head">
                 <span class="sp-require">*</span>计划编号：
             </td>
-            <td><input class="easyui-textbox" id="E_PlanCode" disabled /></td>
+            <td><input class="easyui-textbox" id="E_PlanCode" disabled style="width:110px;" /><span class="sp-require">(生成)</span></td>
             <td class="form-head">
                 <span class="sp-require">*</span>计划类别：
             </td>
@@ -92,12 +92,18 @@
                 <input type="text" style="width: 90px;" class="easyui-combobox" id="E_PlanType"
                        data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
+            <td class="form-head">
+                <span class="sp-require">*</span>工作车间：
+            </td>
+            <td><input class="easyui-textbox" id="Select_WorkShopID" />
+            </td>
+          
         </tr>
         <tr>
             <td class="form-head">
                 <span class="sp-require">*</span>产品编码：
             </td>
-            <td><input class="easyui-textbox" id="E_MaterialProNo" disabled /></td>
+            <td><input class="easyui-textbox" id="Select_MaterialProNo"  /></td>
             <td class="form-head">
                产品简称：
             </td>
@@ -113,7 +119,7 @@
             </td>
             <td><input class="easyui-textbox" id="E_PlanNum" /></td>
             <td class="form-head">
-                <span class="sp-require">*</span>完成数量：
+               完成数量：
             </td>
             <td><input class="easyui-textbox" id="E_CompleteNum" /></td>
             <td class="form-head">
@@ -122,10 +128,7 @@
             <td><input class="easyui-textbox" id="E_Unit" /></td>
         </tr>
         <tr>
-            <td class="form-head">
-                <span class="sp-require">*</span>工厂：
-            </td>
-            <td><input class="easyui-textbox" id="E_Factory" /></td>
+          
             <td class="form-head">
                 计划开始时间：
             </td>
@@ -138,18 +141,19 @@
             <td>
                 <input type="text" class="easyui-datebox" id="E_EndTime" style="width: 120px;" maxlength="50" />
             </td>
-        </tr>
-        <tr>
             <td class="form-head">
-                工作车间：
+                工厂：
             </td>
-            <td><input class="easyui-textbox" id="E_WorkShopID" /></td>
+            <td><input class="easyui-textbox" id="E_Factory" /></td>
         </tr>
 </table>
 </div>
 
 <script src="/Scripts/Common/common_search.js?v=4"></script>
 <script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
     $(document).ready(function () {
         $("#btnQuery").click(function () { PageListObj.queryList(); })
         $("#btnAdd").click(function () { showForm(1); })
@@ -158,10 +162,23 @@
 
         //绑定下拉框
         common_bindCommonCombox("Q_OrderType", { headerType: 1, statusType: "OrderType" });
-        //common_bindCommonCombox("Q_PlanType", { headerType: 1, statusType: "PlanType" });
         common_bindCommonCombox("Q_PlanStatus", { headerType: 1, statusType: "PlanStatus" });
+        common_bindCommonCombox("E_PlanType", { headerType: 0, statusType: "PlanType" });
 
         initGrid();
+
+        CtrlCommonUtil.BindMaterialLike("Select_MaterialProNo", { Width: 150 },
+         function (rowIndex, rowData) { //点击事件
+             $("#Select_MaterialProNo").combogrid("setText", rowData.MaterialProNo);
+             $("#E_MaterialCode").val(rowData.MaterialCode);
+             $("#Version").val(rowData.Version);
+         });
+
+        CtrlCommonUtil.BindWorkShopLike("Select_WorkShopID", { Width: 150 },
+         function (rowIndex, rowData) { //点击事件
+             $("#Select_WorkShopID").combogrid("setText", rowData.WorkShopName);
+             //$("#E_WorkShopID").val(rowData.Id);
+         });
     });
 
     //初始化Grid
@@ -218,7 +235,8 @@
             $("#E_ID").val(row.ID);
             $("#lblPlanStatus").val(row.Show_PlanStatus);
             $("#E_PlanCode").val(row.PlanCode);
-            $("#E_MaterialProNo").val(row.MaterialProNo);
+            $("#Select_ProjectName").combogrid("setText", row.MaterialProNo);
+            //$("#E_MaterialProNo").val(row.MaterialProNo);
             $("#E_MaterialCode").val(row.MaterialCode);
             $("#E_Version").val(row.Version);
             $("#E_Num").val(row.Num);

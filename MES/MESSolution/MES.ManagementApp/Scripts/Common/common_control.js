@@ -395,35 +395,49 @@ var CtrlCommonUtil = {
             //{ field: 'CreateBy', title: '创建人', width: 150 },
             //{ field: 'Description', title: '描述', width: 300, }
         ]];
-        properties.PanelWidth = 600;
+        properties.PanelWidth = 300;
         properties.ID = "ID";
         properties.Name = "RoleName";
 
         bindCombogrid(ctrlId, properties, onClickRow, null);
     },
-    BindMaterialLike: function (ctrlId, properties, onClickRow) { //绑定项目列表
-        properties.url = '/SysManagement/ProductInfo_Select';
+    BindMaterialLike: function (ctrlId, properties, onClickRow) {
+        properties.url = '/BaseManagement/ProductInfo_Select';
         properties.columns = [[
-            { field: 'MaterialProNo', title: '产品编码', width: 150 },
-            { field: 'MaterialCode', title: '产品简称', width: 150 },
+            { field: 'MaterialProNo', title: '产品编码', width: 130, align: 'center' },
+            { field: 'MaterialCode', title: '产品简称', width: 130, align: 'center' },
+            { field: 'TraceProperty', title: '批次属性', width: 90, align: 'center' },
             { field: 'ID', title: 'ID', width: 100, hidden: true }
         ]];
-        properties.PanelWidth = 600;
+        properties.PanelWidth = 300;
         properties.ID = "ID";
-        properties.Name = "MaterialCode";
+        properties.Name = "MaterialProNo";
 
         bindCombogrid(ctrlId, properties, onClickRow, null);
     },
-    BindCustomerLike: function (ctrlId, properties, onClickRow) { //绑定项目列表
-        properties.url = '/SysManagement/CustomerMgt_Select';
+    BindCustomerLike: function (ctrlId, properties, onClickRow) {
+        properties.url = '/BaseManagement/Customer_Select';
         properties.columns = [[
-            { field: 'CustomerName', title: '客户名称', width: 150 },
-            { field: 'CustomerCode', title: '客户编码', width: 150 },
+            { field: 'CustomerName', title: '客户名称', width: 150, align: 'center' },
+            { field: 'CustomerCode', title: '客户编码', width: 130, align: 'center' },
             { field: 'ID', title: 'ID', width: 100, hidden: true }
+        ]];
+        properties.PanelWidth = 300;
+        properties.ID = "ID";
+        properties.Name = "CustomerName";
+
+        bindCombogrid(ctrlId, properties, onClickRow, null);
+    },
+    BindWorkShopLike: function (ctrlId, properties, onClickRow) {
+        properties.url = '/BaseManagement/WorkShop_Select';
+        properties.columns = [[
+              { field: 'ID', title: 'ID', width: 100, align: 'center', hidden: true },
+               { field: 'WorkShopCode', title: '车间编码', width: 100, align: 'center' },
+               { field: 'WorkShopName', title: '车间名称', width: 160, align: 'center' },
         ]];
         properties.PanelWidth = 600;
         properties.ID = "ID";
-        properties.Name = "CustomerName";
+        properties.Name = "WorkShopName";
 
         bindCombogrid(ctrlId, properties, onClickRow, null);
     }

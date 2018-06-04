@@ -79,5 +79,25 @@ namespace MES.ManagementApp.Controllers
             var list = MesSysCustomerDao.Instance.FindByPage(obj, ref pager);
             return Json(new { total = pager.TotalItemCount, rows = list });
         }
+
+        public ActionResult Customer_Select(int page, int rows, string q)
+        {
+            List<Mes_Sys_Customer> list = null;
+            Mes_Sys_Customer obj = new Mes_Sys_Customer();
+            if (!string.IsNullOrEmpty(q))
+            {
+                obj.CustomerName = q;
+            }
+            var pager = new PagerBase() { CurrentPageIndex = page, PageSize = rows };
+            list = MesSysCustomerDao.Instance.FindByPage(obj, ref pager);
+            if (list == null)
+            {
+                list = new List<Mes_Sys_Customer>();
+            }
+
+            return Json(new { total = pager.TotalItemCount, rows = list,JsonRequestBehavior.AllowGet });
+        }
+
+
     }
 }
