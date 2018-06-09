@@ -41,6 +41,21 @@ namespace Sys.Model
         public const string No = "N";
     }
 
+    public class AuditEnum
+    {
+        /// <summary>
+        /// 未审核
+        /// </summary>
+        [CustField("未审核")]
+        public const int No= 1;
+
+        /// <summary>
+        /// 已审核
+        /// </summary>
+        [CustField("已审核")]
+        public const int Yes = 2;
+    }
+
 
     public class HeaderType
     {
@@ -256,6 +271,46 @@ namespace Sys.Model
     }
 
     #endregion 生产相关字典
+
+    #region 仓库管理相关字典
+
+    /// <summary>
+    /// 检验状态
+    /// </summary>
+    public class CheckStatus
+    {
+        /// <summary>
+        /// 未检验
+        /// </summary>
+        [CustField("未检验")]
+        public const int No = 1;
+
+        /// <summary>
+        /// 已检验
+        /// </summary>
+        [CustField("已检验")]
+        public const int Yes = 2;
+    }
+
+    /// <summary>
+    /// 检验状态
+    /// </summary>
+    public class StockBillType
+    {
+        /// <summary>
+        /// 进货单
+        /// </summary>
+        [CustField("进货单")]
+        public const int A = 1;
+
+        /// <summary>
+        /// 委外进货单
+        /// </summary>
+        [CustField("委外进货单")]
+        public const int B = 2;
+    }
+
+    #endregion 仓库管理相关字典
 
     #endregion  状态类型参数
 

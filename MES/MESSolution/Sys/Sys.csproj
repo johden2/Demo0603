@@ -69,6 +69,7 @@
     <Compile Include="Dao\Custom\MesSysAlibraryDao.cs" />
     <Compile Include="Dao\Custom\MesSysCustomerDao.cs" />
     <Compile Include="Dao\Custom\MesSysDataCollectPointDao.cs" />
+    <Compile Include="Dao\Custom\MesStockInStockDao.cs" />
     <Compile Include="Dao\Custom\MesSysMapDao.cs" />
     <Compile Include="Dao\Custom\MesSysModuleItemDao.cs" />
     <Compile Include="Dao\Custom\MesSysRoleDao.cs" />
@@ -84,6 +85,8 @@
     <Compile Include="Dao\Custom\MesTecProductInfoDao.cs" />
     <Compile Include="Dao\Custom\MesTecTestDataPositionDao.cs" />
     <Compile Include="Entity\AutoGen\Mes_Plan_Material.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Stock_InStockItem.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Stock_InStock.cs" />
     <Compile Include="Entity\AutoGen\Mes_Plan_PlanInfor.cs" />
     <Compile Include="Entity\AutoGen\Mes_Plan_SaleOrderItem.cs" />
     <Compile Include="Entity\AutoGen\Mes_Plan_SaleOrder.cs" />
@@ -108,6 +111,8 @@
     <Compile Include="Entity\AutoGen\Mes_Tec_ProductInfo.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tec_TestDataPosition.cs" />
     <Compile Include="Entity\Custom\Mes_Plan_PlanInfor.cs" />
+    <Compile Include="Entity\Custom\Mes_Stock_InStock.cs" />
+    <Compile Include="Entity\Custom\Mes_Stock_InStockItem.cs" />
     <Compile Include="Entity\Custom\Mes_Plan_SaleOrderItem.cs" />
     <Compile Include="Entity\Custom\Mes_Plan_SaleOrder.cs" />
     <Compile Include="Entity\Custom\Mes_Sys_Alibrary.cs" />

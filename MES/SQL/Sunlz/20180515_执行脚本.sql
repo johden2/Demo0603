@@ -72,6 +72,15 @@ VALUES('0301','订单管理','PlanManagement/SaleOrderMgt',0,'admin',GETDATE(),'0301
 INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
 VALUES('0302','计划管理','PlanManagement/PlanMgt',0,'admin',GETDATE(),'0302',2,1,2)
 
+INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
+VALUES('04','仓库管理',NULL,0,'admin',GETDATE(),'04',1,3,2)
+INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
+VALUES('0401','进货单','StockManagement/InStockMgt',0,'admin',GETDATE(),'0401',2,1,2)
+INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
+VALUES('0402','领料单','StockManagement/OutMaterialMgt',0,'admin',GETDATE(),'0402',2,1,2)
+INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
+VALUES('0403','异常领料单','StockManagement/YcOutMaterialMgt',0,'admin',GETDATE(),'0403',2,3,2)
+
 
 --(3)修改员工资料表
 ALTER TABLE Mes_Sys_Employee ADD ProcessNameList NVARCHAR(500)

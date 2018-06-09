@@ -189,22 +189,16 @@ namespace Sys.Tools
 
         public static string FormatSmallDate(DateTime? time)
         {
-            if (!time.HasValue) return string.Empty;
+            if (!time.HasValue || time.Value <= SYS_MINDATE) return string.Empty;
 
             return time.Value.ToString("yyyy-MM-dd");
         }
 
         public static string FormatSmallDate(DateTime time)
         {
-            try
-            {
-                return time.ToString("yyyy-MM-dd");
-            }
-            catch
-            {
-            }
+            if (time <= SYS_MINDATE) return string.Empty;
 
-            return string.Empty;
+            return time.ToString("yyyy-MM-dd");
         }
 
         public static string FormatShortDateToString(DateTime time)

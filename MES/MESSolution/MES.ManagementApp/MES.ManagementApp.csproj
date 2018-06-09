@@ -153,12 +153,16 @@
     <Compile Include="Controllers\BaseManagement\Supplier.cs" />
     <Compile Include="Controllers\BaseManagement\WorkShop.cs" />
     <Compile Include="Controllers\Common\ComboxController.cs" />
+    <Compile Include="Controllers\Common\SelectMgt.cs" />
     <Compile Include="Controllers\Common\SysConfigHelper.cs" />
     <Compile Include="Controllers\Common\SysNumberUtil.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PersonnelManagement\PersonnelManagementController.cs" />
     <Compile Include="Controllers\PersonnelManagement\EmployeeMgt.cs" />
+    <Compile Include="Controllers\StockManagement\StockManagementController.cs" />
+    <Compile Include="Controllers\StockManagement\InStockMgt.cs" />
+    <Compile Include="Controllers\StockManagement\OutMaterialMgt.cs" />
     <Compile Include="Controllers\PlanManagement\PlanManagementController.cs" />
     <Compile Include="Controllers\PlanManagement\PlanMgt.cs" />
     <Compile Include="Controllers\PlanManagement\SaleOrderMgt.cs" />
@@ -1249,6 +1253,15 @@
     <Content Include="Views\BaseManagement\WorkShop.cshtml" />
     <Content Include="Views\ProcessManagement\Process.cshtml" />
     <Content Include="Views\ProcessManagement\TestDataPosition.cshtml" />
+    <Content Include="Views\StockManagement\InStockMgt.cshtml" />
+    <Content Include="Views\StockManagement\OutMaterialMgt.cshtml" />
+    <Content Include="Views\StockManagement\YcOutMaterialMgt.cshtml" />
+    <Content Include="Views\StockManagement\InStockItemMgt.cshtml" />
+    <Content Include="Views\Common\SelectSupplier.cshtml" />
+    <Content Include="Views\Common\SelectCustomer.cshtml" />
+    <Content Include="Views\Common\SelectProduct.cshtml" />
+    <Content Include="Views\Common\SelectWorkShop.cshtml" />
+    <Content Include="Views\Common\SelectSaleOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
