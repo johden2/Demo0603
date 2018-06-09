@@ -1262,6 +1262,7 @@
     <Content Include="Views\Common\SelectProduct.cshtml" />
     <Content Include="Views\Common\SelectWorkShop.cshtml" />
     <Content Include="Views\Common\SelectSaleOrder.cshtml" />
+    <Content Include="Views\Common\SelectStock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
