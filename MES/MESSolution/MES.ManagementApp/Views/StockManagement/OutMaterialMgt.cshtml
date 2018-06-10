@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "订单管理";
+    ViewBag.Title = "领料单管理";
     Layout = "~/Views/Shared/_Layout_Non.cshtml";
 }
 
@@ -17,46 +17,47 @@
     <table id="tbQuery">
         <tr>
             <td class="td-query-title">
-                订单单别：
+                进货单别：
             </td>
             <td>
-                <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_OrderType"
+                <input type="text" style="width: 120px;" class="easyui-combobox" id="Q_BillType"
                        data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td class="td-query-title">
-                订单单号：
+                进货单号：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_OrderNo" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_BillNo" style="width: 150px;" />
             </td>
             <td class="td-query-title">
-                下单日期：
+                进货日期：
             </td>
             <td>
-                <input type="text" class="easyui-datebox" id="Q_OrderDateStart" style="width:90px;" maxlength="50" />
-                ~ <input type="text" class="easyui-datebox" id="Q_OrderDateEnd" style="width:90px;" maxlength="50" />
+                <input type="text" class="easyui-datebox" id="Q_InStockDateStart" style="width:90px;" maxlength="50" />
+                ~ <input type="text" class="easyui-datebox" id="Q_InStockDateEnd" style="width:90px;" maxlength="50" />
             </td>
         </tr>
         <tr>
+            
             <td class="td-query-title">
-                订单状态：
+                单据状态：
             </td>
             <td>
-                <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_OrderStatus"
+                <input type="text" style="width: 120px;" class="easyui-combobox" id="Q_AuditStatus"
                        data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td class="td-query-title">
-                客户名称：
+                供应商：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_CustomerName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_SupplierName" style="width: 150px;" />
             </td>
             <td class="td-query-title">
-                创建日期：
+                检验状态：
             </td>
             <td>
-                <input type="text" class="easyui-datebox" id="Q_CreatedTimeStart" style="width:90px;" maxlength="50" />
-                ~ <input type="text" class="easyui-datebox" id="Q_CreatedTimeEnd" style="width:90px;" maxlength="50" />
+                <input type="text" style="width: 120px;" class="easyui-combobox" id="Q_CheckStatus"
+                       data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                 <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
@@ -66,7 +67,8 @@
             <td colspan="8">
                 <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
-                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">作废</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                @*<a id="btnDelete" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导入</a>*@
             </td>
         </tr>
     </table>
@@ -74,6 +76,9 @@
 
 <script src="/Scripts/Common/common_search.js?v=4"></script>
 <script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
     $(document).ready(function () {
         $("#btnQuery").click(function () { PageListObj.queryList(); })
         $("#btnAdd").click(function () { showForm(1); })
@@ -81,8 +86,9 @@
         $("#btnDelete").click(function () { deleteRecord(); })
 
         //绑定下拉框
-        common_bindCommonCombox("Q_OrderType", { headerType: 1, statusType: "OrderType" });
-        common_bindCommonCombox("Q_OrderStatus", { headerType: 1, statusType: "OrderStatus" });
+        common_bindCommonCombox("Q_BillType", { headerType: 1, statusType: "StockBillType" });
+        common_bindCommonCombox("Q_AuditStatus", { headerType: 1, statusType: "AuditEnum" });
+        common_bindCommonCombox("Q_CheckStatus", { headerType: 1, statusType: "CheckStatus" });
 
         initGrid();
     });
@@ -90,23 +96,26 @@
     //初始化Grid
     function initGrid() {
         var cols = [[
-               { field: 'Show_OrderStatus', title: '订单状态', width: 80, align: 'center' },
-               { field: 'Show_OrderType', title: '订单单别', width: 80, align: 'center' },
-               { field: 'OrderNo', title: '订单单号', width: 120, align: 'center' },
-               { field: 'Show_OrderDate', title: '下单日期', width: 120, align: 'center' },
-               { field: 'OrderAmount', title: '订单金额(万)', width: 100, align: 'center' },
-               { field: 'CustomerName', title: '下单客户', width: 80, align: 'center' },
+               { field: 'Show_AuditStatus', title: '单据状态', width: 70, align: 'center' },
+               { field: 'Show_CheckStatus', title: '检验状态', width: 70, align: 'center' },
+                { field: 'Show_BillType', title: '进货单别', width: 80, align: 'center' },
+               { field: 'BillNo', title: '进货单号', width: 120, align: 'center' },
+               { field: 'Show_InStockDate', title: '进货日期', width: 90, align: 'center' },
+               { field: 'SupplierName', title: '供应商', width: 100, align: 'center' },
+               { field: 'SupBillNo', title: '供应商单号', width: 100, align: 'center' },
+               { field: 'TotalInStockNum', title: '总进货数量', width: 80, align: 'center' },
+               { field: 'TotalAcceptNum', title: '总验收数量', width: 80, align: 'center' },
+               { field: 'Show_SourceBillType', title: '来源单别', width: 80, align: 'center' },
+               { field: 'SourceBillNo', title: '来源单号', width: 120, align: 'center' },
                { field: 'Creater', title: '创建人', width: 80, align: 'center' },
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' },
-               { field: 'Closer', title: '关单人', width: 80, align: 'center' },
-               { field: 'Show_CloseTime', title: '关单时间', width: 150, align: 'center' }
+               { field: 'Show_CreatedTime', title: '创建时间', width: 120, align: 'center' }
         ]];
 
         //设置动态列
         PageListObj.GridProperties = {
             columns: cols,
             singleSelect: true,
-            url: "/PlanManagement/SaleOrderMgt_FindByPage"
+            url: "/StockManagement/InStockMgt_FindByPage"
         };
 
         PageListObj.getQueryParms = function () {
@@ -117,14 +126,13 @@
     }
     function getQueryParms() {
         return {
-            OrderType: $("#Q_OrderType").combobox("getValue"),
-            OrderNo: $.trim($("#Q_OrderNo").val()),
-            OrderDateStart: $.trim($("#Q_OrderDateStart").val()),
-            OrderDateEnd: $.trim($("#Q_OrderDateEnd").val()),
-            OrderStatus: $("#Q_OrderStatus").combobox("getValue"),
-            CustomerName: $.trim($("#Q_CustomerName").val()),
-            CreatedTimeStart: $.trim($("#Q_CreatedTimeStart").val()),
-            CreatedTimeEnd: $.trim($("#Q_CreatedTimeEnd").val())
+            BillType: $("#Q_BillType").combobox("getValue"),
+            BillNo: $.trim($("#Q_BillNo").val()),
+            AuditStatus: $("#Q_AuditStatus").combobox("getValue"),
+            CheckStatus: $("#Q_CheckStatus").combobox("getValue"),
+            SupplierName: $.trim($("#Q_SupplierName").val()),
+            InStockDateStart: $.trim($("#Q_InStockDateStart").val()),
+            InStockDateEnd: $.trim($("#Q_InStockDateEnd").val())
         };
     }
 
@@ -136,21 +144,20 @@
 
             id = row.ID;
         }
-        var url = "PlanManagement/SaleOrderItemMgt?OptType=" + optType + "&ID=" + id;
+        var url = "StockManagement/InStockItemMgt?OptType=" + optType + "&ID=" + id;
         //调用common_control.js中显示tab页的方法
-        showTabIframe("订单明细", url);
+        showTabIframe("进货单明细", url);
     }
 
-    //删除记录
     function deleteRecord() {
         var row = DataGridUitl.getSelectedRow("dgList");
         if (!row) return;
 
         var data = { ID: row.ID };
-        $.messager.confirm("提示", "确定作废该订单吗？", function (isOK) {
+        $.messager.confirm("提示", "确定删除该计划吗？", function (isOK) {
             if (!isOK) return;
 
-            doPostAjaxRequest("/PlanManagement/SaleOrderMgt_Delete", data, function (msg) {
+            doPostAjaxRequest("/StockManagement/InStockMgt_Delete", data, function (msg) {
                 if (!msg.IsSuccess) {
                     $.messager.alert('提示', msg.Message, "info");
                     return;

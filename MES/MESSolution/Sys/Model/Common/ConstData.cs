@@ -293,7 +293,7 @@ namespace Sys.Model
     }
 
     /// <summary>
-    /// 检验状态
+    /// 进货单据类别
     /// </summary>
     public class StockBillType
     {
@@ -307,6 +307,24 @@ namespace Sys.Model
         /// 委外进货单
         /// </summary>
         [CustField("委外进货单")]
+        public const int B = 2;
+    }
+
+    /// <summary>
+    /// 领料单据类别
+    /// </summary>
+    public class LLBillType
+    {
+        /// <summary>
+        /// 领料单
+        /// </summary>
+        [CustField("领料单")]
+        public const int A = 1;
+
+        /// <summary>
+        /// 异常领料单
+        /// </summary>
+        [CustField("异常领料单")]
         public const int B = 2;
     }
 

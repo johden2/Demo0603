@@ -1254,7 +1254,6 @@
     <Content Include="Views\ProcessManagement\Process.cshtml" />
     <Content Include="Views\ProcessManagement\TestDataPosition.cshtml" />
     <Content Include="Views\StockManagement\InStockMgt.cshtml" />
-    <Content Include="Views\StockManagement\OutMaterialMgt.cshtml" />
     <Content Include="Views\StockManagement\YcOutMaterialMgt.cshtml" />
     <Content Include="Views\StockManagement\InStockItemMgt.cshtml" />
     <Content Include="Views\Common\SelectSupplier.cshtml" />
@@ -1263,6 +1262,8 @@
     <Content Include="Views\Common\SelectWorkShop.cshtml" />
     <Content Include="Views\Common\SelectSaleOrder.cshtml" />
     <Content Include="Views\Common\SelectStock.cshtml" />
+    <Content Include="Views\StockManagement\OutMaterialItemMgt.cshtml" />
+    <Content Include="Views\StockManagement\OutMaterialMgt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -89,3 +89,97 @@ END
 GO
 
 
+/*-----2.领料单表-------------------------------------------*/
+
+--(1)领料主表
+	ALTER TABLE Mes_Stock_OutMaterial  ADD OrgName NVARCHAR(50);
+	ALTER TABLE Mes_Stock_OutMaterial DROP COLUMN FactoryCode;
+	ALTER TABLE Mes_Stock_OutMaterial  ADD Factory NVARCHAR(50);
+
+	EXECUTE sp_addextendedproperty N'MS_Description', N'领料单号', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterial', N'column', N'BillNo' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'领料单别(1-领料单;2-异常领料单)', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterial', N'column', N'BillType' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'领料日期', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterial', N'column', N'OutStockDate' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'工厂', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterial', N'column', N'Factory' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'单据日期', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterial', N'column', N'BillDate' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'班组ID', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterial', N'column', N'OrgID' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'班组', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterial', N'column', N'OrgName' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'单据状态(1-未审核;2-已审核)', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterial', N'column', N'AuditStatus' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'领料数量', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterial', N'column', N'TotalNum' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'备注', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterial', N'column', N'Memo' 
+
+
+--(2)领料明细表
+
+	ALTER TABLE Mes_Stock_OutMaterialItem  ADD OutMaterialID INT;
+	ALTER TABLE Mes_Stock_OutMaterialItem DROP COLUMN StockCode;
+	ALTER TABLE Mes_Stock_OutMaterialItem  ADD StockID INT;
+	ALTER TABLE Mes_Stock_OutMaterialItem  ADD StockName NVARCHAR(50);
+	ALTER TABLE Mes_Stock_OutMaterialItem DROP COLUMN AlibraryCode;
+	ALTER TABLE Mes_Stock_OutMaterialItem  ADD AlibraryID INT;
+	ALTER TABLE Mes_Stock_OutMaterialItem  ADD AlibraryName NVARCHAR(50);
+	ALTER TABLE Mes_Stock_OutMaterialItem DROP COLUMN ProcessCode;
+	ALTER TABLE Mes_Stock_OutMaterialItem  ADD ProcessID INT;
+	ALTER TABLE Mes_Stock_OutMaterialItem  ADD ProcessName NVARCHAR(50);
+	ALTER TABLE Mes_Stock_OutMaterialItem  ADD Version VARCHAR(20);
+
+	EXECUTE sp_addextendedproperty N'MS_Description', N'领料单号', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterialItem', N'column', N'BillNo' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'领料单别(1-领料单;2-异常领料单)', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterialItem', N'column', N'BillType' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'行号', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterialItem', N'column', N'ResNum' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'产品编码', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterialItem', N'column', N'MaterialProNo' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'产品简称', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterialItem', N'column', N'MaterialCode'
+	EXECUTE sp_addextendedproperty N'MS_Description', N'版本', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterialItem', N'column', N'Version' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'产品规格', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterialItem', N'column', N'MaterialSize'
+	EXECUTE sp_addextendedproperty N'MS_Description', N'单位', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterialItem', N'column', N'Unit' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'仓库ID', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterialItem', N'column', N'StockID'
+	EXECUTE sp_addextendedproperty N'MS_Description', N'仓库', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterialItem', N'column', N'StockName'
+	EXECUTE sp_addextendedproperty N'MS_Description', N'库位ID', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterialItem', N'column', N'AlibraryID' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'库位', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterialItem', N'column', N'AlibraryName' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'工序ID', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterialItem', N'column', N'ProcessID' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'工序', N'user', N'dbo',
+			N'table', N'Mes_Stock_OutMaterialItem', N'column', N'ProcessName' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'批次号(进货单批次号关联)', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterialItem', N'column', N'BatchNo' 	
+	EXECUTE sp_addextendedproperty N'MS_Description', N'领取数量', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterialItem', N'column', N'Num' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'计划批号', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterialItem', N'column', N'PlanNo' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'备注', N'user', N'dbo',
+				N'table', N'Mes_Stock_OutMaterialItem', N'column', N'Memo' 
+
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
