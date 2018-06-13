@@ -1264,6 +1264,7 @@
     <Content Include="Views\Common\SelectStock.cshtml" />
     <Content Include="Views\StockManagement\OutMaterialItemMgt.cshtml" />
     <Content Include="Views\StockManagement\OutMaterialMgt.cshtml" />
+    <Content Include="Views\Common\SelectPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

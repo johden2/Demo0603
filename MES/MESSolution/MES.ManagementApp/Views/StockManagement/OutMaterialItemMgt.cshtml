@@ -193,7 +193,7 @@
             <td class="form-head">
                 物料规格：
             </td>
-            <td><input class="easyui-textbox" id="EI_MaterialSize" disabled /></td>
+            <td><input class="easyui-textbox" id="EI_MaterialSize" /></td>
             <td class="form-head">
                 单位：
             </td>
@@ -205,7 +205,7 @@
             </td>
             <td colspan="3">
                 <input class="easyui-textbox" id="EI_ProcessName" style="width: 400px;" disabled />
-                <input id="EI_ProcessCode" type="hidden" />
+                <input id="EI_ProcessID" type="hidden" />
                 <img id="btnShowProcess" class="select-icon" src="/images/select_icon.png" title="点击选择工艺" />
                 <div id="divTreeProcess" class="float-tree" style="width:280px;">
                     <div class="tree-ok">
@@ -386,9 +386,10 @@
     function closeIframeForm(data, typeName) {
          if (typeName == "plan") {
             $('#ifmPlanDiv').dialog("close");
-            $("#E_Show_SourceBillType").val(data.Show_OrderType);
-            $("#E_SourceBillType").val(data.OrderType);
-            $("#E_SourceBillNo").val(data.OrderNo);
+            $("#EI_PlanNo").val(data.PlanCode);
+            $("#EI_MaterialProNo").val(data.MaterialProNo);
+            $("#EI_Version").val(data.Version);
+            $("#EI_MaterialCode").val(data.MaterialCode);
         } else if (typeName == "stock") {
             $('#ifmStockDiv').dialog("close");
             $("#EI_StockID").val(data.StockID);
@@ -418,15 +419,14 @@
     function initGrid() {
         var cols = [[
                { field: 'ResNum', title: '订单行号', width: 70, align: 'center' },
-               { field: 'Show_CheckItemStatus', title: '检验状态', width: 80, align: 'center' },
+               { field: 'PlanNo', title: '计划批号', width: 100, align: 'center' },
                { field: 'MaterialProNo', title: '产品编码', width: 120, align: 'center' },
-               { field: 'Version', title: '版本', width: 80, align: 'center' },
-               { field: 'InStockNum', title: '进货数量', width: 80, align: 'center' },
+               { field: 'Version', title: '版本', width: 60, align: 'center' },
+               { field: 'Num', title: '领料数量', width: 80, align: 'center' },
                { field: 'Unit', title: '单位', width: 80, align: 'center' },
-               { field: 'BatchNo', title: '批次号', width: 100, align: 'center' },
-               { field: 'AcceptNum', title: '验收数量', width: 80, align: 'center' },
-               { field: 'Show_AcceptDate', title: '验收日期', width: 120, align: 'center' },
-               { field: 'StockName', title: '仓库', width: 80, align: 'center' }
+               { field: 'ProcessName', title: '工艺', width: 80, align: 'center' },
+               { field: 'BatchNo', title: '批次号', width: 120, align: 'center' },
+               { field: 'StockName', title: '仓库', width: 120, align: 'center' }
         ]];
 
         //设置动态列
@@ -457,18 +457,19 @@
 
             $("#EI_ID").val(row.ID);
             $("#EI_ResNum").val(row.ResNum);
+            $("#EI_PlanNo").val(row.PlanNo);
             $("#EI_MaterialProNo").val(row.MaterialProNo);
             $("#EI_MaterialCode").val(row.MaterialCode);
             $("#EI_Version").val(row.Version);
+            $("#EI_MaterialSize").val(row.MaterialSize);
             $("#EI_Unit").val(row.Unit);
             $("#EI_BatchNo").val(row.BatchNo);
-            $("#EI_InStockNum").val(row.InStockNum);
-            $("#EI_CheckItemStatus").combobox("setValue", row.CheckItemStatus);
-            $("#EI_AcceptNum").val(row.AcceptNum);
-            $("#EI_AcceptDate").datebox('setValue', row.Show_AcceptDate);
-            $("#EI_BackNum").val(row.BackNum);
+            $("#EI_Num").val(row.Num);
+            $("#EI_Memo").val(row.Memo);
             $("#EI_StockName").val(row.StockName);
             $("#EI_StockID").val(row.StockID);
+            $("#EI_ProcessName").val(row.ProcessName);
+            $("#EI_ProcessID").val(row.ProcessID);
         }
 
         //3.显示窗体
@@ -481,21 +482,22 @@
     function saveItemForm() {
         var data = {};
         data.OptType = _ItemOptType;
-        data.InStockID = _ID;
+        data.OutMaterialID = _ID;
         data.ID = $("#EI_ID").val();
         data.ResNum = $("#EI_ResNum").val();
+        data.PlanNo = $("#EI_PlanNo").val();
         data.MaterialProNo = $("#EI_MaterialProNo").val();
         data.MaterialCode = $("#EI_MaterialCode").val();
         data.Version = $("#EI_Version").val();
         data.MaterialSize = $("#EI_MaterialSize").val();
         data.Unit = $("#EI_Unit").val();
         data.BatchNo = $("#EI_BatchNo").val();
-        data.InStockNum = $("#EI_InStockNum").val();
-        data.AcceptNum = $("#EI_AcceptNum").val();
-        data.AcceptDate = $("#EI_AcceptDate").datebox("getValue");
-        data.BackNum = $("#EI_BackNum").val();
+        data.Num = $("#EI_Num").val();
         data.StockID = $("#EI_StockID").val();
-        data.CheckItemStatus = $("#EI_CheckItemStatus").combobox("getValue");
+        data.StockName = $("#EI_StockName").val();
+        data.ProcessID = $("#EI_ProcessID").val();
+        data.ProcessName = $("#EI_ProcessName").val();
+        data.Memo = $("#EI_Memo").val();
         doPostAjaxRequest("/StockManagement/OutMaterialItemMgt_Save", data, function (msg) {
             if (!msg.IsSuccess) {
                 $.messager.alert('提示', msg.Message, "info");

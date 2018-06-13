@@ -48,6 +48,10 @@ namespace MES.ManagementApp.Controllers
             return View();
         }
 
+        public ActionResult SelectPlan()
+        {
+            return View();
+        }
   
     }
 }

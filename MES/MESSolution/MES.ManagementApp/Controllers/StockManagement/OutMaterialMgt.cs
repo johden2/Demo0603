@@ -155,6 +155,8 @@ namespace MES.ManagementApp.Controllers
                 itemObj.WorkOrderType = "";
                 //生成订单行号
                 itemObj.ResNum = MesStockOutMaterialDao.Instance.GenResNum(main);
+                itemObj.Creater = base.CurUser.UserId;
+                itemObj.CreatedTime = DateTime.Now;
             }
             if (itemObj == null)
             {
