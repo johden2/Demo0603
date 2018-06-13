@@ -121,7 +121,7 @@ namespace Sys.Dao
             string sql = @"SELECT T1.*,T2.StockName FROM Mes_Stock_InStockItem T1 WITH(NOLOCK) 
                         LEFT JOIN dbo.Mes_Sys_Stock T2 WITH(NOLOCK)  ON T1.StockID = T2.ID
                         WHERE 1=1 AND T1.InStockID = {0}";
-            sql += string.Format(sql, obj.InStockID);
+            sql = string.Format(sql, obj.InStockID);
             string orderBy = pager.OrderBy;
             if (string.IsNullOrEmpty(orderBy))
             {

@@ -17,24 +17,24 @@
     <table id="tbQuery">
         <tr>
             <td class="td-query-title">
-                进货单别：
+                领料单别：
             </td>
             <td>
                 <input type="text" style="width: 120px;" class="easyui-combobox" id="Q_BillType"
                        data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td class="td-query-title">
-                进货单号：
+                领料单号：
             </td>
             <td>
                 <input class="easyui-textbox" id="Q_BillNo" style="width: 150px;" />
             </td>
             <td class="td-query-title">
-                进货日期：
+                领料日期：
             </td>
             <td>
-                <input type="text" class="easyui-datebox" id="Q_InStockDateStart" style="width:90px;" maxlength="50" />
-                ~ <input type="text" class="easyui-datebox" id="Q_InStockDateEnd" style="width:90px;" maxlength="50" />
+                <input type="text" class="easyui-datebox" id="Q_OutStockDateStart" style="width:90px;" maxlength="50" />
+                ~ <input type="text" class="easyui-datebox" id="Q_OutStockDateEnd" style="width:90px;" maxlength="50" />
             </td>
         </tr>
         <tr>
@@ -47,10 +47,11 @@
                        data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td class="td-query-title">
-                供应商：
+                领料班组：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_SupplierName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_OrgName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_OrgID" type="hidden" style="width: 150px;" />
             </td>
             <td class="td-query-title">
                 检验状态：
@@ -76,8 +77,6 @@
 
 <script src="/Scripts/Common/common_search.js?v=4"></script>
 <script type="text/javascript">
-    var _divFormName = "divForm";
-    var _formName = "tbForm";
     var _OptType = 0;
     $(document).ready(function () {
         $("#btnQuery").click(function () { PageListObj.queryList(); })
@@ -86,9 +85,8 @@
         $("#btnDelete").click(function () { deleteRecord(); })
 
         //绑定下拉框
-        common_bindCommonCombox("Q_BillType", { headerType: 1, statusType: "StockBillType" });
+        common_bindCommonCombox("Q_BillType", { headerType: 1, statusType: "LLBillType" });
         common_bindCommonCombox("Q_AuditStatus", { headerType: 1, statusType: "AuditEnum" });
-        common_bindCommonCombox("Q_CheckStatus", { headerType: 1, statusType: "CheckStatus" });
 
         initGrid();
     });
@@ -97,16 +95,12 @@
     function initGrid() {
         var cols = [[
                { field: 'Show_AuditStatus', title: '单据状态', width: 70, align: 'center' },
-               { field: 'Show_CheckStatus', title: '检验状态', width: 70, align: 'center' },
-                { field: 'Show_BillType', title: '进货单别', width: 80, align: 'center' },
-               { field: 'BillNo', title: '进货单号', width: 120, align: 'center' },
-               { field: 'Show_InStockDate', title: '进货日期', width: 90, align: 'center' },
-               { field: 'SupplierName', title: '供应商', width: 100, align: 'center' },
-               { field: 'SupBillNo', title: '供应商单号', width: 100, align: 'center' },
-               { field: 'TotalInStockNum', title: '总进货数量', width: 80, align: 'center' },
-               { field: 'TotalAcceptNum', title: '总验收数量', width: 80, align: 'center' },
-               { field: 'Show_SourceBillType', title: '来源单别', width: 80, align: 'center' },
-               { field: 'SourceBillNo', title: '来源单号', width: 120, align: 'center' },
+               { field: 'Show_BillType', title: '领料单别', width: 80, align: 'center' },
+               { field: 'BillNo', title: '领料单号', width: 120, align: 'center' },
+               { field: 'Show_OutStockDate', title: '领料日期', width: 90, align: 'center' },
+               { field: 'OrgName', title: '领料班组', width: 120, align: 'center' },
+               { field: 'OptPerson', title: '领料人', width: 80, align: 'center' },
+               { field: 'TotalNum', title: '领料数量', width: 80, align: 'center' },
                { field: 'Creater', title: '创建人', width: 80, align: 'center' },
                { field: 'Show_CreatedTime', title: '创建时间', width: 120, align: 'center' }
         ]];
@@ -115,7 +109,7 @@
         PageListObj.GridProperties = {
             columns: cols,
             singleSelect: true,
-            url: "/StockManagement/InStockMgt_FindByPage"
+            url: "/StockManagement/OutMaterialMgt_FindByPage"
         };
 
         PageListObj.getQueryParms = function () {
@@ -129,10 +123,9 @@
             BillType: $("#Q_BillType").combobox("getValue"),
             BillNo: $.trim($("#Q_BillNo").val()),
             AuditStatus: $("#Q_AuditStatus").combobox("getValue"),
-            CheckStatus: $("#Q_CheckStatus").combobox("getValue"),
             SupplierName: $.trim($("#Q_SupplierName").val()),
-            InStockDateStart: $.trim($("#Q_InStockDateStart").val()),
-            InStockDateEnd: $.trim($("#Q_InStockDateEnd").val())
+            OutStockDateStart: $.trim($("#Q_OutStockDateStart").val()),
+            OutStockDateEnd: $.trim($("#Q_OutStockDateEnd").val())
         };
     }
 
@@ -144,9 +137,9 @@
 
             id = row.ID;
         }
-        var url = "StockManagement/InStockItemMgt?OptType=" + optType + "&ID=" + id;
+        var url = "StockManagement/OutMaterialItemMgt?OptType=" + optType + "&ID=" + id;
         //调用common_control.js中显示tab页的方法
-        showTabIframe("进货单明细", url);
+        showTabIframe("领料单明细", url);
     }
 
     function deleteRecord() {
@@ -154,10 +147,10 @@
         if (!row) return;
 
         var data = { ID: row.ID };
-        $.messager.confirm("提示", "确定删除该计划吗？", function (isOK) {
+        $.messager.confirm("提示", "确定删除该领料单吗？", function (isOK) {
             if (!isOK) return;
 
-            doPostAjaxRequest("/StockManagement/InStockMgt_Delete", data, function (msg) {
+            doPostAjaxRequest("/StockManagement/OutMaterialMgt_Delete", data, function (msg) {
                 if (!msg.IsSuccess) {
                     $.messager.alert('提示', msg.Message, "info");
                     return;

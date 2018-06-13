@@ -98,7 +98,7 @@
         var cols = [[
                { field: 'Show_AuditStatus', title: '单据状态', width: 70, align: 'center' },
                { field: 'Show_CheckStatus', title: '检验状态', width: 70, align: 'center' },
-                { field: 'Show_BillType', title: '进货单别', width: 80, align: 'center' },
+               { field: 'Show_BillType', title: '进货单别', width: 80, align: 'center' },
                { field: 'BillNo', title: '进货单号', width: 120, align: 'center' },
                { field: 'Show_InStockDate', title: '进货日期', width: 90, align: 'center' },
                { field: 'SupplierName', title: '供应商', width: 100, align: 'center' },
@@ -154,7 +154,7 @@
         if (!row) return;
 
         var data = { ID: row.ID };
-        $.messager.confirm("提示", "确定删除该计划吗？", function (isOK) {
+        $.messager.confirm("提示", "确定删除该进货单吗？", function (isOK) {
             if (!isOK) return;
 
             doPostAjaxRequest("/StockManagement/InStockMgt_Delete", data, function (msg) {

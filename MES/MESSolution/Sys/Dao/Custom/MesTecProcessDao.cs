@@ -31,7 +31,7 @@ namespace Sys.Dao
 
         #region 查询和分页方法
 
-        private static string _treeItemContent = "{\"id\":\"[0]\",\"pId\":\"[1]\",\"name\":\"[2]\",\"open\":\"false\",\"nocheck\":\"[3]\",\"isparent\":\"[4]\"},";
+        private static string _treeItemContent = "{\"id\":\"[0]\",\"pId\":\"[1]\",\"name\":\"[2]\",\"open\":\"false\",\"nocheck\":\"[3]\",\"isparent\":\"[4]\",\"ProcessID\":\"[5]\"},";
         public string GetTree(Mes_Tec_Process obj)
         {
             string sql = @"SELECT * FROM dbo.Mes_Tec_Process T1 WITH(NOLOCK) WHERE RecordStatus = 1";
@@ -54,6 +54,7 @@ namespace Sys.Dao
                     .Replace("[2]", item.Name)
                     .Replace("[3]", noCheck.ToString())
                     .Replace("[4]", isParent.ToString())
+                    .Replace("[5]", item.ID.ToString())
                   );
             }
 

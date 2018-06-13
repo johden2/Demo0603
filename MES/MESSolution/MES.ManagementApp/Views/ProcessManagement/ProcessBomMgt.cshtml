@@ -309,7 +309,7 @@ div #rMenu a {
     function onProcessTreeClick(event, treeId, treeNode) {
         if (!treeNode) return;
 
-        $("#E_ProcessCode").val(treeNode.id);
+        $("#E_ProcessCode").val(treeNode.ProcessID);
         $("#E_ProcessName").val(treeNode.name);
         $("#divTreeProcess").hide();
     }

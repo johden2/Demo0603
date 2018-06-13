@@ -36,6 +36,14 @@ namespace Sys.Model
            }
        }
 
+       public string Show_OutStockDate
+       {
+           get
+           {
+               return TConvertHelper.FormatSmallDate(this.OutStockDate);
+           }
+       }
+
        public string Show_BillDate
        {
            get

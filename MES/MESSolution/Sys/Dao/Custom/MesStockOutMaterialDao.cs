@@ -115,7 +115,7 @@ namespace Sys.Dao
         {
             string sql = @"SELECT T1.* FROM Mes_Stock_OutMaterialItem T1 WITH(NOLOCK) 
                         WHERE 1=1 AND T1.OutMaterialID = {0}";
-            sql += string.Format(sql, obj.OutMaterialID);
+            sql = string.Format(sql, obj.OutMaterialID);
             string orderBy = pager.OrderBy;
             if (string.IsNullOrEmpty(orderBy))
             {

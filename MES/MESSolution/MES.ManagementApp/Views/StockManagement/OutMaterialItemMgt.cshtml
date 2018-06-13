@@ -5,7 +5,31 @@
 @model Sys.Model.PageModel
 
 <style type="text/css">
-    
+    .float-tree {
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        border: 1px solid #808080;
+        background-color: #DDDDDD;
+        /*height:220px;*/
+    }
+
+    .tree-close {
+        text-align: right;
+        padding-right: 10px;
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+    .tree-ok {
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+        text-align: right;
+        padding-right: 20px;
+        padding-top: 5px;
+    }
+
 </style>
 
 <div class="easyui-layout" fit="true">
@@ -14,7 +38,7 @@
             <table id="tbMainForm">
                 <tr>
                     <td colspan="2">
-                        <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">保存进货单</a>
+                        <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">保存领料单</a>
                     </td>
                     <td class="form-head">
                         单据状态：
@@ -22,34 +46,27 @@
                     <td>
                         <span class="sp-require"><label id="lblAuditStatus"></label></span>
                     </td>
-                    <td class="form-head">
-                        检验状态：
-                    </td>
-                    <td>
-                        <input type="text" style="width: 120px;" class="easyui-combobox" id="E_CheckStatus"
-                               data-options="valueField:'Value', textField:'Text',editable : false" />
-                    </td>
                 </tr>
                 <tr>
                    
                     <td class="form-head">
-                        <span class="sp-require">*</span>进货单别：
+                        <span class="sp-require">*</span>领料单别：
                     </td>
                     <td>
                         <input type="text" style="width: 120px;" class="easyui-combobox" id="E_BillType"
                                data-options="valueField:'Value', textField:'Text',editable : false" />
                     </td>
                     <td class="form-head">
-                        <span class="sp-require">*</span>进货单号：
+                        <span class="sp-require">*</span>领料单号：
                     </td>
                     <td>
                         <input class="easyui-textbox" id="E_BillNo" disabled /><span class="sp-require">(生成)</span>
                     </td>
                     <td class="form-head">
-                        <span class="sp-require">*</span>进货日期：
+                        <span class="sp-require">*</span>领料日期：
                     </td>
                     <td>
-                        <input type="text" class="easyui-datebox" id="E_InStockDate" style="width: 120px;" maxlength="50" />
+                        <input type="text" class="easyui-datebox" id="E_OutStockDate" style="width: 120px;" maxlength="50" />
                     </td>
                     <td class="form-head">
                         创建人：
@@ -60,25 +77,29 @@
                 </tr>
                 <tr>
                     <td class="form-head">
-                        来源单号：
+                        <span class="sp-require">*</span>领料人：
                     </td>
                     <td>
-                        <input class="easyui-textbox" id="E_SourceBillNo" disabled />
-                        <img id="btnShowSaleOrder" class="select-icon" src="/images/select_icon.png" title="点击选择订单" />
+                        <input class="easyui-textbox" id="E_OptPerson" style="width: 120px;" />
                     </td>
                     <td class="form-head">
-                        <span class="sp-require">*</span>来源单别：
+                        <span class="sp-require">*</span>领料班组：
                     </td>
                     <td>
-                        <input class="easyui-textbox" type="hidden" id="E_SourceBillType" disabled />
-                        <input class="easyui-textbox" id="E_Show_SourceBillType" />
+                        <input class="easyui-textbox" id="E_OrgName" />
+                        <input id="E_OrgID" type="hidden" />
+                        <img id="btnShowOrg" class="select-icon" src="/images/select_icon.png" title="点击选择部门" />
+                        <div id="divTreeOrg" class="float-tree">
+                            <div id="btnTreeClose" class="tree-close" title="点击关闭窗口">关闭</div>
+                            <ul id="treeOrg" class="ztree" style="height: 210px; overflow:auto;"></ul>
+                        </div>
                     </td>
+                    
                     <td class="form-head">
-                        工厂：
+                        <span class="sp-require">*</span>领料数量：
                     </td>
                     <td>
-                        <input class="easyui-textbox" id="E_Factory" style="width: 120px;" />
-                    </td>
+                        <input class="easyui-textbox" id="E_TotalNum" style="width: 120px;"></td>
                     <td class="form-head">
                         创建时间：
                     </td>
@@ -88,36 +109,24 @@
                 </tr>
                 <tr>
                     <td class="form-head">
-                        <span class="sp-require">*</span>供应商：
-                    </td>
-                    <td>
-                        <input class="easyui-textbox" id="E_SupplierName" disabled />
-                        <input class="easyui-textbox" type="hidden" id="E_SupplierID" />
-                        <img id="btnShowSupplier" class="select-icon" src="/images/select_icon.png" title="点击选择供应商" />
-                    </td>
-                    <td class="form-head">
-                        供应商单号：
-                    </td>
-                    <td>
-                        <input class="easyui-textbox" id="E_SupBillNo" />
-                    </td>
-                    <td class="form-head">
                         单据日期：
                     </td>
                     <td>
                         <input type="text" class="easyui-datebox" id="E_BillDate" style="width: 120px;" maxlength="50" />
                     </td>
+                    <td class="form-head">
+                        工厂：
+                    </td>
+                    <td>
+                        <input class="easyui-textbox" id="E_Factory"  />
+                    </td>
+                    
                 </tr>
                 <tr>
                     <td class="form-head">
-                        <span class="sp-require">*</span>总进货数量：
+                       备注：
                     </td>
-                    <td><input class="easyui-textbox" id="E_TotalInStockNum"  /></td>
-                   
-                    <td class="form-head">
-                        总验收数量：
-                    </td>
-                    <td><input class="easyui-textbox" id="E_TotalAcceptNum"  /></td>
+                    <td colspan="3"><textarea id="E_Memo" style="width:400px; height:60px;"></textarea></td>
                 </tr>
             </table>
         </div>
@@ -134,7 +143,7 @@
 </div>
 
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="进货单明细" style="width: 720px; height: 330px;display: none;" collapsible="false" minimizable="false"
+     title="领料单明细" style="width: 720px; height: 380px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
     <table id="tbForm" class="tbForm">
         <tr>
@@ -153,22 +162,24 @@
                 <span class="sp-require">(生成)</span>
             </td>
             <td class="form-head">
-                <span class="sp-require">*</span>进货数量：
+                <span class="sp-require">*</span>领料数量：
             </td>
-            <td><input class="easyui-textbox" id="EI_InStockNum" /></td>
+            <td><input class="easyui-textbox" id="EI_Num" /></td>
         </tr>
         <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>计划批号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="EI_PlanNo" disabled />
+                <img id="btnShowPlan" class="select-icon" src="/images/select_icon.png" title="点击选择计划批号" />
+            </td>
             <td class="form-head">
                 <span class="sp-require">*</span>物料编码：
             </td>
             <td>
                 <input class="easyui-textbox" id="EI_MaterialProNo" disabled />
-                <img id="btnShowMaterial" class="select-icon" src="/images/select_icon.png" title="点击选择物料" />
             </td>
-            <td class="form-head">
-                产品简称：
-            </td>
-            <td><input class="easyui-textbox" id="EI_MaterialCode" disabled /></td>
             <td class="form-head">
                 版本：
             </td>
@@ -176,17 +187,13 @@
         </tr>
         <tr>
             <td class="form-head">
-                批次号：
+                物料简称：
             </td>
-            <td><input class="easyui-textbox" id="EI_BatchNo" /></td>
-           
+            <td><input class="easyui-textbox" id="EI_MaterialCode" disabled /></td>
             <td class="form-head">
-                检验状态：
+                物料规格：
             </td>
-            <td>
-                <input type="text" style="width: 120px;" class="easyui-combobox" id="EI_CheckItemStatus"
-                       data-options="valueField:'Value', textField:'Text',editable : false" />
-            </td>
+            <td><input class="easyui-textbox" id="EI_MaterialSize" disabled /></td>
             <td class="form-head">
                 单位：
             </td>
@@ -194,21 +201,26 @@
         </tr>
         <tr>
             <td class="form-head">
-                验收数量：
+                <span class="sp-require">*</span>工艺：
             </td>
-            <td><input class="easyui-textbox" id="EI_AcceptNum" /></td>
-            <td class="form-head">
-                验收日期：
+            <td colspan="3">
+                <input class="easyui-textbox" id="EI_ProcessName" style="width: 400px;" disabled />
+                <input id="EI_ProcessCode" type="hidden" />
+                <img id="btnShowProcess" class="select-icon" src="/images/select_icon.png" title="点击选择工艺" />
+                <div id="divTreeProcess" class="float-tree" style="width:280px;">
+                    <div class="tree-ok">
+                        <a title="点击关闭窗口" id="btnTreeProcessClose">关闭</a>
+                    </div>
+                    <ul id="treeProcess" class="ztree" style="height: 150px; overflow:auto;"></ul>
+                </div>
             </td>
-            <td>
-                <input type="text" class="easyui-datebox" id="EI_AcceptDate" style="width:120px;" maxlength="50" />
-            </td>
-            <td class="form-head">
-                验退数量：
-            </td>
-            <td><input class="easyui-textbox" id="EI_BackNum" style="width: 90px;" /></td>
         </tr>
         <tr>
+            <td class="form-head">
+                批次号：
+            </td>
+            <td><input class="easyui-textbox" id="EI_BatchNo" /></td>
+           
             <td class="form-head">
                 仓库：
             </td>
@@ -218,10 +230,21 @@
                 <img id="btnShowStock" class="select-icon" src="/images/select_icon.png" title="点击选择仓库" />
             </td>
         </tr>
+       
+        <tr>
+            <td class="form-head">
+                备注：
+            </td>
+            <td colspan="3"><textarea id="EI_Memo" style="width:400px; height:60px;"></textarea></td>
+        </tr>
     </table>
 </div>
 
+<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
 <script src="/Scripts/Common/common_search.js?v=4"></script>
+<script src="@Url.Content("~/Scripts/Common/orgtree.js?v=" + new Random().NextDouble())"></script>
+<script src="@Url.Content("~/Scripts/Common/processtree.js?v=" + new Random().NextDouble())"></script>
 <script type="text/javascript">
     var _divFormName = "divForm";
     var _formName = "tbForm";
@@ -238,101 +261,101 @@
         $("#btnDelete").click(function () { deleteItemRecord(); })
         $("#btnItemOk").click(function () { saveItemForm(); })
         $("#btnItemClose").click(function () { FormUitl.close(_divFormName); })
-        $("#btnShowSupplier").click(function () { showSupplier(); })
-        $("#btnShowSaleOrder").click(function () { showSaleOrder(); })
-        $("#btnShowMaterial").click(function () { showProduct(); })
+        $("#btnShowPlan").click(function () { showPlan(); })
         $("#btnShowStock").click(function () { showStock(); })
-
+        $("#btnShowOrg").click(function () { $("#divTreeOrg").show(); })
+        $("#btnTreeClose").click(function () { $("#divTreeOrg").hide(); })
+        $("#btnShowProcess").click(function () { $("#divTreeProcess").show(); })
+        $("#btnTreeProcessClose").click(function () {$("#divTreeProcess").hide(); })
         //绑定下拉框
-        common_bindCommonCombox("E_CheckStatus", { headerType: 1, statusType: "CheckStatus" });
-        common_bindCommonCombox("E_BillType", { headerType: 1, statusType: "StockBillType" });
-        common_bindCommonCombox("EI_CheckItemStatus", { headerType: 1, statusType: "CheckStatus" });
-
+        common_bindCommonCombox("E_BillType", { headerType: 1, statusType: "LLBillType" });
         //加载主信息
         loadData();
-
         initGrid();
+
+        initOrgTree();
+        initProcessTree();
     });
+
+    //加载部门树
+    function initOrgTree() {
+        var param = {TreeId: "treeOrg"};
+        param.onClick = function (event, treeId, treeNode) {
+            onTreeClick(event, treeId, treeNode);
+        }
+
+        loadOrgTree(param);
+    }
+
+    //树控件的节点点击事件
+    function onTreeClick(event, treeId, treeNode) {
+        if (!treeNode) return;
+
+        $("#E_OrgID").val(treeNode.id);
+        $("#E_OrgName").val(treeNode.name);
+        $("#divTreeOrg").hide();
+    }
+
+    //加载工艺
+    function initProcessTree() {
+        var param = {
+            TreeId: "treeProcess",
+            IsCheck: 0
+        };
+
+        param.onClick = function (event, treeId, treeNode) {
+            onProcessTreeClick(event, treeId, treeNode);
+        }
+
+        loadProcessTree(param);
+    }
+
+    //选择工艺
+    function onProcessTreeClick(event, treeId, treeNode) {
+        if (!treeNode) return;
+
+        $("#EI_ProcessID").val(treeNode.ProcessID);
+        $("#EI_ProcessName").val(treeNode.name);
+        $("#divTreeProcess").hide();
+    }
 
     function loadData() {
         if(_OptType == 2){
             var data = { ID: _ID };
-            doPostAjaxRequest("/StockManagement/InStockMgt_Find", data, function (msg) {
+            doPostAjaxRequest("/StockManagement/OutMaterialMgt_Find", data, function (msg) {
                 if (!msg.IsSuccess) return;
                 var dataObj = $.parseJSON(msg.Message);
                 if (!dataObj) return;
 
                 $("#lblAuditStatus").text(dataObj.Show_AuditStatus);
-                $("#E_CheckStatus").combobox("setValue", dataObj.CheckStatus);
                 $("#E_BillType").combobox("setValue", dataObj.BillType);
                 $("#E_BillNo").val(dataObj.BillNo);
-                $("#E_InStockDate").datebox('setValue', dataObj.Show_InStockDate);
+                $("#E_OutStockDate").datebox('setValue', dataObj.Show_OutStockDate);
                 $("#lblCreater").text(dataObj.Creater);
-                $("#E_Show_SourceBillType").val(dataObj.Show_SourceBillType);
-                $("#E_SourceBillType").val(dataObj.SourceBillType);
-                $("#E_SourceBillNo").val(dataObj.SourceBillNo);
+                $("#E_OrgID").val(dataObj.OrgID);
+                $("#E_OrgName").val(dataObj.OrgName);
+                $("#E_OptPerson").val(dataObj.OptPerson);
                 $("#E_Factory").val(dataObj.Factory);
                 $("#lblCreatedTime").text(dataObj.Show_CreatedTime);
-                $("#E_SupplierID").val(dataObj.SupplierID);
-                $("#E_SupplierName").val(dataObj.SupplierName);
                 $("#E_BillDate").datebox('setValue', dataObj.Show_BillDate);
-                $("#E_TotalInStockNum").val(dataObj.TotalInStockNum);
-                $("#E_TotalAcceptNum").val(dataObj.TotalAcceptNum);
+                $("#E_TotalNum").val(dataObj.TotalNum);
+                $("#E_Memo").val(dataObj.Memo);
             });
         }
     }
 
-    //选择供应商
-    function showSupplier() {
-        var url = "/Common/SelectSupplier";
-        var content = '<iframe id="ifmSupplier" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmSupplierDiv" title="供应商选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    function showPlan() {
+        var url = "/Common/SelectPlan";
+        var content = '<iframe id="ifmPlan" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+        var boarddiv = '<div id="ifmPlanDiv" title="生产计划选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
         $(document.body).append(boarddiv);
-        $('#ifmSupplierDiv').show();
-        var win = $('#ifmSupplierDiv').dialog({
-            content: content,
-            width: 650,
-            height: 370,
-            modal: false,
-            title: "供应商选择",
-            onClose: function () {
-                $(this).dialog('destroy');
-                $(this).remove();
-            }
-        });
-    }
-
-    function showSaleOrder() {
-        var url = "/Common/SelectSaleOrder";
-        var content = '<iframe id="ifmSaleOrder" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmSaleOrderDiv" title="销售订单选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
-        $(document.body).append(boarddiv);
-        $('#ifmSaleOrderDiv').show();
-        var win = $('#ifmSaleOrderDiv').dialog({
+        $('#ifmPlanDiv').show();
+        var win = $('#ifmPlanDiv').dialog({
             content: content,
             width: 700,
             height: 370,
             modal: false,
-            title: "销售订单选择",
-            onClose: function () {
-                $(this).dialog('destroy');
-                $(this).remove();
-            }
-        });
-    }
-
-    function showProduct() {
-        var url = "/Common/SelectProduct";
-        var content = '<iframe id="ifmProduct" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmProductDiv" title="产品/物料选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
-        $(document.body).append(boarddiv);
-        $('#ifmProductDiv').show();
-        var win = $('#ifmProductDiv').dialog({
-            content: content,
-            width: 700,
-            height: 370,
-            modal: false,
-            title: "产品/物料选择",
+            title: "生产计划选择",
             onClose: function () {
                 $(this).dialog('destroy');
                 $(this).remove();
@@ -361,20 +384,11 @@
 
     //关闭弹出iframe窗口
     function closeIframeForm(data, typeName) {
-        if (typeName == "supplier") {
-            $('#ifmSupplierDiv').dialog("close");
-            $("#E_SupplierID").val(data.SupplierID);
-            $("#E_SupplierName").val(data.SupplierName);
-        } else if (typeName == "saleorder") {
-            $('#ifmSaleOrderDiv').dialog("close");
+         if (typeName == "plan") {
+            $('#ifmPlanDiv').dialog("close");
             $("#E_Show_SourceBillType").val(data.Show_OrderType);
             $("#E_SourceBillType").val(data.OrderType);
             $("#E_SourceBillNo").val(data.OrderNo);
-        } else if (typeName == "product") {
-            $('#ifmProductDiv').dialog("close");
-            $("#EI_MaterialProNo").val(data.MaterialProNo);
-            $("#EI_MaterialCode").val(data.MaterialCode);
-            //$("#EI_Unit").val(data.Unit);
         } else if (typeName == "stock") {
             $('#ifmStockDiv').dialog("close");
             $("#EI_StockID").val(data.StockID);
@@ -387,15 +401,15 @@
         var data = FormUitl.getFormData("tbMainForm");
         data.OptType = _OptType;
         data.ID = _ID;
-        doPostAjaxRequest("/StockManagement/InStockMgt_Save", data, function (msg) {
+        doPostAjaxRequest("/StockManagement/OutMaterialMgt_Save", data, function (msg) {
             if (!msg.IsSuccess) {
                 $.messager.alert('提示', msg.Message, "info");
                 return;
             }
             $.messager.alert('提示', '操作成功！', "info");
             if (_OptType == 1) {//新增完成后，变为修改
-                _ID = msg.Message;
-                _OptType = 2;
+                //_ID = msg.Message;
+                //_OptType = 2;
             }
         });
     }
@@ -419,12 +433,12 @@
         PageListObj.GridProperties = {
             columns: cols,
             singleSelect: true,
-            url: "/StockManagement/InStockItemMgt_FindByPage"
+            url: "/StockManagement/OutMaterialItemMgt_FindByPage"
         };
 
         PageListObj.getQueryParms = function () {
             return {
-                InStockID: _ID
+                OutMaterialID: _ID
             };
         }
 
@@ -482,7 +496,7 @@
         data.BackNum = $("#EI_BackNum").val();
         data.StockID = $("#EI_StockID").val();
         data.CheckItemStatus = $("#EI_CheckItemStatus").combobox("getValue");
-        doPostAjaxRequest("/StockManagement/InStockItemMgt_Save", data, function (msg) {
+        doPostAjaxRequest("/StockManagement/OutMaterialItemMgt_Save", data, function (msg) {
             if (!msg.IsSuccess) {
                 $.messager.alert('提示', msg.Message, "info");
                 return;
@@ -502,7 +516,7 @@
         $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
             if (!isOK) return;
 
-            doPostAjaxRequest("/StockManagement/InStockItemMgt_Delete", data, function (msg) {
+            doPostAjaxRequest("/StockManagement/OutMaterialItemMgt_Delete", data, function (msg) {
                 if (!msg.IsSuccess) {
                     $.messager.alert('提示', msg.Message, "info");
                     return;
