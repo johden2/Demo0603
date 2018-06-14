@@ -9,23 +9,6 @@
         padding-top:5px;
     }
 
-    .float-tree {
-        position: absolute;
-        display: none;
-        z-index: 9999;
-        border: 1px solid #808080;
-        background-color: #DDDDDD;
-        /*height:220px;*/
-    }
-
-    .tree-close {
-        text-align: right;
-        padding-right: 10px;
-        height: 5px;
-        font-size: 10px;
-        cursor: pointer;
-    }
-
 </style>
 
 <div class="easyui-layout" fit="true">
@@ -40,19 +23,19 @@
                 车间编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_WorkShopCode" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_WorkShopCode" style="width: 120px;" />
             </td>
             <td>
                 车间名称：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_WorkShopName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_WorkShopName" style="width: 120px;" />
             </td>
             <td>
                 所属工厂:
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_FactoryCode" style="width:150px;" />
+                <input class="easyui-textbox" id="Q_FactoryCode" style="width: 120px;" />
             </td>
             <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                 <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
@@ -63,13 +46,13 @@
                 <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
                 <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
-                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
             </td>
         </tr>
     </table>
 </div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="车间信息" style="width: 600px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     title="车间信息" style="width: 380px; height: 220px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
         <table id="tbForm" class="tbForm">
             <tr>
@@ -84,10 +67,14 @@
                     <span class="sp-require">*</span>车间编码：
                 </td>
                 <td><input class="easyui-textbox" id="E_WorkShopCode" /></td>
+            </tr>
+            <tr>
                 <td class="form-head">
                     <span class="sp-require">*</span>车间名称：
                 </td>
                 <td><input class="easyui-textbox" id="E_WorkShopName" /></td>
+            </tr>
+            <tr>
                 <td class="form-head">
                     <span class="sp-require">*</span>所属工厂:
                 </td>
@@ -123,11 +110,11 @@
     function initGrid() {
         var cols = [[
                { field: 'ID', title: 'ID', width: 100,align:'center',hidden:true},
-               { field: 'WorkShopCode', title: '车间编码', width: 100, align: 'center' },
-               { field: 'WorkShopName', title: '车间名称', width: 160, align: 'center' },
-               { field: 'FactoryCode', title: '工厂', width: 100 },              
-               { field: 'Creater', title: '创建人', width: 100, },
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150 }
+               { field: 'WorkShopCode', title: '车间编码', width: 150, align: 'center' },
+               { field: 'WorkShopName', title: '车间名称', width: 180, align: 'center' },
+               { field: 'FactoryCode', title: '所属工厂', width: 150, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 100, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
         ]];
 
         //设置动态列

@@ -13,7 +13,7 @@ namespace Sys.Model
         {
             get
             {
-                return TConvertHelper.FormatShortDateToString(this.CreatedTime.Value);
+                return TConvertHelper.FormatShortDateToString(this.CreatedTime);
             }
         }
 

@@ -77,11 +77,11 @@ namespace Sys.Dao
             {
                 sql += string.Format(" AND T1.MaterialCode Like '%{0}%'", obj.MaterialCode);
             }
-            if (!string.IsNullOrEmpty(obj.MaterialClass))
+            if (!string.IsNullOrEmpty(obj.MaterialClass) && obj.MaterialClass != "-1")
             {
                 sql += string.Format(" AND T1.MaterialClass Like '%{0}%'", obj.MaterialClass);
             }
-            if (obj.MaterialStatus.HasValue && obj.MaterialStatus.Value > 0)
+            if (obj.MaterialStatus > 0)
             {
                 sql += string.Format(" AND T1.MaterialStatus={0}", obj.MaterialStatus);
             }

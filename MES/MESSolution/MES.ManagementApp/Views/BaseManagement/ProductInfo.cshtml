@@ -8,24 +8,6 @@
         padding-left: 5px;
         padding-top:5px;
     }
-
-    .float-tree {
-        position: absolute;
-        display: none;
-        z-index: 9999;
-        border: 1px solid #808080;
-        background-color: #DDDDDD;
-        /*height:220px;*/
-    }
-
-    .tree-close {
-        text-align: right;
-        padding-right: 10px;
-        height: 5px;
-        font-size: 10px;
-        cursor: pointer;
-    }
-
 </style>
 
 <div class="easyui-layout" fit="true">
@@ -40,23 +22,23 @@
                 物料编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_MaterialProNo" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_MaterialProNo" style="width: 120px;" />
             </td>
             <td>
                 &nbsp;&nbsp;物料名称：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_MaterialCode" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_MaterialCode" style="width: 120px;" />
             </td>
             <td>
-                &nbsp;&nbsp;类别:
+                &nbsp;&nbsp;物料分类:
             </td>
             <td>
                 <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_MaterialClass"
                        data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td>
-                &nbsp;&nbsp;状态：
+                &nbsp;&nbsp;物料状态：
             </td>
             <td>
                 <input type="text" style="width: 90px;" class="easyui-combobox" id="Q_MaterialStatus"
@@ -71,7 +53,7 @@
                 <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
                 <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
-                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
             </td>
         </tr>
     </table>
@@ -89,7 +71,7 @@
             </tr>
             <tr>
                 <td class="form-head">
-                    <span class="sp-require">*</span>物料编号：
+                    <span class="sp-require">*</span>物料编码：
                 </td>
                 <td><input class="easyui-textbox" id="E_MaterialProNo" /></td>
                 <td class="form-head">
@@ -97,7 +79,7 @@
                 </td>
                 <td><input class="easyui-textbox" id="E_MaterialCode" /></td>
                 <td class="form-head">
-                    规格尺寸:
+                    <span class="sp-require">*</span>规格尺寸:
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_MaterialSize" />
@@ -105,28 +87,35 @@
             </tr>   
             <tr>
                 <td class="form-head">
-                    批次属性：
+                    <span class="sp-require">*</span>物料分类:
+                </td>
+                <td>
+                    <input class="easyui-combobox" id="E_MaterialClass"
+                           data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false">
+                </td>
+                <td class="form-head">
+                    <span class="sp-require">*</span>批次属性：
                 </td>
                 <td>
                     <input class="easyui-combobox" id="E_TraceProperty" 
                            data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false" />                    
                 </td>
-                <td class="form-head">
-                    物料分类:
+                <td>
+                    单位:
                 </td>
                 <td>
-                    <input class="easyui-combobox" id="E_MaterialClass" 
-                           data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false">                    
+                    <input id="E_Unit" class="easyui-textbox" maxlength="50">
                 </td>
+               
+            </tr> 
+            <tr>    
                 <td>
                     仓库:
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_StockCode" type="hidden">
                     <input type="text" class="easyui-textbox" id="E_StockName" />
-                </td>
-            </tr> 
-            <tr>                
+                </td>            
                 <td>
                     库位:
                 </td>
@@ -140,12 +129,7 @@
                 <td>
                     <input id="E_SafeNum" class="easyui-textbox" maxlength="50">
                 </td>
-                <td>
-                    单位:
-                </td>
-                <td>
-                    <input id="E_Unit" class="easyui-textbox" maxlength="50">
-                </td>
+
             </tr>
             <tr>
                 <td>替代物料:</td>
@@ -156,13 +140,14 @@
                 <td>
                     <input id="E_PackNumber" class="easyui-textbox" maxlength="50">
                 </td>            
+               
+            </tr> 
+            <tr>
                 <td>
                     备注:
                 </td>
-                <td>
-                    <input class="easyui-textbox" id="E_Memo">
-                </td>
-            </tr>       
+                <td colspan="3"><textarea id="E_Memo" style="width:400px; height:60px;"></textarea></td>
+            </tr>      
         </table>
 </div>
 
@@ -201,29 +186,23 @@
     //初始化Grid
     function initGrid() {
         var cols = [[
-               { field: 'ID', title: 'ID', width: 100,align:'center',hidden:true},
-               { field: 'MaterialProNo', title: '物料编号', width: 100, align: 'center' },
-               { field: 'MaterialCode', title: '物料名称', width: 160, align: 'center' },
-               { field: 'MaterialSize', title: '规格尺寸', width: 160, align: 'center' },
-               { field: 'TraceProperty', title: '批次属性', width: 160, align: 'center',hidden:true},
+               { field: 'MaterialProNo', title: '物料编码', width: 130, align: 'center' },
+               { field: 'MaterialCode', title: '物料名称', width: 150, align: 'center' },
+               { field: 'Show_MaterialClass', title: '物料分类', width: 70, align: 'center' },
                { field: 'Show_TraceProperty', title: '批次属性', width: 90, align: 'center' },
-               { field: 'Class', title: '物料分类', width: 200, align: 'center',hidden:true },
-               { field: 'Show_MaterialClass', title: '物料分类', width: 200, align: 'center' },
-               { field: 'StockCode', title: '仓库', width: 80,align:'center',hidden:true },
+               { field: 'MaterialSize', title: '规格尺寸', width: 130, align: 'center' },
+               { field: 'Unit', title: '单位', width: 80, align: 'center' },
+               { field: 'PackNumber', title: '每箱数量', width: 80, align: 'center' },
                { field: 'Show_StockCode', title: '仓库', width: 80,align:'center'},
-               { field: 'AlibrayCode', title: '库位', width: 90, align: 'center',hidden:true },
                { field: 'Show_AlibrayCode', title: '库位', width: 90, align: 'center' },
                { field: 'SafeNum', title: '安全库存', width: 90, align: 'center' },
-               { field: 'Unit', title: '单位', width: 90, align: 'center' },
                { field: 'ReplaceMaterialProNo', title: '替代物料', width: 90, align: 'center' },
-               { field: 'MaterialStatus', title: '物料状态', width: 90, align: 'center',hidden:true },
                { field: 'Show_MaterialStatus', title: '物料状态', width: 90, align: 'center' },
-               { field: 'PackNumber', title: '每箱数量', width: 90, align: 'center' },
-               { field: 'Memo', title: '备注', width: 160, align: 'center' },
-               { field: 'Creater', title: '创建人', width: 100},
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
-               { field: 'Modifier', title: '修改人', width: 100 },
-               { field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
+               //{ field: 'Memo', title: '备注', width: 160, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 90},
+               { field: 'Show_CreatedTime', title: '创建时间', width: 130 },
+               { field: 'Modifier', title: '修改人', width: 90 },
+               { field: 'Show_ModifiedTime', title: '修改时间', width: 130 }
         ]];
 
         //设置动态列
@@ -306,8 +285,8 @@
         return {
             MaterialProNo: $.trim($("#Q_MaterialProNo").val()),
             MaterialCode: $.trim($("#Q_MaterialCode").val()),
-            MaterialClass: $.trim($("#Q_Class").val()),
-            MaterialStatus: $.trim($("#Q_MaterialStatus").val())
+            MaterialClass: $("#Q_MaterialClass").combobox('getValue'),
+            MaterialStatus:  $("#Q_MaterialStatus").combobox('getValue')
         };
     }
 
