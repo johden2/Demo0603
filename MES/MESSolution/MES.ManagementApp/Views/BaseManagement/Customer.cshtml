@@ -9,23 +9,6 @@
         padding-top:5px;
     }
 
-    .float-tree {
-        position: absolute;
-        display: none;
-        z-index: 9999;
-        border: 1px solid #808080;
-        background-color: #DDDDDD;
-        /*height:220px;*/
-    }
-
-    .tree-close {
-        text-align: right;
-        padding-right: 10px;
-        height: 5px;
-        font-size: 10px;
-        cursor: pointer;
-    }
-
 </style>
 
 <div class="easyui-layout" fit="true">
@@ -40,13 +23,13 @@
                 客户编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_CustomerCode" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_CustomerCode" style="width: 120px;" />
             </td>
             <td>
                 &nbsp;&nbsp;客户名称：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_CustomerName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_CustomerName" style="width: 120px;" />
             </td>            
             <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                 <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
@@ -57,13 +40,13 @@
                 <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
                 <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
-                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
             </td>
         </tr>
     </table>
 </div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="客户信息" style="width: 800px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     title="客户信息" style="width: 550px; height: 280px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
         <table id="tbForm" class="tbForm">
             <tr>
@@ -82,40 +65,40 @@
                     <span class="sp-require">*</span>客户名称：
                 </td>
                 <td><input class="easyui-textbox" id="E_CustomerName" /></td>
+            </tr>
+            <tr>
                 <td class="form-head">
-                    电话:
+                    电话：
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_Phone" />
                 </td>
-            </tr>   
-            <tr>
-                <td>
+                <td class="form-head">
                     联系人：
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_Contacter">
                 </td>
-                <td>
-                    客户地址:
+            </tr>
+            <tr>
+                <td class="form-head">
+                    客户地址：
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_Address" />
                 </td>
-                <td>
-                    邮政编码:
+                <td class="form-head">
+                    邮政编码：
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_PostCode">
                 </td>
             </tr> 
             <tr>                
-                <td>
-                    备注:
+                <td class="form-head">
+                    备注：
                 </td>
-                <td colspan="3">
-                    <input class="easyui-textbox" id="E_Memo">
-                </td>
+                <td colspan="3"><textarea id="E_Memo" style="width:400px; height:60px;"></textarea></td>
             </tr>       
         </table>
 </div>
@@ -144,17 +127,17 @@
     function initGrid() {
         var cols = [[
                { field: 'ID', title: 'ID', width: 100,align:'center',hidden:true},
-               { field: 'CustomerCode', title: '客户编码', width: 100, align: 'center' },
-               { field: 'CustomerName', title: '客户名称', width: 160, align: 'center' },
-               { field: 'Phone', title: '电话', width: 100, align: 'center' },
-               { field: 'Contacter', title: '联系人', width: 90, align: 'center' },
+               { field: 'CustomerCode', title: '客户编码', width: 110, align: 'center' },
+               { field: 'CustomerName', title: '客户名称', width: 150, align: 'center' },
+               { field: 'Phone', title: '电话', width: 120, align: 'center' },
+               { field: 'Contacter', title: '联系人', width: 80, align: 'center' },
+               { field: 'PostCode', title: '邮政编码', width: 80, align: 'center' },
                { field: 'Address', title: '地址', width: 200, align: 'center' },
-               { field: 'PostCode', title: '邮政编码', width: 80,align:'center' },               
-               { field: 'Memo', title: '备注', width: 160, align: 'center' },
-               { field: 'Creater', title: '创建人', width: 100},
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
-               { field: 'Modifier', title: '修改人', width: 100 },
-               { field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
+               //{ field: 'Memo', title: '备注', width: 160, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 80},
+               { field: 'Show_CreatedTime', title: '创建时间', width: 130 }
+               //{ field: 'Modifier', title: '修改人', width: 80 },
+               //{ field: 'Show_ModifiedTime', title: '修改时间', width: 130 }
         ]];
 
         //设置动态列

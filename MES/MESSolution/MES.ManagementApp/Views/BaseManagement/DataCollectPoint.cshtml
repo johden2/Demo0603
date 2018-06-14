@@ -9,23 +9,6 @@
         padding-top:5px;
     }
 
-    .float-tree {
-        position: absolute;
-        display: none;
-        z-index: 9999;
-        border: 1px solid #808080;
-        background-color: #DDDDDD;
-        /*height:220px;*/
-    }
-
-    .tree-close {
-        text-align: right;
-        padding-right: 10px;
-        height: 5px;
-        font-size: 10px;
-        cursor: pointer;
-    }
-
 </style>
 
 <div class="easyui-layout" fit="true">
@@ -40,13 +23,13 @@
                 采集点编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_CollectCode" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_CollectCode" style="width: 120px;" />
             </td>
             <td>
                 &nbsp;&nbsp;采集点名称：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_CollectName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_CollectName" style="width: 120px;" />
             </td>           
             <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                 <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
@@ -57,13 +40,13 @@
                 <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
                 <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
-                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
             </td>
         </tr>
     </table>
 </div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="采集点信息" style="width: 800px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     title="采集点信息" style="width: 400px; height: 320px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
         <table id="tbForm" class="tbForm">
             <tr>
@@ -78,12 +61,16 @@
                     <span class="sp-require">*</span>采集点编码：
                 </td>
                 <td><input class="easyui-textbox" id="E_CollectCode" /></td>
+            </tr>
+            <tr>
                 <td class="form-head">
                     <span class="sp-require">*</span>采集点名称：
                 </td>
                 <td><input class="easyui-textbox" id="E_CollectName" /></td>
+            </tr>
+            <tr>
                 <td class="form-head">
-                    MAC地址:
+                    <span class="sp-require">*</span> MAC地址:
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_MacAddress" />
@@ -91,7 +78,7 @@
             </tr>
             <tr>
                 <td class="form-head">
-                    用户:
+                    <span class="sp-require">*</span>选择用户:
                 </td>
                 <td colspan="3">
                     <input class="easyui-textbox" id="E_UserID" type="hidden" />
@@ -128,15 +115,13 @@
     function initGrid() {
         var cols = [[
                { field: 'ID', title: 'ID', width: 100,align:'center',hidden:true},
-               { field: 'CollectCode', title: '采集点编号', width: 100, align: 'center',sortable:true,order:"asc"},
+               { field: 'CollectCode', title: '采集点编码', width: 120, align: 'center',sortable:true,order:"asc"},
                { field: 'CollectName', title: '采集点名称', width: 160, align: 'center',sortable:true,order:"asc"},
-               { field: 'MacAddress', title: 'Mac地址', width: 100 },
-               { field: 'UserID', title: '用户', width: 100 },
-               { field: 'Show_UserID', title: '用户名称', width: 100 },              
-               { field: 'Creater', title: '创建人', width: 100, },
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
-               { field: 'Modifier', title: '创建人', width: 100, },
-               { field: 'Show_ModifiedTime', title: '创建时间', width: 150 }
+               { field: 'MacAddress', title: 'Mac地址', width: 150, align: 'center' },
+               //{ field: 'UserID', title: '用户', width: 100, align: 'center' },
+               { field: 'Show_UserID', title: '用户名称', width: 120, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 80, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
         ]];
 
         //设置动态列

@@ -40,20 +40,20 @@
                 库位编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_AlibraryCode" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_AlibraryCode" style="width: 120px;" />
             </td>
             <td>
                 &nbsp;&nbsp;库位名称：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_AlibraryName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_AlibraryName" style="width: 120px;" />
             </td> 
             <td>
                 &nbsp;&nbsp;所属仓库：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_StockCode" style="width: 150px;" type="hidden"/>
-                <input class="easyui-textbox" id="Q_StockName" style="width:150px;" />
+                <input class="easyui-textbox" id="Q_StockCode" style="width: 120px;" type="hidden"/>
+                <input class="easyui-textbox" id="Q_StockName" style="width: 120px;" />
             </td>            
             <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                 <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
@@ -64,13 +64,13 @@
                 <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
                 <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
-                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
             </td>
         </tr>
     </table>
 </div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="库位信息" style="width: 600px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     title="库位信息" style="width: 350px; height: 250px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
         <table id="tbForm" class="tbForm">
             <tr>
@@ -85,10 +85,12 @@
                     <span class="sp-require">*</span>库位编码：
                 </td>
                 <td><input class="easyui-textbox" id="E_AlibraryCode" /></td>
+            </tr>
+            <tr>
                 <td class="form-head">
                     <span class="sp-require">*</span>库位名称：
                 </td>
-                <td><input class="easyui-textbox" id="E_AlibraryName" /></td>                             
+                <td><input class="easyui-textbox" id="E_AlibraryName" /></td>
             </tr>
             <tr>
                 <td>所属仓库:</td>
@@ -96,12 +98,14 @@
                     <input id="E_StockName" type="text" class="easyui-textbox" />
                     <input type="hidden" class="easyui-textbox" id="E_StockCode" maxlength="50" name="StockCode" />
                 </td>
+            </tr>
+            <tr>
                 <td class="form-head">
                     库位容积:
                 </td>
                 <td colspan="3">
                     <input class="easyui-textbox" id="E_AlibraryContain">
-                </td>                
+                </td>
             </tr>           
         </table>
 </div>
@@ -115,7 +119,6 @@
     var _formName = "tbForm";
     var _OptType = 0;
     $(document).ready(function () {
-        debugger;
         $("#btnQuery").click(function () {
             PageListObj.queryList();
         })
@@ -154,7 +157,6 @@
             ]],
             //双击事件
             onClickRow: function (rowIndex, rowData) {
-                debugger;
                 $("#E_StockName").combogrid("setText", rowData.StockName);
                 $("#E_StockCode").val(rowData.StockCode);
             },           
@@ -170,15 +172,15 @@
     function initGrid() {
         var cols = [[
                { field: 'ID', title: 'ID', width: 100,align:'center',hidden:true},
-               { field: 'AlibraryCode', title: '库位编码', width: 100, align: 'center' },
+               { field: 'AlibraryCode', title: '库位编码', width: 120, align: 'center' },
                { field: 'AlibraryName', title: '库位名称', width: 160, align: 'center' },
-               { field: 'StockCode', title: '仓库编码', width: 100 },
-               { field: 'Show_StockCode', title: '仓库名称', width: 100 },
-               { field: 'AlibraryContain', title: '库位容积', width: 100 },               
-               { field: 'Creater', title: '创建人', width: 100, },
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
-               { field: 'Modifier', title: '创建人', width: 100, },
-               { field: 'Show_ModifiedTime', title: '创建时间', width: 150 }
+               { field: 'StockCode', title: '仓库编码', width: 120, align: 'center' },
+               { field: 'Show_StockCode', title: '仓库名称', width: 150, align: 'center' },
+               { field: 'AlibraryContain', title: '库位容积', width: 100, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 100, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
+               //{ field: 'Modifier', title: '创建人', width: 100, align: 'center' },
+               //{ field: 'Show_ModifiedTime', title: '创建时间', width: 150, align: 'center' },
         ]];
 
         //设置动态列
@@ -200,7 +202,6 @@
         };
     }
 
-  
     function showForm(optType) {
         //1.清理窗体数据
         FormUitl.reset(_formName);
@@ -215,8 +216,9 @@
             $("#E_AlibraryCode").val(row.AlibraryCode);
             $("#E_AlibraryName").val(row.AlibraryName);
             $("#E_StockCode").val(row.StockCode);
-            $("#E_StockName").val(row.Show_StockCode);
-            $("#E_AlibraryContain").val(row.AlibraryContain);                    
+            //$("#E_StockName").val(row.Show_StockCode);
+            $("#E_StockName").combogrid("setText", row.Show_StockCode);
+            $("#E_AlibraryContain").val(row.AlibraryContain);
         }
 
         //3.显示窗体
@@ -227,7 +229,6 @@
 
     //保存记录
     function saveForm() {
-        debugger;
         var data = FormUitl.getFormData(_formName);
         data.OptType = _OptType;
         doPostAjaxRequest("/BaseManagement/Alibrary_Save", data, function (msg) {

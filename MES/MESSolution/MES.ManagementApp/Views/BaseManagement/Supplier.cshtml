@@ -9,23 +9,6 @@
         padding-top:5px;
     }
 
-    .float-tree {
-        position: absolute;
-        display: none;
-        z-index: 9999;
-        border: 1px solid #808080;
-        background-color: #DDDDDD;
-        /*height:220px;*/
-    }
-
-    .tree-close {
-        text-align: right;
-        padding-right: 10px;
-        height: 5px;
-        font-size: 10px;
-        cursor: pointer;
-    }
-
 </style>
 
 <div class="easyui-layout" fit="true">
@@ -40,19 +23,19 @@
                 供应商编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_SupplierCode" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_SupplierCode" style="width: 120px;" />
             </td>
             <td>
                 &nbsp;&nbsp;供应商名称：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_SupplierName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_SupplierName" style="width: 120px;" />
             </td>
             <td>
-                &nbsp;&nbsp;供应商简称:
+                &nbsp;&nbsp;供应商简称：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_SupplierPrcName" style="width:150px;" />
+                <input class="easyui-textbox" id="Q_SupplierPrcName" style="width: 120px;" />
             </td>
             <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                 <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
@@ -63,13 +46,13 @@
                 <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
                 <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
-                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
             </td>
         </tr>
     </table>
 </div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="供应商信息" style="width: 800px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     title="供应商信息" style="width: 600px; height: 320px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
         <table id="tbForm" class="tbForm">
             <tr>
@@ -81,54 +64,58 @@
             </tr>
             <tr>
                 <td class="form-head">
-                    <span class="sp-require">*</span>供应商编号：
+                    <span class="sp-require">*</span>供应商编码：
                 </td>
                 <td><input class="easyui-textbox" id="E_SupplierCode" /></td>
                 <td class="form-head">
                     <span class="sp-require">*</span>供应商名称：
                 </td>
                 <td><input class="easyui-textbox" id="E_SupplierName" /></td>
+            </tr>
+            <tr>
+               
                 <td class="form-head">
-                    <span class="sp-require">*</span>供应商简称:
+                    <span class="sp-require">*</span>供应商简称：
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_SupplierPrcName" />
                 </td>
-            </tr>   
-            <tr>
-                <td>
+                <td class="form-head">
                     供应商分类：
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_Class">
                 </td>
-                <td>
-                    供应商地址:
-                </td>
-                <td>
-                    <input class="easyui-textbox" id="E_Address" />
-                </td>
-                <td>
-                    联系电话:
+            </tr>   
+           
+            <tr>
+                <td class="form-head">
+                    联系电话：
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_TelPhone">
                 </td>
-            </tr> 
-            <tr>
-                <td>
-                    法人:
+                <td class="form-head">
+                    法人：
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_DutyPerson">
                 </td>
-                <td>
-                    备注:
+            </tr> 
+            <tr>
+                <td class="form-head">
+                    供应商地址：
                 </td>
-                <td colspan="2">
-                    <input class="easyui-textbox" id="E_Memo">
+                <td colspan="3">
+                    <input class="easyui-textbox" id="E_Address" style="width:400px;" />
                 </td>
-            </tr>       
+            </tr>
+            <tr>
+                <td class="form-head">
+                    备注：
+                </td>
+                <td colspan="3"><textarea id="E_Memo" style="width:400px; height:60px;"></textarea></td>
+            </tr>     
         </table>
 </div>
 
@@ -156,18 +143,18 @@
     function initGrid() {
         var cols = [[
                { field: 'ID', title: 'ID', width: 100,align:'center',hidden:true},
-               { field: 'SupplierCode', title: '供应商编号', width: 100, align: 'center' },
+               { field: 'SupplierCode', title: '供应商编码', width: 100, align: 'center' },
                { field: 'SupplierName', title: '供应商名称', width: 160, align: 'center' },
-               { field: 'SupplierPrcName', title: '供应商简称', width: 160, align: 'center' },
+               { field: 'SupplierPrcName', title: '供应商简称', width: 150, align: 'center' },
                { field: 'Class', title: '供应商分类', width: 90, align: 'center' },
-               { field: 'Address', title: '地址', width: 200, align: 'center' },
                { field: 'TelPhone', title: '电话', width: 80,align:'center' },
                { field: 'DutyPerson', title: '法人', width: 90, align: 'center' },
+                { field: 'Address', title: '地址', width: 200, align: 'center' },
                { field: 'Memo', title: '备注', width: 160, align: 'center' },
-               { field: 'Creater', title: '创建人', width: 100},
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
-               { field: 'Modifier', title: '修改人', width: 100 },
-               { field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
+               { field: 'Creater', title: '创建人', width: 100, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
+               //{ field: 'Modifier', title: '修改人', width: 100 },
+               //{ field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
         ]];
 
         //设置动态列
