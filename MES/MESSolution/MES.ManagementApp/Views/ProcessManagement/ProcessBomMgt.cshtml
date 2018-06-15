@@ -27,7 +27,7 @@
         font-size: 10px;
         cursor: pointer;
         text-align: right;
-        padding-right: 20px;
+        padding-right: 40px;
         padding-top: 5px;
     }
 
@@ -57,13 +57,13 @@ div #rMenu a {
                         物料编码：
                     </td>
                     <td>
-                        <input class="easyui-textbox" id="Q_SubMaterialProNo" style="width: 150px;" />
+                        <input class="easyui-textbox" id="Q_SubMaterialProNo" style="width: 120px;" />
                     </td>
                     <td>
                         物料简称：
                     </td>
                     <td>
-                        <input class="easyui-textbox" id="Q_SubMaterialCode" style="width: 150px;" />
+                        <input class="easyui-textbox" id="Q_SubMaterialCode" style="width: 120px;" />
                     </td>
                     <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                         <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
@@ -83,7 +83,7 @@ div #rMenu a {
     </div>
 </div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="配套明细" style="width: 560px; height: 340px;display: none;" collapsible="false" minimizable="false"
+     title="配套明细" style="width: 560px; height: 380px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
     <table id="tbForm" class="tbForm">
         <tr>
@@ -121,11 +121,11 @@ div #rMenu a {
                 <input class="easyui-textbox" id="E_ProcessName" style="width:380px;" />
                 <input id="E_ProcessCode" type="hidden" />
                 <img id="btnShowProcess" class="select-icon" src="/images/select_icon.png" title="点击选择工艺" />
-                <div id="divTreeProcess" class="float-tree" style="width:280px;">
+                <div id="divTreeProcess" class="float-tree" style="width:280px; ">
                     <div class="tree-ok">
                         <a title="点击关闭窗口" id="btnTreeProcessClose">关闭</a>
                     </div>
-                    <ul id="treeProcess" class="ztree" style="height: 180px; overflow:auto;"></ul>
+                    <ul id="treeProcess" class="ztree" style="height: 150px; overflow:auto;"></ul>
                 </div>
             </td>
         </tr>
@@ -158,9 +158,9 @@ div #rMenu a {
     </table>
 </div>
 <div id="divMenuForm" class="easyui-window" closed="true" modal="true"
-     title="产品信息" style="width: 320px; height: 220px;display: none;" collapsible="false" minimizable="false"
+     title="产品信息" style="width: 400px; height: 300px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
-    <table id="tbMenuForm" class="tbForm">
+    <table id="tbMenuForm" class="tbForm" style="padding:10px 20px;">
         <tr>
             <td colspan="6">
                 <a id="btnMenuOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
@@ -186,12 +186,18 @@ div #rMenu a {
             </td>
             <td><input class="easyui-textbox" id="E_MenuVersion" /></td>
         </tr>
+        <tr>
+            <td class="form-head">备注：</td>
+            <td >
+                <textarea rows="5" cols="35" id="E_MenuMemo" maxlength="500"></textarea>
+            </td>
+        </tr>
     </table>
 </div>
 <div id="divRightMenu" class="easyui-menu div-right-menu">
-    <div id="divMenuAdd" data-options="iconCls:'icon-add'">新增子节点</div>
-    <div id="divMenuEdit" data-options="iconCls:'icon-edit'">修改当前节点</div>
-    <div id="divMenuDelete" data-options="iconCls:'icon-remove'">删除当前节点</div>
+    <div id="divMenuAdd" data-options="iconCls:'icon-add'">新增产品(版本)</div>
+    <div id="divMenuEdit" data-options="iconCls:'icon-edit'">修改当前产品(版本)</div>
+    <div id="divMenuDelete" data-options="iconCls:'icon-remove'">删除当前产品(版本)</div>
 </div>
 <link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
 <script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
@@ -291,7 +297,7 @@ div #rMenu a {
         };
     }
 
-    //加载部门树
+    //加载工序树
     function initProcessTree() {
         var param = {
             TreeId: "treeProcess",
@@ -414,6 +420,16 @@ div #rMenu a {
                 $("#E_MenuMaterialProNo").val(node.attributes.MaterialProNo);
                 $("#E_MenuMaterialCode").val(node.attributes.MaterialCode);
                 $("#E_MenuVersion").val(node.attributes.Version);
+
+                var data = { MaterialProNo: node.attributes.MaterialProNo, Version: node.attributes.Version };
+                doPostAjaxRequest("/ProcessManagement/ProcessBomMgt_Find", data, function (msg) {
+                    if (!msg.IsSuccess) return;
+                    var dataObj = $.parseJSON(msg.Message);
+                    if (!dataObj) return;
+
+                    $("#E_MenuMemo").val(dataObj.Memo);
+
+                });
             }
         } 
 
@@ -427,7 +443,8 @@ div #rMenu a {
             ID: $("#E_MenuID").val(),
             MaterialProNo: $("#E_MenuMaterialProNo").val(),
             MaterialCode: $("#E_MenuMaterialCode").val(),
-            Version: $("#E_MenuVersion").val()
+            Version: $("#E_MenuVersion").val(),
+            Memo: $("#E_MenuMemo").val()
         };
         data.OptType = _OptType;
         doPostAjaxRequest("/ProcessManagement/ProcessBomMgt_SaveBom", data, function (msg) {

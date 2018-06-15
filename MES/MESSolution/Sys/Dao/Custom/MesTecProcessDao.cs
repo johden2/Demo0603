@@ -143,7 +143,6 @@ namespace Sys.Dao
             //返回当前页的记录数
             return this.CurDbSession.FromSql(cmdPageSql).ToList<Mes_Tec_Process>();
         }
-      
 
         #endregion 查询和分页方法
 

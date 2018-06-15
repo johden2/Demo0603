@@ -63,20 +63,22 @@ namespace Sys.Dao
         /// <returns></returns>
         public List<Mes_Tec_TestDataPosition> FindByPage(Mes_Tec_TestDataPosition obj, ref PagerBase pager)
         {
-            string sql = @"select * from Mes_Tec_TestDataPosition WHERE   1=1 ";
+            string sql = @"SELECT T1.*,T2.Name AS ProcessName FROM Mes_Tec_TestDataPosition T1  WITH(NOLOCK) 
+                        LEFT JOIN Mes_Tec_Process T2 WITH(NOLOCK)  ON T1.ProcessCode=T2.ProcessCode
+                        WHERE   1=1 ";
 
             if (!string.IsNullOrEmpty(obj.ProcessCode))
             {
-                sql += string.Format(" AND ProcessCode Like '%{0}%'", obj.ProcessCode);
+                sql += string.Format(" AND T1.ProcessCode Like '%{0}%'", obj.ProcessCode);
             }
 
             if (!string.IsNullOrEmpty(obj.DataTableName))
             {
-                sql += string.Format(" AND DataTableName Like '%{0}%'", obj.DataTableName);
+                sql += string.Format(" AND T1.DataTableName Like '%{0}%'", obj.DataTableName);
             }
             if (!string.IsNullOrEmpty(obj.DataProcessName))
             {
-                sql += string.Format(" AND DataProcessName Like '%{0}%'", obj.DataProcessName);
+                sql += string.Format(" AND T1.DataProcessName Like '%{0}%'", obj.DataProcessName);
             }
             string orderBy = pager.OrderBy;
             if (string.IsNullOrEmpty(orderBy))

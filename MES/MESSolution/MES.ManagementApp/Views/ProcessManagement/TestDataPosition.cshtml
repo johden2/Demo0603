@@ -26,6 +26,15 @@
         cursor: pointer;
     }
 
+    .tree-ok {
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+        text-align: right;
+        padding-right: 40px;
+        padding-top: 5px;
+    }
+
 </style>
 
 <div class="easyui-layout" fit="true">
@@ -40,20 +49,20 @@
                 工序编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_ProcessCode" style="width: 150px;" type="hidden" />
-                <input class="easyui-textbox" id="Q_ProcessName" type="text" />
+                <input class="easyui-textbox" id="Q_ProcessCode" style="width: 120px;" type="hidden" />
+                <input class="easyui-textbox" id="Q_ProcessName" type="text" style="width: 120px;" />
             </td>
             <td>
-                &nbsp;&nbsp;测试数据表名称：
+                &nbsp;&nbsp;测试表名称：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_DataTableName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_DataTableName" style="width: 120px;" />
             </td>
             <td>
-                &nbsp;&nbsp;测试数据工序名称:
+                &nbsp;&nbsp;测试工序名称:
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_DataProcessName" style="width:150px;" />
+                <input class="easyui-textbox" id="Q_DataProcessName" style="width:120px;" />
             </td>
             <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                 <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
@@ -64,13 +73,13 @@
                 <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
                 <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
-                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
             </td>
         </tr>
     </table>
 </div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="测试数据校验配置" style="width: 800px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     title="测试数据校验配置" style="width: 450px; height: 250px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
         <table id="tbForm" class="tbForm">
             <tr>
@@ -82,28 +91,39 @@
             </tr>
             <tr>
                 <td class="form-head">
-                    <span class="sp-require">*</span>工序编码：
+                    <span class="sp-require">*</span>选择工序：
                 </td>
-                <td>
-                   <input class="easyui-textbox" id="E_ProcessCode" type="hidden"/>
-                    <input class="easyui-textbox" id="E_ProcessName" type="text" />
-                </td>                
+                <td colspan="3">
+                    <input class="easyui-textbox" id="E_ProcessName" style="width:250px;" disabled />
+                    <input id="E_ProcessCode" type="hidden" />
+                    <img id="btnShowProcess" class="select-icon" src="/images/select_icon.png" title="点击选择工艺" />
+                    <div id="divTreeProcess" class="float-tree" style="width:280px; ">
+                        <div class="tree-ok">
+                            <a title="点击关闭窗口" id="btnTreeProcessClose">关闭</a>
+                        </div>
+                        <ul id="treeProcess" class="ztree" style="height: 150px; overflow:auto;"></ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <td class="form-head">
                     <span class="sp-require">*</span>数据表名称：
                 </td>
                 <td><input class="easyui-textbox" id="E_DataTableName" /></td>
+            </tr>
+            <tr>
                 <td class="form-head">
-                    <span class="sp-require">*</span>测试数据工序简称:
+                    <span class="sp-require">*</span>测试工序名称：
                 </td>
                 <td>
                     <input class="easyui-textbox" id="E_DataProcessName" />
                 </td>
             </tr>   
             <tr>
-                <td>
+                <td class="form-head">
                     判断条件：
                 </td>
-                <td colspan="3">
+                <td >
                     <input class="easyui-combobox" id="E_TestProperty"
                            data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false"/>
                 </td>               
@@ -114,7 +134,7 @@
 <link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
 <script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
 <script src="/Scripts/Common/common_search.js?v=4"></script>
-<script src="@Url.Content("~/Scripts/Common/orgtree.js?v=" + new Random().NextDouble())"></script>
+<script src="@Url.Content("~/Scripts/Common/processtree.js?v=" + new Random().NextDouble())"></script>
 <script type="text/javascript">
     var _divFormName = "divForm";
     var _formName = "tbForm";
@@ -128,9 +148,12 @@
         $("#btnDelete").click(function () { deleteRecord(); })
         $("#btnOk").click(function () { saveForm(); })
         $("#btnClose").click(function () { FormUitl.close(_divFormName); })
+        $("#btnShowProcess").click(function () { $("#divTreeProcess").show(); })
+        $("#btnTreeProcessClose").click(function () { $("#divTreeProcess").hide(); })
+
         initGrid();
         //加载工序编码
-        initProcess();
+        initProcessTree();
         //加载判断条件
         common_bindCommonCombox("E_TestProperty", { headerType: 3, statusType: "TestPropertyStatus" });
     });
@@ -138,17 +161,16 @@
     //初始化Grid
     function initGrid() {
         var cols = [[
-               { field: 'ID', title: 'ID', width: 100, align: 'center', hidden: true },
-               { field: 'ProcessCode', title: '工序编码', width: 100, align: 'center' },
-               { field: 'Show_ProcessCode', title: '工序名称', width: 160, align: 'center' },
+               { field: 'ID', title: 'ID', width: 1, align: 'center', hidden: true },
+               { field: 'ProcessCode', title: '工序编码', width: 120, align: 'center' },
+               { field: 'ProcessName', title: '工序名称', width: 160, align: 'center' },
                { field: 'DataTableName', title: '测试表名称', width: 160, align: 'center' },
-               { field: 'DataProcessName', title: '测试工序名称', width: 90, align: 'center' },
-               { field: 'TestProperty', title: '校验条件', width: 200, align: 'center', hidden: true },
-               { field: 'Show_TestProperty', title: '校验条件', width: 80, align: 'center' },
-               { field: 'Creater', title: '创建人', width: 100 },
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
-               { field: 'Modifier', title: '修改人', width: 100 },
-               { field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
+               { field: 'DataProcessName', title: '测试工序名称', width: 100, align: 'center' },
+               { field: 'Show_TestProperty', title: '校验条件', width: 180, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 80, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 130, align: 'center' }
+               //{ field: 'Modifier', title: '修改人', width: 100 },
+               //{ field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
         ]];
 
         //设置动态列
@@ -172,35 +194,27 @@
         };
     }
 
-    function initProcess() {
-        $("#E_ProcessName").combogrid({
-            width: 150,
-            height: 24,
-            panelWidth: 350,
-            panelHeight: 250,
-            idField: "ProcessCode",
-            textField: "Name",
-            delay: 500,
-            mode: "remote",
-            pagination: true,
-            rownumbers: true,
-            pageList: [10, 20, 30],
-            url: "/ProcessManagement/Process_FindbyPage",
-            columns: [[
-                { field: "ProcessCode", title: "工序编码", width: 100 },
-                { field: "Name", title: "工序名称", width: 100 },
-                { field: "ParentCode", title: "父级工序编码", width: 100 },
-                { field: "Show_ParentCode", title: "父级工序名称", width: 100 },
-            ]],
-            onClickRow: function (rowIndex, rowData) {
-                $("#E_ProcessCode").val(rowData.ProcessCode);
-                $("#E_ProcessName").combogrid('setText', rowData.Name);
-            },
-            onLoadError: function () {
-                $.messager.progress('close');
-                $.messager.alert('错误', "加载失败", "error");
-            }
-        })
+    //加载工序树
+    function initProcessTree() {
+        var param = {
+            TreeId: "treeProcess",
+            IsCheck: 0
+        };
+
+        param.onClick = function (event, treeId, treeNode) {
+            onProcessTreeClick(event, treeId, treeNode);
+        }
+
+        loadProcessTree(param);
+    }
+
+    //选择工序
+    function onProcessTreeClick(event, treeId, treeNode) {
+        if (!treeNode) return;
+
+        $("#E_ProcessCode").val(treeNode.id);
+        $("#E_ProcessName").val(treeNode.name);
+        $("#divTreeProcess").hide();
     }
 
     function showForm(optType) {
@@ -215,7 +229,7 @@
 
             $("#E_ID").val(row.ID);
             $("#E_ProcessCode").val(row.ProcessCode);
-            $("#E_ProcessName").combogrid('setText', row.Show_ProcessCode);;
+            $("#E_ProcessName").val(row.ProcessName);
             $("#E_DataTableName").val(row.DataTableName);
             $("#E_DataProcessName").val(row.DataProcessName);
             $("#E_TestProperty").combobox('setText',row.Show_TestProperty);            

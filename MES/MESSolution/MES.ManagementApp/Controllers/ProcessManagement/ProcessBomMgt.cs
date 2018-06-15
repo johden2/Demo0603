@@ -66,8 +66,13 @@ namespace MES.ManagementApp.Controllers
                 resultObj.Creater = base.CurUser.UserId;
                 resultObj.CreatedTime = DateTime.Now;
             }
+            else
+            {
+                resultObj.Memo = obj.Memo;
+                resultObj.MaterialCode = obj.MaterialCode;
+            }
 
-            MesTecProcessBomDao.Instance.Save(obj);
+            MesTecProcessBomDao.Instance.Save(resultObj);
             return Json(new { IsSuccess = true, Message = "操作成功！" });
         }
         public ActionResult ProcessBomMgt_Delete(Mes_Tec_ProcessBom obj)
@@ -92,6 +97,26 @@ namespace MES.ManagementApp.Controllers
 
             MesTecProcessBomDao.Instance.DeleteExt(resultObj);
             return Json(new { IsSuccess = true, Message = "操作成功！" });
+        }
+
+
+        public ActionResult ProcessBomMgt_Find(Mes_Tec_ProcessBom obj)
+        {
+            if (string.IsNullOrEmpty(obj.MaterialProNo))
+            {
+                return Json(new { IsSuccess = false, Message = "【产品编码】有误！" });
+            }
+            if (string.IsNullOrEmpty(obj.Version))
+            {
+                return Json(new { IsSuccess = false, Message = "【产品版本】有误！" });
+            }
+            Mes_Tec_ProcessBom result = MesTecProcessBomDao.Instance.FindExt(obj);
+            if (result == null)
+            {
+                return Json(new { IsSuccess = false, Message = "信息不存在，请刷新后重试！" });
+            }
+
+            return Json(new { IsSuccess = true, Message = JsonHelper.SerializeObject(result) }, JsonRequestBehavior.AllowGet);
         }
 
 
