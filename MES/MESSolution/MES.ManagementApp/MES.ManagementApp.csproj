@@ -1265,6 +1265,7 @@
     <Content Include="Views\StockManagement\OutMaterialItemMgt.cshtml" />
     <Content Include="Views\StockManagement\OutMaterialMgt.cshtml" />
     <Content Include="Views\Common\SelectPlan.cshtml" />
+    <Content Include="Views\ProcessManagement\Process - 复制.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

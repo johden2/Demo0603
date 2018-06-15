@@ -62,20 +62,49 @@ namespace Sys.Dao
             return result.Remove(result.Length - 1) + "]";
         }
 
-        public void GetChildNodes(List<Mes_Sys_Organization> list, Mes_Sys_Organization node, StringBuilder jsonStr)
+        public string GetList()
         {
-            List<Mes_Sys_Organization> childList = list.Where(p => p.ParentID == node.ID).ToList();
+            Mes_Tec_Process root = new Mes_Tec_Process();
+            root.ProcessCode = "01";
+            root.Name = "工艺库";
+
+            string sql = @"SELECT * FROM dbo.Mes_Tec_Process T1 WITH(NOLOCK) WHERE RecordStatus = 1";
+            List<Mes_Tec_Process> list = this.CurDbSession.FromSql(sql).ToList<Mes_Tec_Process>();
+            List<Mes_Tec_Process> oneList = list.Where(p => p.ParentCode == root.ProcessCode).ToList();
+
+            StringBuilder jsonStr = new StringBuilder();
+            jsonStr.Append("[{");
+            jsonStr.AppendFormat("\"id\":\"{0}\",\"text\":\"{1}\"", root.ProcessCode, root.Name);
+            jsonStr.Append(",\"children\":[");
+            foreach (var item in oneList)
+            {
+                jsonStr.Append("{");
+                jsonStr.AppendFormat("\"id\":\"{0}\",\"text\":\"{1}\"", item.ProcessCode, item.Name);
+                GetChildNodesByList(list, item, jsonStr);
+                jsonStr.Append("},");
+            }
+            if (oneList.Count > 0)
+            {
+                jsonStr = jsonStr.Remove(jsonStr.Length - 1, 1);
+            }
+            jsonStr.Append("]}]");
+            return jsonStr.ToString();
+        }
+        public void GetChildNodesByList(List<Mes_Tec_Process> list, Mes_Tec_Process node, StringBuilder jsonStr)
+        {
+            List<Mes_Tec_Process> childList = list.Where(p => p.ParentCode == node.ProcessCode).ToList();
             if (childList == null || childList.Count == 0) return;
 
+            jsonStr.Append(",\"children\":[");
             foreach (var item in childList)
             {
-                jsonStr.Append(_treeItemContent.Replace("[0]", item.ID.ToString())
-                    .Replace("[1]", item.ParentID.ToString())
-                    .Replace("[2]", item.OrgName)
-                    .Replace("[3]", "true")
-                    .Replace("[4]", item.OrgLevel.ToString())
-                    );
+                jsonStr.Append("{");
+                jsonStr.AppendFormat("\"id\":\"{0}\",\"text\":\"{1}\"", item.ProcessCode, item.Name);
+                GetChildNodesByList(list, item, jsonStr);
+                jsonStr.Append("},");
             }
+            jsonStr = jsonStr.Remove(jsonStr.Length - 1, 1);
+            jsonStr.Append("]");
 
         }
 
@@ -86,34 +115,33 @@ namespace Sys.Dao
         /// <param name="obj"></param>
         /// <param name="pager"></param>
         /// <returns></returns>
-        public List<Mes_Sys_Supplier> FindByPage(Mes_Sys_Supplier obj, ref PagerBase pager)
+        public List<Mes_Tec_Process> FindByPage(Mes_Tec_Process obj, ref PagerBase pager)
         {
-            string sql = @"select * from Mes_Sys_Supplier WHERE   1=1 ";
+            string sql = @"SELECT T1.*,T2.Name AS ParentName FROM Mes_Tec_Process T1 WITH(NOLOCK) 
+                        LEFT JOIN Mes_Tec_Process T2 WITH(NOLOCK)  ON T1.ParentCode=T2.ProcessCode
+                        WHERE T1.RecordStatus = 1 ";
 
-            if (!string.IsNullOrEmpty(obj.SupplierCode))
+            if (!string.IsNullOrEmpty(obj.Name))
             {
-                sql += string.Format(" AND SupplierCode Like '%{0}%'", obj.SupplierCode);
+                sql += string.Format(" AND T1.Name Like '%{0}%'", obj.Name);
             }
-
-            if (!string.IsNullOrEmpty(obj.SupplierName))
+            if (!string.IsNullOrEmpty(obj.ProcessCode))
             {
-                sql += string.Format(" AND SupplierName Like '%{0}%'", obj.SupplierName);
-            }
-            if (!string.IsNullOrEmpty(obj.SupplierPrcName))
-            {
-                sql += string.Format(" AND SupplierPrcName Like '%{0}%'", obj.SupplierPrcName);
+                if(obj.ProcessCode != "01"){
+                    sql += string.Format(" AND (T1.ProcessCode = '{0}' OR T1.ParentCode = '{0}')", obj.ProcessCode);
+                }
             }
             string orderBy = pager.OrderBy;
             if (string.IsNullOrEmpty(orderBy))
             {
-                orderBy = "CreatedTime DESC";
+                orderBy = "State,ProcessCode";
             }
             string cmdPageSql = string.Format(BaseDao.PageSql, orderBy, sql, pager.StartNo, pager.EndNo);
             string cmdCountSql = string.Format(BaseDao.CountSql, sql.Substring(sql.ToLower().IndexOf("from", StringComparison.Ordinal)));
             //查询总记录数
             pager.TotalItemCount = this.CurDbSession.FromSql(cmdCountSql).ToScalar<int>();
             //返回当前页的记录数
-            return this.CurDbSession.FromSql(cmdPageSql).ToList<Mes_Sys_Supplier>();
+            return this.CurDbSession.FromSql(cmdPageSql).ToList<Mes_Tec_Process>();
         }
       
 

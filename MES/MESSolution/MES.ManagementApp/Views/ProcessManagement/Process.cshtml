@@ -9,68 +9,42 @@
         padding-top:5px;
     }
 
-    .float-tree {
-        position: absolute;
-        display: none;
-        z-index: 9999;
-        border: 1px solid #808080;
-        background-color: #DDDDDD;
-        /*height:220px;*/
-    }
-
-    .tree-close {
-        text-align: right;
-        padding-right: 10px;
-        height: 5px;
-        font-size: 10px;
-        cursor: pointer;
-    }
-
 </style>
 
 <div class="easyui-layout" fit="true">
+    <div style="width: 200px;" region="west" split="true">
+        <ul id="treeProcess" class="easyui-tree"></ul>
+    </div>
     <div region="center">
+        <div id="divQuery" style="padding:5px;height:auto">
+            <table id="tbQuery">
+                <tr>
+                    <td>
+                        &nbsp;&nbsp;工序名称：
+                    </td>
+                    <td>
+                        <input class="easyui-textbox" id="Q_Name" style="width: 120px;" />
+                    </td>
+                    <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                        <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                        <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                        <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                        <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div id="dgList"></div>
     </div>
 </div>
-<div id="divQuery" style="padding:5px;height:auto">
-    <table id="tbQuery">
-        <tr>
-            <td>
-                工序编码：
-            </td>
-            <td>
-                <input class="easyui-textbox" id="Q_ProcessCode" style="width: 150px;" />               
-            </td>
-            <td>
-                &nbsp;&nbsp;工序名称：
-            </td>
-            <td>
-                <input class="easyui-textbox" id="Q_ProcessName" style="width: 150px;" />
-            </td>
-            <td>
-                &nbsp;&nbsp;父级工序编码:
-            </td>
-            <td>
-                <input class="easyui-textbox" id="Q_ParentCode" style="width:150px;" type="hidden" />
-                <input class="easyui-textbox" id="Q_ParentName" type="text" />
-            </td>
-            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
-                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
-                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
-                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
-                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
-            </td>
-        </tr>
-    </table>
-</div>
+
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="工序配置" style="width: 800px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     title="工序配置" style="width: 550px; height: 320px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
         <table id="tbForm" class="tbForm">
             <tr>
@@ -85,32 +59,41 @@
                     <span class="sp-require">*</span>工序编码：
                 </td>
                 <td>
-                   <input class="easyui-textbox" id="E_ProcessCode"  style="max-width:50px;"/>                   
-                </td>                
+                    <input class="easyui-textbox" id="E_ProcessCode"  />
+                </td>
                 <td class="form-head">
                     <span class="sp-require">*</span>工序名称：
                 </td>
                 <td><input class="easyui-textbox" id="E_Name" /></td>
+            </tr> 
+            <tr>
                 <td class="form-head">
                     父级工序名称:
                 </td>
                 <td>
-                    <input class="easyui-textbox" id="E_ParentCode" type="hidden" />
-                    <input class="easyui-textbox" id="E_ParentName" type="text" />
+                    <input class="easyui-textbox" id="E_ParentName" type="text" disabled />
                 </td>
-            </tr>   
+                <td class="form-head">
+                    父级编码:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_ParentCode" disabled/>
+                </td>
+            </tr>  
             <tr>
                 <td>
                     <span class="sp-require">*</span>工序属性:
                 </td>
                 <td>
-                    <input id="E_State" class="easyui-combobox" data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false" />
+                    <input id="E_State" class="easyui-combobox" 
+                           data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false" />
                 </td>
                 <td>
                     是否返修工序:
                 </td>            
-                <td colspan="2">
-                    <input id="E_IsRepairStatus" class="easyui-combobox" data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false" />
+                <td >
+                    <input id="E_IsRepairStatus" class="easyui-combobox" 
+                           data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false" />
                 </td>                            
             </tr>             
         </table>
@@ -133,38 +116,50 @@
         $("#btnDelete").click(function () { deleteRecord(); })
         $("#btnOk").click(function () { saveForm(); })
         $("#btnClose").click(function () { FormUitl.close(_divFormName); })
+
+        initTree();
+
         initGrid();
-        //加载父级工序编码
-        initParentProcess();
-        initParentInProcess();
+        ////加载父级工序编码
+        //initParentProcess();
+        //initParentInProcess();
 
         //加载判断条件
         common_bindCommonCombox("E_State", { headerType: 3, statusType: "ProcessState" });
         common_bindCommonCombox("E_IsRepairStatus", { headerType: 3, statusType: "RepairStatus" })
     });
 
+    //加载部门树
+    function initTree() {
+        $('#treeProcess').tree({
+            url: '/ProcessManagement/ProcessMgt_GetList',
+            method: 'get',
+            loadMsg: '数据加载中，请稍后……',
+            animate: false,
+            onClick: function (node) {//单击事件
+                //nodeId = node.id;
+                PageListObj.queryList();
+            }
+        });
+    }
+
     //初始化Grid
     function initGrid() {
         var cols = [[
-               { field: 'ID', title: 'ID', width: 100, align: 'center', hidden: true },
-               { field: 'ProcessCode', title: '工序编码', width: 100, align: 'center' },
-               { field: 'Name', title: '工序名称', width: 160, align: 'center' },
-               { field: 'ParentCode', title: '父级工序编码', width: 160, align: 'center' },
-               { field: 'Show_ParentCode', title: '父级工序名称', width: 90, align: 'center' },
-               { field: 'State', title: '工序属性', width: 80, align: 'center', hidden: true },
+               { field: 'Name', title: '工序名称', width: 130, align: 'center' },
+               { field: 'ProcessCode', title: '工序编码', width: 120, align: 'center' },
+               { field: 'ParentName', title: '父级工序', width: 120, align: 'center' },
+               { field: 'ParentCode', title: '父级工序编码', width: 120, align: 'center' },
                { field: 'Show_State', title: '工序属性', width: 100, align: 'center' },
-               { field: 'IsRepairStatus', title: '是否返修工序', width: 100, align: 'center', hidden: true },
                { field: 'Show_IsRepairStatus', title: '是否返修工序', width: 80, align: 'center' },
-               { field: 'Creater', title: '创建人', width: 100 },
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
-               { field: 'Modifier', title: '修改人', width: 100 },
-               { field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
+               { field: 'Creater', title: '创建人', width: 80, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 130, align: 'center' }
         ]];
 
         //设置动态列
         PageListObj.GridProperties = {
             columns: cols,
-            url: "/ProcessManagement/Process_FindByPage"
+            url: "/ProcessManagement/ProcessMgt_FindByPage"
         };
 
         PageListObj.getQueryParms = function () {
@@ -175,10 +170,14 @@
     }
 
     function getQueryParms() {
+        var processCode = "";
+        var selNode = $("#treeProcess").tree('getSelected');
+        if (selNode) {
+            processCode = selNode.id;
+        }
         return {
-            ProcessCode: $.trim($("#Q_ProcessCode").val()),
-            DataTableName: $.trim($("#Q_ProcessName").val()),
-            DataProcessName: $.trim($("#Q_ParentCode").val())
+            Name: $.trim($("#Q_Name").val()),
+            ProcessCode: processCode
         };
     }
 
@@ -212,45 +211,28 @@
             }
         })
     }
-   
-    function initParentInProcess() {
-        $("#E_ParentName").combogrid({
-            width: 150,
-            height: 24,
-            panelWidth: 350,
-            panelHeight: 250,
-            idField: "ProcessCode",
-            textField: "Name",
-            delay: 500,
-            mode: "remote",
-            pagination: true,
-            rownumbers: true,
-            pageList: [10, 20, 30],
-            url: "/ProcessManagement/Process_FindbyPage",
-            columns: [[
-                { field: "ProcessCode", title: "工序编码", width: 100 },
-                { field: "Name", title: "工序名称", width: 100 },
-                { field: "ParentCode", title: "父级工序编码", width: 100 },
-                { field: "Show_ParentCode", title: "父级工序名称", width: 100 },
-            ]],
-            onClickRow: function (rowIndex, rowData) {
-                $("#E_ParentCode").val(rowData.ProcessCode);
-                $("#E_ParentName").combogrid('setText', rowData.Name);
-            },
-            onLoadError: function () {
-                $.messager.progress('close');
-                $.messager.alert('错误', "加载失败", "error");
-            }
-        })
-    }
+  
 
     function showForm(optType) {
+        var selNode;
+        if (optType == 1) { //新增
+            selNode = $("#treeProcess").tree('getSelected');
+            if (!selNode) {
+                $.messager.alert('错误', "请先选择一个父级工序！", "error");
+                return false;
+            }
+        }
+
         //1.清理窗体数据
         FormUitl.reset(_formName);
         $("#E_ID").val("");
-       
+
         //2.加载窗体数据
-        if (optType == 2) { //修改
+        if (optType == 1) { //新增
+            $("#E_ParentCode").val(selNode.id);
+            $("#E_ParentName").val(selNode.text);
+        }
+        else if (optType == 2) { //修改
             var row = DataGridUitl.getSelectedRow("dgList");
             if (!row) return;
 
@@ -258,9 +240,9 @@
             $("#E_ProcessCode").val(row.ProcessCode);
             $("#E_Name").val(row.Name);;
             $("#E_ParentCode").val(row.ParentCode);
-            $("#E_ParentName").combogrid("setText", row.Show_ParentCode);
-            $("#E_State").combobox('setText', row.Show_State);
-            $("#E_IsRepairStatus").combobox('setText', row.Show_IsRepairStatus);
+            $("#E_ParentName").val(row.ParentName);
+            $("#E_State").combobox('setValue', row.State);
+            $("#E_IsRepairStatus").combobox('setValue', row.IsRepairStatus);
         }
 
         //3.显示窗体
@@ -273,7 +255,7 @@
     function saveForm() {
         var data = FormUitl.getFormData(_formName);   
         data.OptType = _OptType;
-        doPostAjaxRequest("/ProcessManagement/Process_Save", data, function (msg) {
+        doPostAjaxRequest("/ProcessManagement/ProcessMgt_Save", data, function (msg) {
             if (!msg.IsSuccess) {
                 $.messager.alert('提示', msg.Message, "info");
                 return;
@@ -293,7 +275,7 @@
         $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
             if (!isOK) return;
 
-            doPostAjaxRequest("/ProcessManagement/Process_Delete", data, function (msg) {
+            doPostAjaxRequest("/ProcessManagement/ProcessMgt_Delete", data, function (msg) {
                 if (!msg.IsSuccess) {
                     $.messager.alert('提示', msg.Message, "info");
                     return;

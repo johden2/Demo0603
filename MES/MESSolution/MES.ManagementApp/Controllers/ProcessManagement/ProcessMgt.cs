@@ -85,11 +85,18 @@ namespace MES.ManagementApp.Controllers
             return Json(new { IsSuccess = true, Message = sMessage });
         }
 
-        public ActionResult ProcessMgt_FindByPage(Mes_Sys_Supplier obj, int page, int rows)
+        public ActionResult ProcessMgt_FindByPage(Mes_Tec_Process obj, int page, int rows)
         {
             var pager = new PagerBase() { CurrentPageIndex = page, PageSize = rows };
             var list = MesTecProcessDao.Instance.FindByPage(obj, ref pager);
             return Json(new { total = pager.TotalItemCount, rows = list });
         }
+
+        public string ProcessMgt_GetList(Mes_Tec_Process obj)
+        {
+            string result = MesTecProcessDao.Instance.GetList();
+            return result;
+        }
+
     }
 }
