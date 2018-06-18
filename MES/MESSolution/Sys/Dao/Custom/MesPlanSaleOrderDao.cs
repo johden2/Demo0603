@@ -88,6 +88,27 @@ namespace Sys.Dao
             return this.CurDbSession.FromSql(cmdPageSql).ToList<Mes_Plan_SaleOrder>();
         }
 
+        public Mes_Plan_SaleOrder FindEntity(Mes_Plan_SaleOrder obj)
+        {
+            string sql = @"SELECT TOP 1 T1.*,T2.CustomerName FROM Mes_Plan_SaleOrder T1 WITH(NOLOCK)
+                        LEFT JOIN dbo.Mes_Sys_Customer T2 WITH(NOLOCK) ON T1.CustomerID = T2.ID
+                        WHERE OrderStatus<>20 ";
+            if (obj.ID > 0)
+            {
+                sql += string.Format(" AND T1.ID = {0}", obj.ID);
+            }
+            if (TConvertHelper.FormatDBInt(obj.OrderType) > 0)
+            {
+                sql += string.Format(" AND T1.OrderType = '{0}'", obj.OrderType);
+            }
+            if (!string.IsNullOrEmpty(obj.OrderNo))
+            {
+                sql += string.Format(" AND T1.OrderNo = '{0}'", obj.OrderNo);
+            }
+
+            return this.CurDbSession.FromSql(sql).ToFirst<Mes_Plan_SaleOrder>();
+        }
+
         public bool DeleteExt(Mes_Plan_SaleOrder obj)
         {
             //作废订单

@@ -37,7 +37,9 @@ namespace MES.ManagementApp.Controllers
             {
                 return Json(new { IsSuccess = false, Message = "选择的记录有误，请刷新后重试！" });
             }
-            Mes_Plan_SaleOrder obj = MesPlanSaleOrderDao.Instance.Find<Mes_Plan_SaleOrder, int>(ID);
+            Mes_Plan_SaleOrder searchObj = new Mes_Plan_SaleOrder();
+            searchObj.ID = ID;
+            Mes_Plan_SaleOrder obj = MesPlanSaleOrderDao.Instance.FindEntity(searchObj);
             if (obj == null)
             {
                 return Json(new { IsSuccess = false, Message = "订单信息不存在，请刷新后重试！" });
