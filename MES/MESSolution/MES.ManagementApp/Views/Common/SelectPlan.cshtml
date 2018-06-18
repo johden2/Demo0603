@@ -104,18 +104,20 @@
     }
 
     function imgFormatterQuery (value, row, index) {
-        var rvalue = "<div style='vertical-align:middle;' ><input type='button' onclick=\"selectData('[0]','[1]','[2]','[3]','[4]','[5]');\" class='btn-select-item' value='选&nbsp;择' title=\"点击确定选择\"/></div>";
+        var rvalue = "<div style='vertical-align:middle;' ><input type='button' onclick=\"selectData('[0]','[1]','[2]','[3]','[4]','[5]','[6]','[7]');\" class='btn-select-item' value='选&nbsp;择' title=\"点击确定选择\"/></div>";
         return rvalue.replace("[0]", row.PlanCode).replace("[1]", row.MaterialProNo).replace("[2]", row.MaterialCode)
-        .replace("[3]", row.Version).replace("[4]", row.OrderNo).replace("[5]", row.OrderType);
+        .replace("[3]", row.Version).replace("[4]", row.OrderNo).replace("[5]", row.OrderType).replace("[6]", row.Unit).replace("[7]", row.MaterialSize);
     }
-    function selectData(sPlanCode, sMaterialProNo, sMaterialCode, sVersion, sOrderNo, sOrderType) { //确定选择
+    function selectData(sPlanCode, sMaterialProNo, sMaterialCode, sVersion, sOrderNo, sOrderType, sUnit, sMaterialSize) { //确定选择
         var data = {
             PlanCode: sPlanCode,
             MaterialProNo: sMaterialProNo,
             MaterialCode: sMaterialCode,
             Version: sVersion,
             OrderNo: sOrderNo,
-            OrderType: sOrderType
+            OrderType: sOrderType,
+            Unit: sUnit,
+            MaterialSize: ""// sMaterialSize
         };
         if (parent && parent.closeIframeForm) {
             parent.closeIframeForm(data, "plan");

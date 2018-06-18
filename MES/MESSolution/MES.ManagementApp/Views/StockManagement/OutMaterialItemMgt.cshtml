@@ -155,7 +155,7 @@
         </tr>
         <tr>
             <td class="form-head">
-                <span class="sp-require">*</span>单据行号：
+                <span class="sp-require">*</span>行号：
             </td>
             <td>
                 <input class="easyui-textbox" id="EI_ResNum" disabled style="width:60px;" />
@@ -190,14 +190,14 @@
                 物料简称：
             </td>
             <td><input class="easyui-textbox" id="EI_MaterialCode" disabled /></td>
-            <td class="form-head">
+            @*<td class="form-head">
                 物料规格：
             </td>
-            <td><input class="easyui-textbox" id="EI_MaterialSize" /></td>
+            <td><input class="easyui-textbox" id="EI_MaterialSize" /></td>*@
             <td class="form-head">
-                单位：
+                计量单位：
             </td>
-            <td><input class="easyui-textbox" id="EI_Unit" style="width:60px;" /></td>
+            <td><input class="easyui-textbox" id="EI_Unit" disabled /></td>
         </tr>
         <tr>
             <td class="form-head">
@@ -217,7 +217,7 @@
         </tr>
         <tr>
             <td class="form-head">
-                批次号：
+                进货批号：
             </td>
             <td><input class="easyui-textbox" id="EI_BatchNo" /></td>
            
@@ -261,8 +261,8 @@
         $("#btnDelete").click(function () { deleteItemRecord(); })
         $("#btnItemOk").click(function () { saveItemForm(); })
         $("#btnItemClose").click(function () { FormUitl.close(_divFormName); })
-        $("#btnShowPlan").click(function () { showPlan(); })
-        $("#btnShowStock").click(function () { showStock(); })
+        $("#btnShowPlan").click(function () { showWinPlan(); })
+        $("#btnShowStock").click(function () { showWinStock(); })
         $("#btnShowOrg").click(function () { $("#divTreeOrg").show(); })
         $("#btnTreeClose").click(function () { $("#divTreeOrg").hide(); })
         $("#btnShowProcess").click(function () { $("#divTreeProcess").show(); })
@@ -344,44 +344,6 @@
         }
     }
 
-    function showPlan() {
-        var url = "/Common/SelectPlan";
-        var content = '<iframe id="ifmPlan" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmPlanDiv" title="生产计划选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
-        $(document.body).append(boarddiv);
-        $('#ifmPlanDiv').show();
-        var win = $('#ifmPlanDiv').dialog({
-            content: content,
-            width: 700,
-            height: 370,
-            modal: false,
-            title: "生产计划选择",
-            onClose: function () {
-                $(this).dialog('destroy');
-                $(this).remove();
-            }
-        });
-    }
-
-    function showStock() {
-        var url = "/Common/SelectStock";
-        var content = '<iframe id="ifmStock" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmStockDiv" title="仓库选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
-        $(document.body).append(boarddiv);
-        $('#ifmStockDiv').show();
-        var win = $('#ifmStockDiv').dialog({
-            content: content,
-            width: 700,
-            height: 370,
-            modal: false,
-            title: "仓库选择",
-            onClose: function () {
-                $(this).dialog('destroy');
-                $(this).remove();
-            }
-        });
-    }
-
     //关闭弹出iframe窗口
     function closeIframeForm(data, typeName) {
          if (typeName == "plan") {
@@ -390,6 +352,8 @@
             $("#EI_MaterialProNo").val(data.MaterialProNo);
             $("#EI_Version").val(data.Version);
             $("#EI_MaterialCode").val(data.MaterialCode);
+            $("#EI_MaterialSize").val(data.MaterialSize);
+            $("#EI_Unit").val(data.Unit);
         } else if (typeName == "stock") {
             $('#ifmStockDiv').dialog("close");
             $("#EI_StockID").val(data.StockID);
@@ -418,14 +382,14 @@
     //初始化Grid
     function initGrid() {
         var cols = [[
-               { field: 'ResNum', title: '订单行号', width: 70, align: 'center' },
+               { field: 'ResNum', title: '行号', width: 70, align: 'center' },
                { field: 'PlanNo', title: '计划批号', width: 100, align: 'center' },
                { field: 'MaterialProNo', title: '产品编码', width: 120, align: 'center' },
                { field: 'Version', title: '版本', width: 60, align: 'center' },
                { field: 'Num', title: '领料数量', width: 80, align: 'center' },
-               { field: 'Unit', title: '单位', width: 80, align: 'center' },
+               { field: 'Unit', title: '计量单位', width: 80, align: 'center' },
                { field: 'ProcessName', title: '工艺', width: 80, align: 'center' },
-               { field: 'BatchNo', title: '批次号', width: 120, align: 'center' },
+               { field: 'BatchNo', title: '进货批号', width: 120, align: 'center' },
                { field: 'StockName', title: '仓库', width: 120, align: 'center' }
         ]];
 

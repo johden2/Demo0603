@@ -172,11 +172,11 @@
             <td class="form-head">
                 版本：
             </td>
-            <td><input class="easyui-textbox" id="EI_Version" style="width:60px;" /></td>
+            <td><input class="easyui-textbox" id="EI_Version" style="width: 90px;" /></td>
         </tr>
         <tr>
             <td class="form-head">
-                批次号：
+                进货批号：
             </td>
             <td><input class="easyui-textbox" id="EI_BatchNo" /></td>
            
@@ -184,25 +184,26 @@
                 检验状态：
             </td>
             <td>
-                <input type="text" style="width: 120px;" class="easyui-combobox" id="EI_CheckItemStatus"
+                <input type="text" class="easyui-combobox" id="EI_CheckItemStatus"
                        data-options="valueField:'Value', textField:'Text',editable : false" />
             </td>
             <td class="form-head">
                 计量单位：
             </td>
-            <td><input class="easyui-textbox" id="EI_Unit" style="width:60px;" /></td>
+            <td><input class="easyui-textbox" id="EI_Unit" style="width: 90px;" /></td>
         </tr>
         <tr>
-            <td class="form-head">
-                验收数量：
-            </td>
-            <td><input class="easyui-textbox" id="EI_AcceptNum" /></td>
             <td class="form-head">
                 验收日期：
             </td>
             <td>
-                <input type="text" class="easyui-datebox" id="EI_AcceptDate" style="width:120px;" maxlength="50" />
+                <input type="text" class="easyui-datebox" id="EI_AcceptDate" maxlength="50" />
             </td>
+            <td class="form-head">
+                验收数量：
+            </td>
+            <td><input class="easyui-textbox" id="EI_AcceptNum" /></td>
+          
             <td class="form-head">
                 验退数量：
             </td>
@@ -238,15 +239,15 @@
         $("#btnDelete").click(function () { deleteItemRecord(); })
         $("#btnItemOk").click(function () { saveItemForm(); })
         $("#btnItemClose").click(function () { FormUitl.close(_divFormName); })
-        $("#btnShowSupplier").click(function () { showSupplier(); })
-        $("#btnShowSaleOrder").click(function () { showSaleOrder(); })
-        $("#btnShowMaterial").click(function () { showProduct(); })
-        $("#btnShowStock").click(function () { showStock(); })
+        $("#btnShowSupplier").click(function () { showWinSupplier(); })
+        $("#btnShowSaleOrder").click(function () { showWinSaleOrder(); })
+        $("#btnShowMaterial").click(function () { showWinProduct(); })
+        $("#btnShowStock").click(function () { showWinStock(); })
 
         //绑定下拉框
         common_bindCommonCombox("E_CheckStatus", { headerType: 1, statusType: "CheckStatus" });
         common_bindCommonCombox("E_BillType", { headerType: 1, statusType: "StockBillType" });
-        common_bindCommonCombox("EI_CheckItemStatus", { headerType: 1, statusType: "CheckStatus" });
+        common_bindCommonCombox("EI_CheckItemStatus", { headerType: 0, statusType: "CheckStatus" });
 
         //加载主信息
         loadData();
@@ -282,83 +283,6 @@
         }
     }
 
-    //选择供应商
-    function showSupplier() {
-        var url = "/Common/SelectSupplier";
-        var content = '<iframe id="ifmSupplier" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmSupplierDiv" title="供应商选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
-        $(document.body).append(boarddiv);
-        $('#ifmSupplierDiv').show();
-        var win = $('#ifmSupplierDiv').dialog({
-            content: content,
-            width: 650,
-            height: 370,
-            modal: false,
-            title: "供应商选择",
-            onClose: function () {
-                $(this).dialog('destroy');
-                $(this).remove();
-            }
-        });
-    }
-
-    function showSaleOrder() {
-        var url = "/Common/SelectSaleOrder";
-        var content = '<iframe id="ifmSaleOrder" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmSaleOrderDiv" title="销售订单选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
-        $(document.body).append(boarddiv);
-        $('#ifmSaleOrderDiv').show();
-        var win = $('#ifmSaleOrderDiv').dialog({
-            content: content,
-            width: 700,
-            height: 370,
-            modal: false,
-            title: "销售订单选择",
-            onClose: function () {
-                $(this).dialog('destroy');
-                $(this).remove();
-            }
-        });
-    }
-
-    function showProduct() {
-        var url = "/Common/SelectProduct";
-        var content = '<iframe id="ifmProduct" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmProductDiv" title="产品/物料选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
-        $(document.body).append(boarddiv);
-        $('#ifmProductDiv').show();
-        var win = $('#ifmProductDiv').dialog({
-            content: content,
-            width: 700,
-            height: 370,
-            modal: false,
-            title: "产品/物料选择",
-            onClose: function () {
-                $(this).dialog('destroy');
-                $(this).remove();
-            }
-        });
-    }
-
-    function showStock() {
-        var url = "/Common/SelectStock";
-        var content = '<iframe id="ifmStock" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmStockDiv" title="仓库选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
-        $(document.body).append(boarddiv);
-        $('#ifmStockDiv').show();
-        var win = $('#ifmStockDiv').dialog({
-            content: content,
-            width: 700,
-            height: 370,
-            modal: false,
-            title: "仓库选择",
-            onClose: function () {
-                $(this).dialog('destroy');
-                $(this).remove();
-            }
-        });
-    }
-
     //关闭弹出iframe窗口
     function closeIframeForm(data, typeName) {
         if (typeName == "supplier") {
@@ -374,7 +298,7 @@
             $('#ifmProductDiv').dialog("close");
             $("#EI_MaterialProNo").val(data.MaterialProNo);
             $("#EI_MaterialCode").val(data.MaterialCode);
-            //$("#EI_Unit").val(data.Unit);
+            $("#EI_Unit").val(data.Unit);
         } else if (typeName == "stock") {
             $('#ifmStockDiv').dialog("close");
             $("#EI_StockID").val(data.StockID);
@@ -409,9 +333,9 @@
                { field: 'Version', title: '版本', width: 80, align: 'center' },
                { field: 'InStockNum', title: '进货数量', width: 80, align: 'center' },
                { field: 'Unit', title: '计量单位', width: 80, align: 'center' },
-               { field: 'BatchNo', title: '批次号', width: 100, align: 'center' },
-               { field: 'AcceptNum', title: '验收数量', width: 80, align: 'center' },
+               { field: 'BatchNo', title: '进货批号', width: 100, align: 'center' },
                { field: 'Show_AcceptDate', title: '验收日期', width: 120, align: 'center' },
+               { field: 'AcceptNum', title: '验收数量', width: 80, align: 'center' },
                { field: 'StockName', title: '仓库', width: 80, align: 'center' }
         ]];
 
