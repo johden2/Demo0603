@@ -112,7 +112,7 @@
 </div>
 
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="订单明细" style="width: 620px; height: 330px;display: none;" collapsible="false" minimizable="false"
+     title="订单明细" style="width: 770px; height: 330px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
     <table id="tbForm" class="tbForm">
         <tr>
@@ -124,32 +124,47 @@
         </tr>
         <tr>
             <td class="form-head">
-                <span class="sp-require">*</span>订单行号：
+                <span class="sp-require">*</span>行号：
             </td>
             <td>
                 <input class="easyui-textbox" id="EI_ResNum" disabled style="width:60px;" />
                 <span class="sp-require">(生成)</span>
             </td>
             <td class="form-head">
-                <span class="sp-require">*</span>订单数量：
-            </td>
-            <td><input class="easyui-textbox" id="EI_Num" /></td>
-        </tr>
-        <tr>
-            <td class="form-head">
                 <span class="sp-require">*</span>产品编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="Select_MaterialProNo" />
+                <input class="easyui-textbox" id="EI_MaterialProNo" disabled />
+                <img id="btnShowMaterial" class="select-icon" src="/images/select_icon.png" title="点击选择物料" />
             </td>
+        </tr>
+        <tr>
             <td class="form-head">
                 产品名称：
             </td>
-            <td><input class="easyui-textbox" id="EI_MaterialCode"  /></td>
+            <td><input class="easyui-textbox" id="EI_MaterialCode" disabled /></td>
             <td class="form-head">
-                版本：
+                规格型号：
             </td>
-            <td><input class="easyui-textbox" id="EI_Version" style="width:60px;" /></td>
+            <td><input class="easyui-textbox" id="EI_MaterialSize"  disabled /></td>
+            <td class="form-head">
+                计量单位：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Unit" disabled style="width:100px;" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+               单价：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Price" /><span class="sp-require">(元)</span></td>
+            <td class="form-head">
+                数量：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Num" /></td>
+            <td class="form-head">
+                金额：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Amount" style="width:100px;" /><span class="sp-require">(元)</span></td>
         </tr>
         <tr>
             <td class="form-head">
@@ -189,7 +204,8 @@
         $("#btnDelete").click(function () { deleteItemRecord(); })
         $("#btnItemOk").click(function () { saveItemForm(); })
         $("#btnItemClose").click(function () { FormUitl.close(_divFormName); })
-        $("#btnShowCustomer").click(function () { showCustomer(); })
+        $("#btnShowCustomer").click(function () { showWinCustomer(); })
+        $("#btnShowMaterial").click(function () { showWinProduct(); })
 
         //绑定下拉框
         common_bindCommonCombox("E_OrderType", { headerType: 1, statusType: "OrderType" });
@@ -198,14 +214,6 @@
         loadData();
 
         initGrid();
-
-        CtrlCommonUtil.BindMaterialLike("Select_MaterialProNo", { Width: 150 },
-       function (rowIndex, rowData) { //点击事件
-           $("#Select_MaterialProNo").combogrid("setText", rowData.MaterialProNo);
-           $("#EI_MaterialCode").val(rowData.MaterialCode);
-           $("#EI_Version").val(rowData.Version);
-       });
-
     });
 
     function loadData() {
@@ -232,33 +240,19 @@
         }
     }
 
-    //选择供应商
-    function showCustomer() {
-        var url = "/Common/SelectCustomer";
-        var content = '<iframe id="ifmCustomer" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-        var boarddiv = '<div id="ifmCustomerDiv" title="客户选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
-        $(document.body).append(boarddiv);
-        $('#ifmCustomerDiv').show();
-        var win = $('#ifmCustomerDiv').dialog({
-            content: content,
-            width: 650,
-            height: 370,
-            modal: false,
-            title: "客户选择",
-            onClose: function () {
-                $(this).dialog('destroy');
-                $(this).remove();
-            }
-        });
-    }
-
     //关闭弹出iframe窗口
     function closeIframeForm(data, typeName) {
         if (typeName == "customer") {
             $('#ifmCustomerDiv').dialog("close");
             $("#E_CustomerID").val(data.CustomerID);
             $("#E_CustomerName").val(data.CustomerName);
-        } 
+        } else if (typeName == "product") {
+            $('#ifmProductDiv').dialog("close");
+            $("#EI_MaterialProNo").val(data.MaterialProNo);
+            $("#EI_MaterialCode").val(data.MaterialCode);
+            $("#EI_MaterialSize").val(data.MaterialSize);
+            $("#EI_Unit").val(data.Unit);
+        }
     }
 
     //保存主订单
@@ -282,15 +276,18 @@
     //初始化Grid
     function initGrid() {
         var cols = [[
-               { field: 'ResNum', title: '订单行号', width: 70, align: 'center' },
-               { field: 'MaterialProNo', title: '产品编码', width: 120, align: 'center' },
+               { field: 'ResNum', title: '行号', width: 60, align: 'center' },
+               { field: 'MaterialProNo', title: '产品编码', width: 110, align: 'center' },
                { field: 'MaterialCode', title: '产品名称', width: 120, align: 'center' },
-               { field: 'Version', title: '版本', width: 80, align: 'center' },
-               { field: 'Num', title: '订单数量', width: 80, align: 'center' },
-               { field: 'AlNum', title: '已发数量', width: 80, align: 'center' },
-               { field: 'Show_ShipDate', title: '发货日期', width: 120, align: 'center' },
+               { field: 'MaterialSize', title: '规格型号', width: 100, align: 'center' },
+               { field: 'Unit', title: '计量单位', width: 70, align: 'center' },
+               { field: 'Price', title: '单价', width: 90, align: 'center' },
+               { field: 'Num', title: '数量', width: 70, align: 'center' },
+               { field: 'Amount', title: '金额', width: 100, align: 'center' },
+               { field: 'AlNum', title: '已发数量', width: 70, align: 'center' },
+               { field: 'Show_ShipDate', title: '发货日期', width: 90, align: 'center' },
                { field: 'Creater', title: '创建人', width: 80, align: 'center' },
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
+               { field: 'Show_CreatedTime', title: '创建时间', width: 130, align: 'center' }
         ]];
 
         //设置动态列
@@ -323,8 +320,11 @@
             $("#EI_ResNum").val(row.ResNum);
             $("#EI_MaterialProNo").val(row.MaterialProNo);
             $("#EI_MaterialCode").val(row.MaterialCode);
-            $("#EI_Version").val(row.Version);
+            $("#EI_MaterialSize").val(row.MaterialSize);
+            $("#EI_Unit").val(row.Unit);
             $("#EI_Num").val(row.Num);
+            $("#EI_Price").val(row.Price);
+            $("#EI_Amount").val(row.Amount);
             $("#EI_ShipDate").datebox('setValue', row.Show_ShipDate);
             $("#EI_AlNum").val(row.AlNum);
             $("#EI_Memo").val(row.Memo);
@@ -343,10 +343,13 @@
         data.OrderID = _OrderID;
         data.ID = $("#EI_ID").val();
         data.ResNum = $("#EI_ResNum").val();
-        data.MaterialProNo = $("#Select_MaterialProNo").combogrid("getText");
+        data.MaterialProNo = $("#EI_MaterialProNo").val();
         data.MaterialCode = $("#EI_MaterialCode").val();
-        data.Version = $("#EI_Version").val();
+        data.MaterialSize = $("#EI_MaterialSize").val();
+        data.Unit = $("#EI_Unit").val();
         data.Num = $("#EI_Num").val();
+        data.Price = $("#EI_Price").val();
+        data.Amount = $("#EI_Amount").val();
         data.ShipDate = $("#EI_ShipDate").datebox("getValue");
         data.AlNum = $("#EI_AlNum").val();
         data.Memo = $("#EI_Memo").val();

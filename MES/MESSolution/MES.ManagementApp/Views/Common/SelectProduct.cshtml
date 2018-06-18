@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "物料选择";
+    ViewBag.Title = "产品(物料)选择";
     Layout = "~/Views/Shared/_Layout_Non.cshtml";
 }
 
@@ -106,11 +106,11 @@
     }
 
     function imgFormatterQuery(value, row, index) {
-        var rvalue = "<div style='vertical-align:middle;' ><input type='button' onclick=\"selectData('[0]','[1]','[2]');\" class='btn-select-item' value='选&nbsp;择' title=\"点击确定选择\"/></div>";
-        return rvalue.replace("[0]", row.MaterialProNo).replace("[1]", row.MaterialCode).replace("[2]", row.Unit);
+        var rvalue = "<div style='vertical-align:middle;' ><input type='button' onclick=\"selectData('[0]','[1]','[2]','[3]');\" class='btn-select-item' value='选&nbsp;择' title=\"点击确定选择\"/></div>";
+        return rvalue.replace("[0]", row.MaterialProNo).replace("[1]", row.MaterialCode).replace("[2]", row.Unit).replace("[3]", row.MaterialSize);
     }
-    function selectData(sMaterialProNo, sMaterialCode, sUnit) { //确定选择
-        var data = { MaterialProNo: sMaterialProNo, MaterialCode: sMaterialCode, Unit: sUnit };
+    function selectData(sMaterialProNo, sMaterialCode, sUnit, sMaterialSize) { //确定选择
+        var data = { MaterialProNo: sMaterialProNo, MaterialCode: sMaterialCode, Unit: sUnit, MaterialSize: sMaterialSize };
         if (parent && parent.closeIframeForm) {
             parent.closeIframeForm(data, "product");
         }

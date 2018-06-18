@@ -31,6 +31,18 @@ EXECUTE sp_addextendedproperty N'MS_Description', N'已发数量', N'user', N'dbo',
 			N'table', N'Mes_Plan_SaleOrderItem', N'column', N'AlNum' 
 
 
+ALTER TABLE Mes_Plan_SaleOrderItem ADD MaterialSize VARCHAR(50)
+ALTER TABLE Mes_Plan_SaleOrderItem ADD Unit VARCHAR(20)
+ALTER TABLE Mes_Plan_SaleOrderItem ADD Price DECIMAL(18,2)
+ALTER TABLE Mes_Plan_SaleOrderItem ADD Amount DECIMAL(18,2)
+EXECUTE sp_addextendedproperty N'MS_Description', N'规格型号', N'user', N'dbo',
+			N'table', N'Mes_Plan_SaleOrderItem', N'column', N'MaterialSize' 
+EXECUTE sp_addextendedproperty N'MS_Description', N'计量单位', N'user', N'dbo',
+			N'table', N'Mes_Plan_SaleOrderItem', N'column', N'Unit' 
+EXECUTE sp_addextendedproperty N'MS_Description', N'单价', N'user', N'dbo',
+			N'table', N'Mes_Plan_SaleOrderItem', N'column', N'Price'
+EXECUTE sp_addextendedproperty N'MS_Description', N'金额', N'user', N'dbo',
+			N'table', N'Mes_Plan_SaleOrderItem', N'column', N'Amount' 
 
 /*-----2.计划管理-------------------------------------------*/
 IF EXISTS(SELECT * FROM syscolumns WHERE id=object_id('Mes_Plan_PlanInfor') and name='WorkShopCode')

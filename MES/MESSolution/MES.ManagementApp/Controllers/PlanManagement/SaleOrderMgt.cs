@@ -164,10 +164,10 @@ namespace MES.ManagementApp.Controllers
             {
                 return Json(new { IsSuccess = false, Message = "【产品编码】不能为空！" });
             }
-            if (string.IsNullOrEmpty(obj.Version))
-            {
-                return Json(new { IsSuccess = false, Message = "【产品版本】不能为空！" });
-            }
+            //if (string.IsNullOrEmpty(obj.Version))
+            //{
+            //    return Json(new { IsSuccess = false, Message = "【产品版本】不能为空！" });
+            //}
             Mes_Plan_SaleOrder order = MesPlanSaleOrderDao.Instance.Find<Mes_Plan_SaleOrder, int>(obj.OrderID);
             if (order == null)
             {
@@ -196,11 +196,15 @@ namespace MES.ManagementApp.Controllers
 
             itemObj.MaterialProNo = obj.MaterialProNo;
             itemObj.MaterialCode = obj.MaterialCode;
-            itemObj.Version = obj.Version;
+            itemObj.MaterialSize = obj.MaterialSize;
+            itemObj.Unit = obj.Unit;
             itemObj.Num = obj.Num;
+            itemObj.Price = obj.Price;
+            itemObj.Amount = obj.Amount;
             itemObj.ShipDate = obj.ShipDate;
             itemObj.AlNum = obj.AlNum;
             itemObj.Memo = obj.Memo;
+
             int id = MesPlanSaleOrderDao.Instance.Save<Mes_Plan_SaleOrderItem>(itemObj);
             return Json(new { IsSuccess = true, Message = id.ToString() });
         }

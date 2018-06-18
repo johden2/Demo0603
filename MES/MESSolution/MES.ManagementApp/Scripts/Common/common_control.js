@@ -550,6 +550,175 @@ function showTabIframe(title, url) {
     return true;
 }
 
+//显示产品
+function showWinProduct(param) {
+    var width = 700;
+    var height = 370;
+    if (param && param.Width) {
+        width = param.Width;
+    }
+    if (param && param.Height) {
+        height = param.Height;
+    }
+    var url = "/Common/SelectProduct";
+    var content = '<iframe id="ifmProduct" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+    var boarddiv = '<div id="ifmProductDiv" title="产品(物料)选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    $(document.body).append(boarddiv);
+    $('#ifmProductDiv').show();
+    var win = $('#ifmProductDiv').dialog({
+        content: content,
+        width: width,
+        height: height,
+        modal: false,
+        title: "产品(物料)选择",
+        onClose: function () {
+            $(this).dialog('destroy');
+            $(this).remove();
+        }
+    });
+}
+
+//选择客户
+function showWinCustomer(param) {
+    var width = 650;
+    var height = 370;
+    if (param && param.Width) {
+        width = param.Width;
+    }
+    if (param && param.Height) {
+        height = param.Height;
+    }
+    var url = "/Common/SelectCustomer";
+    var content = '<iframe id="ifmCustomer" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+    var boarddiv = '<div id="ifmCustomerDiv" title="客户选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    $(document.body).append(boarddiv);
+    $('#ifmCustomerDiv').show();
+    var win = $('#ifmCustomerDiv').dialog({
+        content: content,
+        width: width,
+        height: height,
+        modal: false,
+        title: "客户选择",
+        onClose: function () {
+            $(this).dialog('destroy');
+            $(this).remove();
+        }
+    });
+}
+
+//选择供应商
+function showWinSupplier(param) {
+    var width = 650;
+    var height = 370;
+    if (param && param.Width) {
+        width = param.Width;
+    }
+    if (param && param.Height) {
+        height = param.Height;
+    }
+    var url = "/Common/SelectSupplier";
+    var content = '<iframe id="ifmSupplier" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+    var boarddiv = '<div id="ifmSupplierDiv" title="供应商选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    $(document.body).append(boarddiv);
+    $('#ifmSupplierDiv').show();
+    var win = $('#ifmSupplierDiv').dialog({
+        content: content,
+        width: width,
+        height: height,
+        modal: false,
+        title: "供应商选择",
+        onClose: function () {
+            $(this).dialog('destroy');
+            $(this).remove();
+        }
+    });
+}
+
+//选择仓库
+function showWinStock(param) {
+    var width = 650;
+    var height = 370;
+    if (param && param.Width) {
+        width = param.Width;
+    }
+    if (param && param.Height) {
+        height = param.Height;
+    }
+    var url = "/Common/SelectStock";
+    var content = '<iframe id="ifmStock" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+    var boarddiv = '<div id="ifmStockDiv" title="仓库选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    $(document.body).append(boarddiv);
+    $('#ifmStockDiv').show();
+    var win = $('#ifmStockDiv').dialog({
+        content: content,
+        width: width,
+        height: height,
+        modal: false,
+        title: "仓库选择",
+        onClose: function () {
+            $(this).dialog('destroy');
+            $(this).remove();
+        }
+    });
+}
+
+//选择销售订单
+function showWinSaleOrder(param) {
+    var width = 700;
+    var height = 370;
+    if (param && param.Width) {
+        width = param.Width;
+    }
+    if (param && param.Height) {
+        height = param.Height;
+    }
+    var url = "/Common/SelectSaleOrder";
+    var content = '<iframe id="ifmSaleOrder" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+    var boarddiv = '<div id="ifmSaleOrderDiv" title="销售订单选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    $(document.body).append(boarddiv);
+    $('#ifmSaleOrderDiv').show();
+    var win = $('#ifmSaleOrderDiv').dialog({
+        content: content,
+        width: width,
+        height: height,
+        modal: false,
+        title: "销售订单选择",
+        onClose: function () {
+            $(this).dialog('destroy');
+            $(this).remove();
+        }
+    });
+}
+
+//选择生成计划
+function showWinPlan(param) {
+    var width = 700;
+    var height = 370;
+    if (param && param.Width) {
+        width = param.Width;
+    }
+    if (param && param.Height) {
+        height = param.Height;
+    }
+    var url = "/Common/SelectPlan";
+    var content = '<iframe id="ifmPlan" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+    var boarddiv = '<div id="ifmPlanDiv" title="生产计划选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    $(document.body).append(boarddiv);
+    $('#ifmPlanDiv').show();
+    var win = $('#ifmPlanDiv').dialog({
+        content: content,
+        width: width,
+        height: height,
+        modal: false,
+        title: "生产计划选择",
+        onClose: function () {
+            $(this).dialog('destroy');
+            $(this).remove();
+        }
+    });
+}
+
+
 
 /*
     功能：通用的弹出模式对话框处理

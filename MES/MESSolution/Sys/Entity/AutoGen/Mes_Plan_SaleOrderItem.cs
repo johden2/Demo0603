@@ -34,6 +34,10 @@ namespace Sys.Model
         private string _Memo;
         private string _Creater;
         private DateTime _CreatedTime;
+        private string _MaterialSize;
+        private string _Unit;
+        private decimal? _Price;
+        private decimal? _Amount;
 
         /// <summary>
         /// 
@@ -140,7 +144,7 @@ namespace Sys.Model
             }
         }
         /// <summary>
-        /// 
+        /// 发货日期
         /// </summary>
         [Field("ShipDate")]
         public DateTime? ShipDate
@@ -153,7 +157,7 @@ namespace Sys.Model
             }
         }
         /// <summary>
-        /// 
+        /// 已发数量
         /// </summary>
         [Field("AlNum")]
         public int AlNum
@@ -204,6 +208,58 @@ namespace Sys.Model
                 this._CreatedTime = value;
             }
         }
+        /// <summary>
+        /// 规格型号
+        /// </summary>
+        [Field("MaterialSize")]
+        public string MaterialSize
+        {
+            get { return _MaterialSize; }
+            set
+            {
+                this.OnPropertyValueChange("MaterialSize");
+                this._MaterialSize = value;
+            }
+        }
+        /// <summary>
+        /// 计量单位
+        /// </summary>
+        [Field("Unit")]
+        public string Unit
+        {
+            get { return _Unit; }
+            set
+            {
+                this.OnPropertyValueChange("Unit");
+                this._Unit = value;
+            }
+        }
+        /// <summary>
+        /// 单价
+        /// </summary>
+        [Field("Price")]
+        public decimal? Price
+        {
+            get { return _Price; }
+            set
+            {
+                this.OnPropertyValueChange("Price");
+                this._Price = value;
+            }
+        }
+        /// <summary>
+        /// 金额
+        /// </summary>
+        [Field("Amount")]
+        public decimal? Amount
+        {
+            get { return _Amount; }
+            set
+            {
+                this.OnPropertyValueChange("Amount");
+                this._Amount = value;
+            }
+        }
         #endregion
 
         #region Method
@@ -245,6 +301,10 @@ namespace Sys.Model
 				_.Memo,
 				_.Creater,
 				_.CreatedTime,
+				_.MaterialSize,
+				_.Unit,
+				_.Price,
+				_.Amount,
 			};
         }
         /// <summary>
@@ -266,6 +326,10 @@ namespace Sys.Model
 				this._Memo,
 				this._Creater,
 				this._CreatedTime,
+				this._MaterialSize,
+				this._Unit,
+				this._Price,
+				this._Amount,
 			};
         }
         /// <summary>
@@ -321,13 +385,13 @@ namespace Sys.Model
             /// </summary>
             public readonly static Field Num = new Field("Num", "Mes_Plan_SaleOrderItem", "订单数量");
             /// <summary>
-            /// 
+            /// 发货日期
             /// </summary>
-            public readonly static Field ShipDate = new Field("ShipDate", "Mes_Plan_SaleOrderItem", "");
+            public readonly static Field ShipDate = new Field("ShipDate", "Mes_Plan_SaleOrderItem", "发货日期");
             /// <summary>
-            /// 
+            /// 已发数量
             /// </summary>
-            public readonly static Field AlNum = new Field("AlNum", "Mes_Plan_SaleOrderItem", "");
+            public readonly static Field AlNum = new Field("AlNum", "Mes_Plan_SaleOrderItem", "已发数量");
             /// <summary>
             /// 
             /// </summary>
@@ -340,6 +404,22 @@ namespace Sys.Model
             /// 
             /// </summary>
             public readonly static Field CreatedTime = new Field("CreatedTime", "Mes_Plan_SaleOrderItem", "");
+            /// <summary>
+            /// 规格型号
+            /// </summary>
+            public readonly static Field MaterialSize = new Field("MaterialSize", "Mes_Plan_SaleOrderItem", "规格型号");
+            /// <summary>
+            /// 计量单位
+            /// </summary>
+            public readonly static Field Unit = new Field("Unit", "Mes_Plan_SaleOrderItem", "计量单位");
+            /// <summary>
+            /// 单价
+            /// </summary>
+            public readonly static Field Price = new Field("Price", "Mes_Plan_SaleOrderItem", "单价");
+            /// <summary>
+            /// 金额
+            /// </summary>
+            public readonly static Field Amount = new Field("Amount", "Mes_Plan_SaleOrderItem", "金额");
         }
         #endregion
     }
