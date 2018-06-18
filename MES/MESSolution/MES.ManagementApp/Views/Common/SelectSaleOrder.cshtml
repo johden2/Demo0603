@@ -129,8 +129,9 @@
     }
 
     function imgFormatterQuery (value, row, index) {
-        var rvalue = "<div style='vertical-align:middle;' ><input type='button' onclick=\"selectData('[0]','[1]','[2]');\" class='btn-select-item' value='选&nbsp;择' title=\"点击确定选择\"/></div>";
-        return rvalue.replace("[0]", row.OrderType).replace("[1]", row.Show_OrderType).replace("[2]", row.OrderNo);
+        var rvalue = "<div style='vertical-align:middle;' ><input type='button' onclick=\"selectData('[0]','[1]','[2]','[3]','[4]','[5]');\" class='btn-select-item' value='选&nbsp;择' title=\"点击确定选择\"/></div>";
+        return rvalue.replace("[0]", row.OrderType).replace("[1]", row.Show_OrderType).replace("[2]", row.OrderNo)
+        .replace("[3]", row.OrderNo).replace("[4]", row.OrderNo).replace("[5]", row.OrderNo);
     }
     function selectData(sOrderType, sShow_OrderType, sOrderNo) { //确定选择
         var data = { OrderType: sOrderType, Show_OrderType: sShow_OrderType, OrderNo: sOrderNo };

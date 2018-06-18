@@ -67,7 +67,7 @@
     </table>
 </div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="计划信息" style="width: 780px; height: 300px;display: none;" collapsible="false" minimizable="false"
+     title="计划信息" style="width: 810px; height: 300px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
     <table id="tbForm" class="tbForm">
         <tr>
@@ -96,7 +96,10 @@
             <td class="form-head">
                 <span class="sp-require">*</span>工作车间：
             </td>
-            <td><input class="easyui-textbox" id="Select_WorkShopID" />
+            <td>
+                <input class="easyui-textbox" id="E_WorkShopName" disabled />
+                <input class="easyui-textbox" id="E_WorkShopID" hidden />
+                <img id="btnShowWorkShop" class="select-icon" src="/images/select_icon.png" title="点击选择工作车间" />
             </td>
           
         </tr>
@@ -105,15 +108,20 @@
                 <span class="sp-require">*</span>订单单号：
             </td>
             <td>
-                <input class="easyui-textbox" id="Select_OrderNo" />
+                <input class="easyui-textbox" id="E_OrderNo" disabled />
+                <img id="btnShowSaleOrder" class="select-icon" src="/images/select_icon.png" title="点击选择订单" />
             </td>
             <td class="form-head">
                 <span class="sp-require">*</span>订单单别：
             </td>
             <td>
-                <input class="easyui-textbox" id="Show_OrderType" disabled />
+                <input class="easyui-textbox" id="E_Show_OrderType" disabled />
                 <input type="hidden" class="easyui-textbox" id="E_OrderType" disabled />
             </td>
+            <td class="form-head">
+                计量单位：
+            </td>
+            <td><input class="easyui-textbox" id="E_Unit" /></td>
         </tr>
         <tr>
             <td class="form-head">
@@ -121,13 +129,13 @@
             </td>
             <td><input class="easyui-textbox" id="E_MaterialProNo" disabled /></td>
             <td class="form-head">
-               产品简称：
+                <span class="sp-require">*</span>产品名称：
             </td>
             <td><input class="easyui-textbox" id="E_MaterialCode" disabled /></td>
             <td class="form-head">
-                产品版本：
+                <span class="sp-require">*</span>产品版本：
             </td>
-            <td><input class="easyui-textbox" id="E_Version" disabled style="width:60px;" /></td>
+            <td><input class="easyui-textbox" id="E_Version"  /></td>
         </tr>
         <tr>
             <td class="form-head">
@@ -139,9 +147,9 @@
             </td>
             <td><input class="easyui-textbox" id="E_CompleteNum" /></td>
             <td class="form-head">
-                单位：
+                工厂：
             </td>
-            <td><input class="easyui-textbox" id="E_Unit" /></td>
+            <td><input class="easyui-textbox" id="E_Factory" /></td>
         </tr>
         <tr>
           
@@ -157,10 +165,7 @@
             <td>
                 <input type="text" class="easyui-datebox" id="E_EndTime"  maxlength="50" />
             </td>
-            <td class="form-head">
-                工厂：
-            </td>
-            <td><input class="easyui-textbox" id="E_Factory" /></td>
+          
         </tr>
 </table>
 </div>
@@ -177,6 +182,8 @@
         $("#btnDelete").click(function () { deleteRecord(); })
         $("#btnOk").click(function () { saveForm(); })
         $("#btnClose").click(function () { FormUitl.close(_divFormName); })
+        $("#btnShowWorkShop").click(function () { showWinWorkShop(); })
+        $("#btnShowSaleOrder").click(function () { showWinSaleOrderItem(); })
 
         //绑定下拉框
         common_bindCommonCombox("Q_OrderType", { headerType: 1, statusType: "OrderType" });
@@ -184,35 +191,22 @@
         common_bindCommonCombox("E_PlanType", { headerType: 0, statusType: "PlanType" });
 
         initGrid();
-
-        CtrlCommonUtil.BindSaleOrderLike("Select_OrderNo", { Width: 150 },
-         function (rowIndex, rowData) { //点击事件
-             $("#Select_OrderNo").combogrid("setText", rowData.OrderNo);
-             $("#Show_OrderType").val(rowData.Show_OrderType);
-             $("#E_OrderType").val(rowData.OrderType);
-             $("#E_MaterialProNo").val(rowData.MaterialProNo);
-             $("#E_MaterialCode").val(rowData.MaterialCode);
-             $("#E_Version").val(rowData.Version);
-         });
-
-        CtrlCommonUtil.BindWorkShopLike("Select_WorkShopID", { Width: 150 },
-         function (rowIndex, rowData) { //点击事件
-             $("#Select_WorkShopID").combogrid("setText", rowData.WorkShopName);
-             //$("#E_WorkShopID").val(rowData.Id);
-         });
     });
 
     //初始化Grid
     function initGrid() {
         var cols = [[
                { field: 'Show_PlanStatus', title: '计划状态', width: 80, align: 'center' },
+               { field: 'Show_PlanType', title: '计划类别', width: 80, align: 'center' },
                { field: 'PlanCode', title: '计划编号', width: 120, align: 'center' },
                { field: 'Show_OrderType', title: '订单单别', width: 80, align: 'center' },
                { field: 'OrderNo', title: '订单单号', width: 120, align: 'center' },
-               { field: 'MaterialProNo', title: '产品名称', width: 120, align: 'center' },
+               { field: 'MaterialProNo', title: '产品编码', width: 120, align: 'center' },
+               { field: 'MaterialCode', title: '产品名称', width: 120, align: 'center' },
                { field: 'Version', title: '版本', width: 60, align: 'center' },
-               { field: 'PlanNum', title: '计划数量', width: 80, align: 'center' },
-               { field: 'CompleteNum', title: '完成数量', width: 80, align: 'center' },
+               { field: 'Unit', title: '计量单位', width: 60, align: 'center' },
+               { field: 'PlanNum', title: '计划数量', width: 60, align: 'center' },
+               { field: 'CompleteNum', title: '完成数量', width: 60, align: 'center' },
                { field: 'Show_BeginTime', title: '计划开始时间', width: 100, align: 'center' },
                { field: 'Show_EndTime', title: '计划结束时间', width: 100, align: 'center' },
                { field: 'Creater', title: '创建人', width: 80, align: 'center' },
@@ -243,6 +237,24 @@
         };
     }
 
+    //关闭弹出iframe窗口
+    function closeIframeForm(data, typeName) {
+        if (typeName == "workshop") {
+            $('#ifmWorkShopDiv').dialog("close");
+            $("#E_WorkShopName").val(data.WorkShopName);
+            $("#E_WorkShopID").val(data.WorkShopID);
+        } else if (typeName == "saleorderitem") {
+            $('#ifmSaleOrderItemDiv').dialog("close");
+            $("#E_OrderNo").val(data.OrderNo);
+            $("#E_Show_OrderType").val(data.Show_OrderType);
+            $("#E_OrderType").val(data.OrderType);
+            $("#E_MaterialProNo").val(data.MaterialProNo);
+            $("#E_MaterialCode").val(data.MaterialCode);
+            $("#E_Version").val(data.Version);
+            $("#E_Unit").val(data.Unit);
+        }
+    }
+
     function showForm(optType) {
         //1.清理窗体数据
         FormUitl.reset(_formName);
@@ -257,9 +269,9 @@
             $("#lblPlanStatus").text(row.Show_PlanStatus);
             $("#E_PlanCode").val(row.PlanCode);
             $("#E_PlanType").combobox("setValue", row.PlanType);
-            $("#Select_OrderNo").combogrid("setText", row.OrderNo);
-            $("#Select_WorkShopID").combogrid("setText", row.WorkShopName);
-            $("#Select_WorkShopID").combogrid("setValue", row.WorkShopID);
+            $("#E_WorkShopName").val(row.WorkShopName);
+            $("#E_WorkShopID").val(row.WorkShopID);
+            $("#E_OrderNo").val(row.OrderNo);
             $("#Show_OrderType").val(row.Show_OrderType);
             $("#E_OrderType").val(row.OrderType);
             $("#E_MaterialProNo").val(row.MaterialProNo);
@@ -282,8 +294,8 @@
     function saveForm() {
         var data = FormUitl.getFormData(_formName);
         data.OptType = _OptType;
-        data.OrderNo = $("#Select_OrderNo").combogrid("getText");
-        data.WorkShopID = $("#Select_WorkShopID").combogrid("getValue");
+        //data.OrderNo = $("#Select_OrderNo").combogrid("getText");
+        //data.WorkShopID = $("#Select_WorkShopID").combogrid("getValue");
         doPostAjaxRequest("/PlanManagement/PlanMgt_Save", data, function (msg) {
             if (!msg.IsSuccess) {
                 $.messager.alert('提示', msg.Message, "info");

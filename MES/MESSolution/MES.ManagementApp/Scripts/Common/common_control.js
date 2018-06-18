@@ -634,6 +634,34 @@ function showWinSupplier(param) {
     });
 }
 
+//选择工作车间
+function showWinWorkShop(param) {
+    var width = 650;
+    var height = 370;
+    if (param && param.Width) {
+        width = param.Width;
+    }
+    if (param && param.Height) {
+        height = param.Height;
+    }
+    var url = "/Common/SelectWorkShop";
+    var content = '<iframe id="ifmWorkShop" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+    var boarddiv = '<div id="ifmWorkShopDiv" title="车间选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    $(document.body).append(boarddiv);
+    $('#ifmWorkShopDiv').show();
+    var win = $('#ifmWorkShopDiv').dialog({
+        content: content,
+        width: width,
+        height: height,
+        modal: false,
+        title: "车间选择",
+        onClose: function () {
+            $(this).dialog('destroy');
+            $(this).remove();
+        }
+    });
+}
+
 //选择仓库
 function showWinStock(param) {
     var width = 650;
@@ -674,7 +702,7 @@ function showWinSaleOrder(param) {
     }
     var url = "/Common/SelectSaleOrder";
     var content = '<iframe id="ifmSaleOrder" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
-    var boarddiv = '<div id="ifmSaleOrderDiv" title="销售订单选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    var boarddiv = '<div id="ifmSaleOrderDiv" title="订单选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
     $(document.body).append(boarddiv);
     $('#ifmSaleOrderDiv').show();
     var win = $('#ifmSaleOrderDiv').dialog({
@@ -682,7 +710,35 @@ function showWinSaleOrder(param) {
         width: width,
         height: height,
         modal: false,
-        title: "销售订单选择",
+        title: "订单选择",
+        onClose: function () {
+            $(this).dialog('destroy');
+            $(this).remove();
+        }
+    });
+}
+
+//选择销售订单
+function showWinSaleOrderItem(param) {
+    var width = 700;
+    var height = 370;
+    if (param && param.Width) {
+        width = param.Width;
+    }
+    if (param && param.Height) {
+        height = param.Height;
+    }
+    var url = "/Common/SelectSaleOrderItem";
+    var content = '<iframe id="ifmSaleOrderItem" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+    var boarddiv = '<div id="ifmSaleOrderItemDiv" title="订单明细选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    $(document.body).append(boarddiv);
+    $('#ifmSaleOrderItemDiv').show();
+    var win = $('#ifmSaleOrderItemDiv').dialog({
+        content: content,
+        width: width,
+        height: height,
+        modal: false,
+        title: "订单明细选择",
         onClose: function () {
             $(this).dialog('destroy');
             $(this).remove();

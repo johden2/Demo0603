@@ -1,32 +1,7 @@
 ﻿@{
-    ViewBag.Title = "供应商管理";
+    ViewBag.Title = "车间选择";
     Layout = "~/Views/Shared/_Layout_Non.cshtml";
 }
-
-<style type="text/css">
-    #divForm .tbForm td {
-        padding-left: 5px;
-        padding-top:5px;
-    }
-
-    .float-tree {
-        position: absolute;
-        display: none;
-        z-index: 9999;
-        border: 1px solid #808080;
-        background-color: #DDDDDD;
-        /*height:220px;*/
-    }
-
-    .tree-close {
-        text-align: right;
-        padding-right: 10px;
-        height: 5px;
-        font-size: 10px;
-        cursor: pointer;
-    }
-
-</style>
 
 <div class="easyui-layout" fit="true">
     <div region="center">
@@ -37,143 +12,60 @@
     <table id="tbQuery">
         <tr>
             <td>
-                供应商编码：
+                车间编码：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_SupplierCode" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_WorkShopCode" style="width: 120px;" />
             </td>
             <td>
-                &nbsp;&nbsp;供应商名称：
+                车间名称：
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_SupplierName" style="width: 150px;" />
+                <input class="easyui-textbox" id="Q_WorkShopName" style="width: 120px;" />
             </td>
             <td>
-                &nbsp;&nbsp;供应商简称:
+                所属工厂:
             </td>
             <td>
-                <input class="easyui-textbox" id="Q_SupplierPrcName" style="width:150px;" />
+                <input class="easyui-textbox" id="Q_FactoryCode" style="width: 120px;" />
             </td>
             <td style="padding-left:10px; padding-bottom:5px" colspan="2">
                 <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
             </td>
         </tr>
-        <tr>
-            <td colspan="3">
-                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
-                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
-                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
-                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
-            </td>
-        </tr>
     </table>
 </div>
-<div id="divForm" class="easyui-window" closed="true" modal="true"
-     title="供应商信息" style="width: 800px; height: 370px;display: none;" collapsible="false" minimizable="false"
-     maximizable="false">
-        <table id="tbForm" class="tbForm">
-            <tr>
-                <td colspan="3">
-                    <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
-                    <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
-                    <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
-                </td>
-            </tr>
-            <tr>
-                <td class="form-head">
-                    <span class="sp-require">*</span>供应商编号：
-                </td>
-                <td><input class="easyui-textbox" id="E_SupplierCode" /></td>
-                <td class="form-head">
-                    <span class="sp-require">*</span>供应商名称：
-                </td>
-                <td><input class="easyui-textbox" id="E_SupplierName" /></td>
-                <td class="form-head">
-                    <span class="sp-require">*</span>供应商简称:
-                </td>
-                <td>
-                    <input class="easyui-textbox" id="E_SupplierPrcName" />
-                </td>
-            </tr>   
-            <tr>
-                <td>
-                    供应商分类：
-                </td>
-                <td>
-                    <input class="easyui-textbox" id="E_Class">
-                </td>
-                <td>
-                    供应商地址:
-                </td>
-                <td>
-                    <input class="easyui-textbox" id="E_Address" />
-                </td>
-                <td>
-                    联系电话:
-                </td>
-                <td>
-                    <input class="easyui-textbox" id="E_TelPhone">
-                </td>
-            </tr> 
-            <tr>
-                <td>
-                    法人:
-                </td>
-                <td>
-                    <input class="easyui-textbox" id="E_DutyPerson">
-                </td>
-                <td>
-                    备注:
-                </td>
-                <td colspan="2">
-                    <input class="easyui-textbox" id="E_Memo">
-                </td>
-            </tr>       
-        </table>
-</div>
 
-<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
-<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
 <script src="/Scripts/Common/common_search.js?v=4"></script>
-<script src="@Url.Content("~/Scripts/Common/orgtree.js?v=" + new Random().NextDouble())"></script>
 <script type="text/javascript">
-    var _divFormName = "divForm";
-    var _formName = "tbForm";
-    var _OptType = 0;
-    $(document).ready(function () {       
-        $("#btnQuery").click(function () {      
+    $(document).ready(function () {
+        $("#btnQuery").click(function () {
             PageListObj.queryList();
         })
-        $("#btnAdd").click(function () { showForm(1); })
-        $("#btnEdit").click(function () { showForm(2); })
-        $("#btnDelete").click(function () { deleteRecord(); })
-        $("#btnOk").click(function () { saveForm(); })
-        $("#btnClose").click(function () { FormUitl.close(_divFormName); })
         initGrid();
     });
 
     //初始化Grid
     function initGrid() {
         var cols = [[
-               { field: 'ID', title: 'ID', width: 100,align:'center',hidden:true},
-               { field: 'SupplierCode', title: '供应商编号', width: 100, align: 'center' },
-               { field: 'SupplierName', title: '供应商名称', width: 160, align: 'center' },
-               { field: 'SupplierPrcName', title: '供应商简称', width: 160, align: 'center' },
-               { field: 'Class', title: '供应商分类', width: 90, align: 'center' },
-               { field: 'Address', title: '地址', width: 200, align: 'center' },
-               { field: 'TelPhone', title: '电话', width: 80,align:'center' },
-               { field: 'DutyPerson', title: '法人', width: 90, align: 'center' },
-               { field: 'Memo', title: '备注', width: 160, align: 'center' },
-               { field: 'Creater', title: '创建人', width: 100},
-               { field: 'Show_CreatedTime', title: '创建时间', width: 150 },
-               { field: 'Modifier', title: '修改人', width: 100 },
-               { field: 'Show_ModifiedTime', title: '修改时间', width: 150 }
+                {
+                    field: 'Operation', title: '选择', width: 80, align: 'center',
+                    formatter: function (value, row, index) {
+                        return imgFormatterQuery(value, row, index);
+                    }
+                },
+               { field: 'ID', title: 'ID', width: 100, align: 'center', hidden: true },
+               { field: 'WorkShopCode', title: '车间编码', width: 150, align: 'center' },
+               { field: 'WorkShopName', title: '车间名称', width: 180, align: 'center' },
+               { field: 'FactoryCode', title: '所属工厂', width: 150, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 100, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
         ]];
 
         //设置动态列
         PageListObj.GridProperties = {
             columns: cols,
-            url: "/BaseManagement/Supplier_FindByPage"
+            url: "/BaseManagement/WorkShop_FindByPage"
         };
 
         PageListObj.getQueryParms = function () {
@@ -184,75 +76,21 @@
     }
     function getQueryParms() {
         return {
-            SupplierCode: $.trim($("#Q_SupplierCode").val()),
-            SupplierName: $.trim($("#Q_SupplierName").val()),
-            SupplierPrcName: $.trim($("#Q_SupplierPrcName").val())
+            WorkShopCode: $.trim($("#Q_WorkShopCode").val()),
+            WorkShopName: $.trim($("#Q_WorkShopName").val()),
+            FactoryCode: $.trim($("#Q_FactoryCode").val())
         };
     }
 
-  
-    function showForm(optType) {
-        //1.清理窗体数据
-        FormUitl.reset(_formName);
-        $("#E_ID").val("");
-       
-        //2.加载窗体数据
-        if (optType == 2) { //修改
-            var row = DataGridUitl.getSelectedRow("dgList");
-            if (!row) return;
-
-            $("#E_ID").val(row.ID);
-            $("#E_SupplierCode").val(row.SupplierCode);
-            $("#E_SupplierName").val(row.SupplierName);
-            $("#E_SupplierPrcName").val(row.SupplierPrcName);
-            $("#E_Class").val(row.Class);
-            $("#E_Address").val(row.Address);
-            $("#E_TelPhone").val(row.TelPhone);
-            $("#E_DutyPerson").val(row.DutyPerson);
-            $("#E_Memo").val(row.Memo);
+    function imgFormatterQuery(value, row, index) {
+        var rvalue = "<div style='vertical-align:middle;' ><input type='button' onclick=\"selectData('[0]','[1]');\" class='btn-select-item' value='选&nbsp;择' title=\"点击确定选择\"/></div>";
+        return rvalue.replace("[0]", row.ID).replace("[1]", row.WorkShopName);
+    }
+    function selectData(id, name) { //确定选择
+        var data = { StockID: id, WorkShopName: name };
+        if (parent && parent.closeIframeForm) {
+            parent.closeIframeForm(data, "workshop");
         }
-
-        //3.显示窗体
-        $('#' + _divFormName).show();
-        FormUitl.open(_divFormName);
-        _OptType = optType;
     }
 
-    //保存记录
-    function saveForm() {
-        var data = FormUitl.getFormData(_formName);   
-        data.OptType = _OptType;
-        doPostAjaxRequest("/BaseManagement/Supplier_Save", data, function (msg) {
-            if (!msg.IsSuccess) {
-                $.messager.alert('提示', msg.Message, "info");
-                return;
-            }
-            $.messager.alert('提示', '操作成功！', "info", function () {
-                $('#dgList').datagrid('reload'); //刷新列表
-            });
-        });
-    }
-
-    //删除记录
-    function deleteRecord() {
-        var row = DataGridUitl.getSelectedRow("dgList");
-        if (!row) return;
-
-        var data = { ids: row.ID };
-        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
-            if (!isOK) return;
-
-            doPostAjaxRequest("/BaseManagement/Supplier_Delete", data, function (msg) {
-                if (!msg.IsSuccess) {
-                    $.messager.alert('提示', msg.Message, "info");
-                    return;
-                }
-
-                $.messager.alert('提示', '操作成功！', "info", function () {
-                    $('#dgList').datagrid('load');
-                });
-            });
-        });
-    }
-
-    </script>
+</script>
