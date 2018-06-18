@@ -145,6 +145,7 @@
     <Compile Include="Model\Common\ResultMessage.cs" />
     <Compile Include="Model\Common\ImportMessageModel.cs" />
     <Compile Include="Model\Common\UploadImgModel.cs" />
+    <Compile Include="Model\Custom\BussinessModel.cs" />
     <Compile Include="Model\Custom\TestModel.cs" />
     <Compile Include="Model\Custom\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

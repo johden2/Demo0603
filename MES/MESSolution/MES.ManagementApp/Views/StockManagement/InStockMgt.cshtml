@@ -84,6 +84,7 @@
         $("#btnAdd").click(function () { showForm(1); })
         $("#btnEdit").click(function () { showForm(2); })
         $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnExport").click(function () { exportExcel(); })
 
         //绑定下拉框
         common_bindCommonCombox("Q_BillType", { headerType: 1, statusType: "StockBillType" });
@@ -167,6 +168,20 @@
                     $('#dgList').datagrid('load');
                 });
             });
+        });
+    }
+
+    //导出Excel
+    function exportExcel() {
+        doPostAjaxRequest("/StockManagement/InStockMgt_Export", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+
+            var url = "/Web/ExportWeb.aspx?BusinessType=InStockMgt&IsExport=1&FileName=" + msg.Message;
+            art.dialog.open(url, { title: '导出信息', height: 300, width: 450 }, false);
+         
         });
     }
 
