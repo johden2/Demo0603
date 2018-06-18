@@ -27,7 +27,6 @@ namespace Sys.Model
         private DateTime _InStockDate;
         private string _SupplierName;
         private string _SupBillNo;
-        private DateTime _BillDate;
         private int _AuditStatus;
         private int _TotalInStockNum;
         private int _TotalAcceptNum;
@@ -40,6 +39,7 @@ namespace Sys.Model
         private DateTime? _ModifiedTime;
         private string _Factory;
         private int? _SupplierID;
+        private DateTime? _BillDate;
 
         /// <summary>
         /// 
@@ -117,19 +117,6 @@ namespace Sys.Model
             {
                 this.OnPropertyValueChange("SupBillNo");
                 this._SupBillNo = value;
-            }
-        }
-        /// <summary>
-        /// 单据日期
-        /// </summary>
-        [Field("BillDate")]
-        public DateTime BillDate
-        {
-            get { return _BillDate; }
-            set
-            {
-                this.OnPropertyValueChange("BillDate");
-                this._BillDate = value;
             }
         }
         /// <summary>
@@ -288,6 +275,19 @@ namespace Sys.Model
                 this._SupplierID = value;
             }
         }
+        /// <summary>
+        /// 单据日期
+        /// </summary>
+        [Field("BillDate")]
+        public DateTime? BillDate
+        {
+            get { return _BillDate; }
+            set
+            {
+                this.OnPropertyValueChange("BillDate");
+                this._BillDate = value;
+            }
+        }
         #endregion
 
         #region Method
@@ -319,7 +319,6 @@ namespace Sys.Model
 				_.InStockDate,
 				_.SupplierName,
 				_.SupBillNo,
-				_.BillDate,
 				_.AuditStatus,
 				_.TotalInStockNum,
 				_.TotalAcceptNum,
@@ -332,6 +331,7 @@ namespace Sys.Model
 				_.ModifiedTime,
 				_.Factory,
 				_.SupplierID,
+				_.BillDate,
 			};
         }
         /// <summary>
@@ -346,7 +346,6 @@ namespace Sys.Model
 				this._InStockDate,
 				this._SupplierName,
 				this._SupBillNo,
-				this._BillDate,
 				this._AuditStatus,
 				this._TotalInStockNum,
 				this._TotalAcceptNum,
@@ -359,6 +358,7 @@ namespace Sys.Model
 				this._ModifiedTime,
 				this._Factory,
 				this._SupplierID,
+				this._BillDate,
 			};
         }
         /// <summary>
@@ -405,10 +405,6 @@ namespace Sys.Model
             /// 供应商单号
             /// </summary>
             public readonly static Field SupBillNo = new Field("SupBillNo", "Mes_Stock_InStock", "供应商单号");
-            /// <summary>
-            /// 单据日期
-            /// </summary>
-            public readonly static Field BillDate = new Field("BillDate", "Mes_Stock_InStock", "单据日期");
             /// <summary>
             /// _1-未审核（默认值);2-已审核
             /// </summary>
@@ -457,6 +453,10 @@ namespace Sys.Model
             /// 供应商ID
             /// </summary>
             public readonly static Field SupplierID = new Field("SupplierID", "Mes_Stock_InStock", "供应商ID");
+            /// <summary>
+            /// 单据日期
+            /// </summary>
+            public readonly static Field BillDate = new Field("BillDate", "Mes_Stock_InStock", "单据日期");
         }
         #endregion
     }

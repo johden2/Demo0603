@@ -40,6 +40,11 @@ BEGIN
 END
 GO
 
+	ALTER TABLE Mes_Stock_InStock DROP COLUMN BillDate;
+	ALTER TABLE Mes_Stock_InStock  ADD BillDate DATETIME;
+	EXECUTE sp_addextendedproperty N'MS_Description', N'单据日期', N'user', N'dbo',
+				N'table', N'Mes_Stock_InStock', N'column', N'BillDate' ;
+
 IF NOT EXISTS(SELECT * FROM syscolumns WHERE id=object_id('Mes_Stock_InStockItem') and name='InStockID')
 BEGIN
 
@@ -84,7 +89,10 @@ BEGIN
 				N'table', N'Mes_Stock_InStockItem', N'column', N'CheckItemStatus' 
 	EXECUTE sp_addextendedproperty N'MS_Description', N'验收码(1-未验收;2-已验收)', N'user', N'dbo',
 				N'table', N'Mes_Stock_InStockItem', N'column', N'AcceptStatus' 
+	
 
+	
+	
 END
 GO
 
