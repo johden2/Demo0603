@@ -87,6 +87,53 @@ namespace Sys.Dao
             return this.CurDbSession.FromSql(cmdPageSql).ToList<Mes_Stock_InStock>();
         }
 
+        public List<Mes_Stock_InStock> FindByCond(Mes_Stock_InStock obj)
+        {
+            string sql = @"SELECT T1.* FROM Mes_Stock_InStock T1 WHERE 1=1 ";
+
+            if (TConvertHelper.FormatDBInt(obj.BillType) > 0)
+            {
+                sql += string.Format(" AND T1.BillType = '{0}'", obj.BillType);
+            }
+            if (!string.IsNullOrEmpty(obj.BillNo))
+            {
+                sql += string.Format(" AND T1.BillNo Like '%{0}%'", obj.BillNo);
+            }
+            if (!string.IsNullOrEmpty(obj.InStockDateStart))
+            {
+                sql += string.Format(" AND T1.InStockDate >='{0}'", obj.InStockDateStart);
+            }
+            if (!string.IsNullOrEmpty(obj.InStockDateEnd))
+            {
+                sql += string.Format(" AND T1.InStockDate <'{0}'", TConvertHelper.FormatDBDate(obj.InStockDateEnd).AddDays(1));
+            }
+            if (obj.AuditStatus > 0)
+            {
+                sql += string.Format(" AND T1.AuditStatus = {0}", obj.AuditStatus);
+            }
+            if (obj.CheckStatus > 0)
+            {
+                sql += string.Format(" AND T1.CheckStatus = {0}", obj.CheckStatus);
+            }
+            if (!string.IsNullOrEmpty(obj.SupplierName))
+            {
+                sql += string.Format(" AND T1.SupplierName Like '%{0}%'", obj.SupplierName);
+            }
+            if (!string.IsNullOrEmpty(obj.CreatedTimeStart))
+            {
+                sql += string.Format(" AND T1.CreatedTime >='{0}'", obj.CreatedTimeStart);
+            }
+            if (!string.IsNullOrEmpty(obj.CreatedTimeEnd))
+            {
+                sql += string.Format(" AND T1.CreatedTime <'{0}'", TConvertHelper.FormatDBDate(obj.CreatedTimeEnd).AddDays(1));
+            }
+
+            sql += " ORDER BY CreatedTime DESC";
+         
+            //返回当前页的记录数
+            return this.CurDbSession.FromSql(sql).ToList<Mes_Stock_InStock>();
+        }
+
         public bool DeleteExt(int id)
         {
             string sql = "DELETE FROM Mes_Stock_InStock WHERE ID ={0};";

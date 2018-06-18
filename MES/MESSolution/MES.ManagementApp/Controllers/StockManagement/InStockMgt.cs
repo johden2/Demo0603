@@ -111,6 +111,28 @@ namespace MES.ManagementApp.Controllers
             return Json(new { IsSuccess = true, Message = "" });
         }
 
+        /// <summary>
+        /// 导出
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public ActionResult InStockMgt_Export(Mes_Stock_InStock obj)
+        {
+            var list = MesStockInStockDao.Instance.FindByCond(obj);
+            BussinessModel bussinessObj = new BussinessModel();
+            bussinessObj.BusinessType = "InStockMgt";
+            List<string> colList = new List<string>()
+            {
+                "Show_AuditStatus","BillNo"
+            };
+            string message = SysExportHelper.Export<Mes_Stock_InStock>(ref bussinessObj, list);
+            if (!string.IsNullOrEmpty(message))
+            {
+                return Json(new { IsSuccess = false, Message = message });
+            }
+            return Json(new { IsSuccess = true, Message = bussinessObj.FileName });
+        }
+
 
         #endregion 主信息
 
