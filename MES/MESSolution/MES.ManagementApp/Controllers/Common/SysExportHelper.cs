@@ -37,10 +37,11 @@ namespace MES.ManagementApp.Controllers
                 //1.生成文件(由模板生成新的文件)
                 string templateName = "ExportTemplate.xls";
                 string templatePath = HttpContext.Current.Server.MapPath("~" + SysConfigHelper.TemplateFolder) + templateName;
+                string tempPath = HttpContext.Current.Server.MapPath("~" + SysConfigHelper.TempFolder) ;
                 string fileName = string.Format("{0}_{1}.xls", businessObj.BusinessType, DateTime.Now.ToString("yyMMddHHmmssffff"));
-                businessObj.FilePath = businessObj.TempPath + fileName;
+                businessObj.FilePath = tempPath + fileName;
                 businessObj.FileName = fileName;
-                message = FileHelper.CopyFile(templatePath, businessObj.TempPath.Trim('/'), fileName);
+                message = FileHelper.CopyFile(templatePath, tempPath.Trim('/'), fileName);
                 if (!string.IsNullOrEmpty(message)) return message;
 
                 //2.填写文件内容
@@ -55,13 +56,13 @@ namespace MES.ManagementApp.Controllers
                 if (businessObj.ColList != null && businessObj.ColList.Count > 0)
                 {
                     //(1)先写列头
-                    businessObj.ColList.ForEach(colName =>
+                    businessObj.ColList.ForEach(item =>
                     {
-                        cells[index, colNum++].Value = colName;
-                        if (!colProperties.ContainsKey(colName))
+                        cells[index, colNum++].Value = item.Value;
+                        if (!colProperties.ContainsKey(item.Key))
                         {
-                            property = type.GetProperty(colName);
-                            colProperties.Add(colName, property);
+                            property = type.GetProperty(item.Key);
+                            colProperties.Add(item.Key, property);
                         }
                     });
 
@@ -72,9 +73,9 @@ namespace MES.ManagementApp.Controllers
                         colNum = 0;
                         foreach (var item in list)
                         {
-                            foreach (string colName in businessObj.ColList)
+                            foreach (KeyModel keyObj in businessObj.ColList)
                             {
-                                property = colProperties[colName];
+                                property = colProperties[keyObj.Key];
                                 if (property != null)
                                 {
                                     value = property.GetValue(item, null);

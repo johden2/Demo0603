@@ -121,10 +121,35 @@ namespace MES.ManagementApp.Controllers
             var list = MesStockInStockDao.Instance.FindByCond(obj);
             BussinessModel bussinessObj = new BussinessModel();
             bussinessObj.BusinessType = "InStockMgt";
-            List<string> colList = new List<string>()
-            {
-                "Show_AuditStatus","BillNo"
-            };
+            KeyModel keyObj = null;
+            List<KeyModel> colList = new List<KeyModel>();
+            keyObj = new KeyModel("单据状态","Show_AuditStatus");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("检验状态", "Show_CheckStatus");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("进货单别", "Show_BillType");
+            colList.Add(keyObj);
+             keyObj = new KeyModel("进货单号","BillNo");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("进货日期", "Show_InStockDate");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("总进货数量", "TotalInStockNum");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("总验收数量", "TotalAcceptNum");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("供应商", "SupplierName");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("供应商单号", "SupBillNo");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("销售单别", "Show_SourceBillType");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("销售单号", "SourceBillNo");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("创建人", "Creater");
+            colList.Add(keyObj);
+            keyObj = new KeyModel("创建时间", "Show_CreatedTime");
+            colList.Add(keyObj);
+            bussinessObj.ColList = colList;
             string message = SysExportHelper.Export<Mes_Stock_InStock>(ref bussinessObj, list);
             if (!string.IsNullOrEmpty(message))
             {

@@ -36,7 +36,7 @@ namespace Sys.Model
         /// <summary>
         /// 用于导出时控制需要显示的列
         /// </summary>
-        public List<string> ColList { get; set; }
+        public List<KeyModel> ColList { get; set; }
 
     }
 }

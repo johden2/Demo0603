@@ -74,6 +74,9 @@
     </table>
 </div>
 
+<link href="/Scripts/artDialog4.1/skins/best.css" rel="stylesheet" />
+<script src="/Scripts/artDialog4.1/artDialog.js"></script>
+<script src="/Scripts/artDialog4.1/plugins/iframeTools.js"></script>
 <script src="/Scripts/Common/common_search.js?v=4"></script>
 <script type="text/javascript">
     var _divFormName = "divForm";
@@ -173,6 +176,7 @@
 
     //导出Excel
     function exportExcel() {
+        var data = getQueryParms();
         doPostAjaxRequest("/StockManagement/InStockMgt_Export", data, function (msg) {
             if (!msg.IsSuccess) {
                 $.messager.alert('提示', msg.Message, "info");

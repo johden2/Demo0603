@@ -20,7 +20,7 @@ namespace MES.ManagementApp.Controllers
         /// <summary>
         /// 模板文件放置的文件夹
         /// </summary>
-        public const string TemplateFolder = "/Document/";
+        public const string TemplateFolder = "/Document/Template/";
 
         /// <summary>
         /// 临时文件夹路径
