@@ -153,6 +153,7 @@
     <Compile Include="Controllers\BaseManagement\Supplier.cs" />
     <Compile Include="Controllers\BaseManagement\WorkShop.cs" />
     <Compile Include="Controllers\Common\ComboxController.cs" />
+    <Compile Include="Controllers\Common\ImportExcelController.cs" />
     <Compile Include="Controllers\Common\SelectMgt.cs" />
     <Compile Include="Controllers\Common\SysConfigHelper.cs" />
     <Compile Include="Controllers\Common\SysExportHelper.cs" />
@@ -1276,6 +1277,7 @@
     <Content Include="Views\Common\SelectPlan.cshtml" />
     <Content Include="Views\ProcessManagement\Process - 复制.cshtml" />
     <Content Include="Views\Common\SelectSaleOrderItem.cshtml" />
+    <Content Include="Views\Common\ImportExcel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

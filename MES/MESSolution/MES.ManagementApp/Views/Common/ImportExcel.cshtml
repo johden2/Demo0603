@@ -1,0 +1,112 @@
+﻿@{
+    List<Sys.Model.ImportMessageModel> errorList = ViewBag.ErrorList;
+    ViewBag.Title = "导入Excel";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+    <style>
+        .title_pop
+        {
+            border-left: 3px solid #ff8400;
+            text-indent: 1em;
+            height: 14px;
+            line-height: 14px;
+            color: #696767;
+            font-size: 14px;
+            width: 100%;
+            margin-bottom: 5px;
+            margin-top: 20px;
+        }
+    </style>
+
+    @using (Html.BeginForm("ImportExcelMain", "Common", FormMethod.Post, new { id = "UserExcel", enctype = "multipart/form-data", target = "_self" }))
+    {
+        <div class="title_pop">
+            <strong>第一步：下载Excel模板（点击下方链接后选择保存到本地）</strong></div>
+        <div class="mb_30">
+            <p style="margin-left: 75px;">
+                <a href="@Url.Content("~" + ViewBag.TemplateUrl)" onclick="javascript:void(0);" class="import-a">
+                    模板下载</a></p>
+        </div>
+        <div class="title_pop">
+            <strong>第二步：选择您编辑好的Excel文件</strong></div>
+        
+        <div id="divQuery" style="padding: 3px; padding-top: 15px">
+            <div class="cf">
+                <div class="file-box" style="*margin-left: 30px;">
+                    <input type="text" name="textfield" id="textfield" class="txt" style="visibility: hidden;
+                        display: none;" />
+                    <input type="file" name="fileField" class="file" style="*right: 90px;" id="fileField"
+                        size="28" onchange="document.getElementById('textfield').value=this.value" />
+                    <input type="hidden" name="BusinessType" value="@ViewBag.BusinessType" />
+                    <input type="hidden" name="ParamKey" value="@ViewBag.ParamKey" />
+                    <input type="hidden" id="LoginUser" name="LoginUser" value="" />
+                    <input id="btnImport" type="submit" value="确定导入"  class="easyui-button" />
+                </div>
+            </div>
+        </div> 
+    }
+    @if (errorList != null && errorList.Count > 0)
+    {
+        <div class="title_pop">
+            <strong>第三步：查看校验结果，如有错误请修改后再次进行第二步导入操作</strong></div>
+        <div class="datagrid-body" style="width: 690px; margin-top: 0px; height: 196px;">
+            <table class="easyui-datagrid">
+                <thead>
+                    <tr class="datagrid-header-row">
+                        <th data-options="field:'itemid',width:150">
+                            <strong style="color: Gray;">错误行号（excel中系统行号）</strong>
+                        </th>
+                        <th data-options="field:'productid',width:470" style="color: Gray;">
+                            <strong style="color: Gray;">校验结果(请依据错误提示，修改Excel文件对应行)</strong>
+                        </th>
+                    </tr>
+                </thead>
+                @foreach (var item in errorList)
+                {
+                    <tr>
+                        <td style="width:150px">
+                            @item.RowData
+                        </td>
+                        <td title="@item.RowMessage" style="width: 470px">
+                            @item.RowMessage
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
+<link href="/Scripts/artDialog4.1/skins/best.css" rel="stylesheet" />
+<script src="/Scripts/artDialog4.1/artDialog.js"></script>
+<script src="/Scripts/artDialog4.1/plugins/iframeTools.js"></script>
+<script type="text/javascript" language="javascript">
+    $(function () {
+        $("#btnImport").bind("click", function () {
+            return validateData();
+        })
+
+        var message = "@ViewBag.ErrorMessage";
+        if (message.length > 0) {
+            $(function () { alert(message); });
+
+            if (message == "导入成功") {
+                var win = art.dialog.open.origin;//来源页面
+                if (win.onImportSucc) { //如果定义了成功后的方法
+                    win.onImportSucc();
+                }
+            }
+        }
+
+    });
+
+    //数据验证
+    function validateData() {
+        //debugger
+        if ($("#textfield").val().length == 0) {
+            return false;
+        }
+        return true;
+    }
+
+</script>
