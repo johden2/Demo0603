@@ -199,5 +199,51 @@ namespace Sys.Dao
             return true;
         }
 
+        //样品导入
+        public bool Import(List<Mes_Tec_ProcessBom> bomList,List<Mes_Tec_ProcessBomItem> list, IList<ImportMessageModel> resultList)
+        {
+            try
+            {
+                int result = 0;
+                using (DbTrans trans = this.CurDbSession.BeginTransaction())
+                {
+                    //1.保存主表
+                    foreach (var item in bomList)
+                    {
+                        result = this.CurDbSession.Insert<Mes_Tec_ProcessBom>(item);
+                        if (result <= 0)
+                        {
+                            trans.Rollback();
+                            return false;
+                        }
+
+                        list.ForEach(p =>
+                        {
+                            if (p.MaterialProNo == item.MaterialProNo && p.Version == item.Version)
+                            {
+                                p.ProcessBomID = result;
+                            }
+                        });
+                    }
+                    //2.保存明细
+                    result = this.CurDbSession.Insert<Mes_Tec_ProcessBomItem>(list);
+                    if (result <= 0)
+                    {
+                        trans.Rollback();
+                        return false;
+                    }
+
+                    //提交事务
+                    trans.Commit();
+                }
+                 return true;
+            }
+            catch (Exception ex)
+            {
+                resultList.Add(new ImportMessageModel { RowData = "导入失败", RowMessage = "导入出错，错误信息：" + ex.Message });
+            }
+            return false;
+        }
+
     }
 }

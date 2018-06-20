@@ -60,7 +60,7 @@ div #rMenu a {
                         <input class="easyui-textbox" id="Q_SubMaterialProNo" style="width: 120px;" />
                     </td>
                     <td>
-                        物料简称：
+                        物料名称：
                     </td>
                     <td>
                         <input class="easyui-textbox" id="Q_SubMaterialCode" style="width: 120px;" />
@@ -100,7 +100,7 @@ div #rMenu a {
             </td>
             <td><input class="easyui-textbox" id="E_MaterialProNo" disabled /></td>
             <td class="form-head">
-                <span class="sp-require">*</span>产品简称：
+                <span class="sp-require">*</span>产品名称：
             </td>
             <td><input class="easyui-textbox" id="E_MaterialCode" disabled /></td>
         </tr>
@@ -135,7 +135,7 @@ div #rMenu a {
             </td>
             <td><input class="easyui-textbox" id="E_SubMaterialProNo" /></td>
             <td class="form-head">
-                <span class="sp-require">*</span>物料简称：
+                <span class="sp-require">*</span>物料名称：
             </td>
             <td><input class="easyui-textbox" id="E_SubMaterialCode" /></td>
         </tr>
@@ -176,7 +176,7 @@ div #rMenu a {
         </tr>
         <tr>
             <td class="form-head">
-                <span class="sp-require">*</span>产品简称：
+                <span class="sp-require">*</span>产品名称：
             </td>
             <td><input class="easyui-textbox" id="E_MenuMaterialCode" /></td>
         </tr>
@@ -199,6 +199,9 @@ div #rMenu a {
     <div id="divMenuEdit" data-options="iconCls:'icon-edit'">修改当前产品(版本)</div>
     <div id="divMenuDelete" data-options="iconCls:'icon-remove'">删除当前产品(版本)</div>
 </div>
+<link href="/Scripts/artDialog4.1/skins/best.css" rel="stylesheet" />
+<script src="/Scripts/artDialog4.1/artDialog.js"></script>
+<script src="/Scripts/artDialog4.1/plugins/iframeTools.js"></script>
 <link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
 <script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
 <script src="/Scripts/Common/common_search.js?v=4"></script>
@@ -213,7 +216,7 @@ div #rMenu a {
         $("#btnAdd").click(function () { showForm(1); })
         $("#btnEdit").click(function () { showForm(2); })
         $("#btnDelete").click(function () { deleteRecord(); })
-        $("#btnImport").click(function () { importExcel(); })
+        $("#btnImport").click(function () { importData(); })
         $("#btnOk").click(function () { saveForm(); })
         $("#btnClose").click(function () { FormUitl.close(_divFormName); })
         $("#btnShowProcess").click(function () { $("#divTreeProcess").show(); })
@@ -257,11 +260,11 @@ div #rMenu a {
     function initGrid() {
         var cols = [[
                { field: 'MaterialProNo', title: '产品编码', width: 150, align: 'center' },
-               { field: 'MaterialCode', title: '产品简称', width: 130, align: 'center' },
+               { field: 'MaterialCode', title: '产品名称', width: 130, align: 'center' },
                { field: 'Version', title: '版本', width: 60, align: 'center' },
                { field: 'ProcessName', title: '工艺', width: 140, align: 'center' },
                { field: 'SubMaterialProNo', title: '物料编码', width: 150, align: 'center' },
-               { field: 'SubMaterialCode', title: '物料简称', width: 140, align: 'center' },
+               { field: 'SubMaterialCode', title: '物料名称', width: 140, align: 'center' },
                { field: 'Num', title: '数量', width: 60, align: 'center' },
                { field: 'Unit', title: '单位', width: 60, align: 'center' }
         ]];
@@ -482,6 +485,19 @@ div #rMenu a {
             });
         });
     }
+
+
+    //导入样品
+    function importData() {
+        var url = '@Url.Action("ImportExcel", "Common")' + "?BusinessType=TecProcessBom&rnd=" + Math.random();
+        art.dialog.open(url, { title: '导入配套明细', height: 420, width: 650 }, false);
+    }
+
+    function onImportSucc() {
+        $('#treeList').tree('reload');
+        //$('#dgData').datagrid('reload'); //刷新当前页列表
+    }
+
 
 </script>
 

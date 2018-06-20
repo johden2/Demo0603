@@ -129,6 +129,7 @@
     <Compile Include="Entity\Custom\Mes_Sys_Stock.cs" />
     <Compile Include="Entity\Custom\Mes_Sys_Supplier.cs" />
     <Compile Include="Entity\Custom\Mes_Sys_WorkShop.cs" />
+    <Compile Include="Entity\Custom\Mes_Tec_ProcessBomItem.cs" />
     <Compile Include="Entity\Custom\Mes_Tec_ProcessBom.cs" />
     <Compile Include="Entity\Custom\Mes_Tec_Process.cs" />
     <Compile Include="Entity\Custom\Mes_Sys_User.cs" />
