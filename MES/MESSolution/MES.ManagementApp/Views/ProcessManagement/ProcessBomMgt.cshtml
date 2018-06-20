@@ -119,7 +119,7 @@ div #rMenu a {
             </td>
             <td colspan="3">
                 <input class="easyui-textbox" id="E_ProcessName" style="width:380px;" />
-                <input id="E_ProcessCode" type="hidden" />
+                <input id="E_ProcessID" type="hidden" />
                 <img id="btnShowProcess" class="select-icon" src="/images/select_icon.png" title="点击选择工艺" />
                 <div id="divTreeProcess" class="float-tree" style="width:280px; ">
                     <div class="tree-ok">
@@ -315,7 +315,7 @@ div #rMenu a {
     function onProcessTreeClick(event, treeId, treeNode) {
         if (!treeNode) return;
 
-        $("#E_ProcessCode").val(treeNode.ProcessID);
+        $("#E_ProcessID").val(treeNode.ProcessID);
         $("#E_ProcessName").val(treeNode.name);
         $("#divTreeProcess").hide();
     }
@@ -355,7 +355,7 @@ div #rMenu a {
             $("#E_Unit").val(row.Unit);
             $("#E_Memo").val(row.Memo);
             $("#E_ProcessName").val(row.ProcessName);
-            $("#E_ProcessCode").val(row.ProcessCode);
+            $("#E_ProcessID").val(row.ProcessID);
 
             $("#E_ProcessName").attr("disabled", "disabled");
         } else if (optType == 1) { //新增

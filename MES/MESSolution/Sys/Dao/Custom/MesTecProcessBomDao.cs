@@ -87,10 +87,10 @@ namespace Sys.Dao
 
         public List<Mes_Tec_ProcessBom> FindByPage(Mes_Tec_ProcessBom obj, ref PagerBase pager)
         {
-            string sql = @"SELECT T1.ID,T1.MaterialProNo,T1.Version,T1.MaterialCode,T2.ID AS ItemID,T2.SubMaterialProNo,T2.SubMaterialCode,T2.Num,T2.Unit,T2.Memo,T2.ProcessCode,T3.Name AS ProcessName 
+            string sql = @"SELECT T1.ID,T1.MaterialProNo,T1.Version,T1.MaterialCode,T2.ID AS ItemID,T2.SubMaterialProNo,T2.SubMaterialCode,T2.Num,T2.Unit,T2.Memo,T2.ProcessID,T3.Name AS ProcessName 
                         FROM dbo.Mes_Tec_ProcessBom T1 WITH(NOLOCK) 
                         INNER JOIN Mes_Tec_ProcessBomItem T2 WITH(NOLOCK) ON T1.ID = T2.ProcessBomID
-                        LEFT JOIN dbo.Mes_Tec_Process T3 WITH(NOLOCK) ON T2.ProcessCode = T3.ProcessCode
+                        LEFT JOIN dbo.Mes_Tec_Process T3 WITH(NOLOCK) ON T2.ProcessID = T3.ID
                         WHERE 1=1";
 
             if (!string.IsNullOrEmpty(obj.MaterialProNo))
@@ -113,9 +113,9 @@ namespace Sys.Dao
             {
                 sql += string.Format(" AND T1.Version = '{0}'", obj.Version);
             }
-            if (!string.IsNullOrEmpty(obj.ProcessCode))
+            if (obj.ProcessID > 0)
             {
-                sql += string.Format(" AND T2.ProcessCode = '{0}'", obj.ProcessCode);
+                sql += string.Format(" AND T2.ProcessID = '{0}'", obj.ProcessID);
             }
 
             string orderBy = pager.OrderBy;
@@ -178,7 +178,7 @@ namespace Sys.Dao
             Mes_Tec_ProcessBomItem itemObj = new Mes_Tec_ProcessBomItem();
             itemObj.ID = obj.ItemID;
             itemObj.ProcessBomID = resultObj.ID;
-            itemObj.ProcessCode = obj.ProcessCode;
+            itemObj.ProcessID = obj.ProcessID;
             itemObj.SubMaterialProNo = obj.SubMaterialProNo;
             itemObj.SubMaterialCode = obj.SubMaterialCode;
             itemObj.Num = obj.Num;

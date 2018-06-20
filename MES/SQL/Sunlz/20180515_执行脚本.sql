@@ -110,8 +110,10 @@ EXECUTE sp_addextendedproperty N'MS_Description', N'子物料简称', N'user', N'dbo'
 			N'table', N'Mes_Tec_ProcessBomItem', N'column', N'SubMaterialCode' 
 
 
-
-
+ALTER TABLE Mes_Tec_ProcessBomItem DROP COLUMN ProcessCode
+ALTER TABLE Mes_Tec_ProcessBomItem ADD ProcessID INT
+EXECUTE sp_addextendedproperty N'MS_Description', N'工艺ID', N'user', N'dbo',
+			N'table', N'Mes_Tec_ProcessBomItem', N'column', N'ProcessID' 
 
 
 

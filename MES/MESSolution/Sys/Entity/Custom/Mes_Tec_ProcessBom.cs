@@ -18,7 +18,7 @@ namespace Sys.Model
 
         public string Unit { get; set; }
 
-        public string ProcessCode { get; set; }
+        public int ProcessID { get; set; }
 
         public string ProcessName { get; set; }
 
