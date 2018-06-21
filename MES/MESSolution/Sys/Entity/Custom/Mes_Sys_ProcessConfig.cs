@@ -20,6 +20,14 @@ namespace Sys.Model
             }
         }
 
+       public string Show_BusinessType
+       {
+           get
+           {
+               return StatusHelper.GetConstStatus<FlowBusinessType>(this.BusinessType);
+           }
+       }
+
     }
 
 }

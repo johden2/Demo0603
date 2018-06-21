@@ -22,6 +22,10 @@ namespace MES.ManagementApp.Controllers
         {
             return View();
         }
+        public ActionResult SelectUser()
+        {
+            return View();
+        }
 
         public ActionResult SelectCustomer()
         {

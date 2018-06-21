@@ -1280,6 +1280,7 @@
     <Content Include="Views\Common\SelectSaleOrderItem.cshtml" />
     <Content Include="Views\Common\ImportExcel.cshtml" />
     <Content Include="Views\BaseManagement\FlowConfig.cshtml" />
+    <Content Include="Views\Common\SelectUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -81,6 +81,9 @@ VALUES('0402','领料单','StockManagement/OutMaterialMgt',0,'admin',GETDATE(),'040
 INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
 VALUES('0403','异常领料单','StockManagement/YcOutMaterialMgt',0,'admin',GETDATE(),'0403',2,3,2)
 
+INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
+VALUES('0111','流程配置','BaseManagement/FlowConfig',0,'admin',GETDATE(),'0111',2,9,2)
+
 
 --(3)修改员工资料表
 ALTER TABLE Mes_Sys_Employee ADD ProcessNameList NVARCHAR(500)

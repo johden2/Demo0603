@@ -81,6 +81,24 @@ namespace Sys.Model
 
     #endregion 公共字典
 
+    #region 基础管理
+
+    /// <summary>
+    /// 流程配置
+    /// </summary>
+    public class FlowBusinessType
+    {
+        /// <summary>
+        /// 进货单审批
+        /// </summary>
+        [CustField("进货单审批")]
+        public const string A = "InStockApproval";
+
+    }
+
+    #endregion 基础管理
+
+
     #region 订单、计划字典
 
     /// <summary>

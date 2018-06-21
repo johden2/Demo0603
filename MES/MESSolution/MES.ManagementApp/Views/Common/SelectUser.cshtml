@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "用户选择";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td>
+                登录账号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_UserID" style="width: 150px;" />
+            </td>
+            <td>
+                用户名：<input class="easyui-textbox" id="Q_UserName" style="width: 150px;" />
+            </td>
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        common_bindCommonCombox("E_IsAdmin", { headerType: 3, statusType: "YesNoEnum" });
+        $("#btnQuery").click(function () { PageListObj.queryList(); })
+
+        initGrid();
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+                {
+                    field: 'Operation', title: '选择', width: 80, align: 'center',
+                    formatter: function (value, row, index) {
+                        return imgFormatterQuery(value, row, index);
+                    }
+                },
+               { field: 'UserID', title: '工号', width: 100,align:'center' },
+               { field: 'UserName', title: '用户名', width: 120, align: 'center' },
+               { field: 'Show_IsAdmin', title: '是否管理员', width: 100, align: 'center' },
+               { field: 'RoleName', title: '角色名称', width: 150, align: 'center' },
+               { field: 'OrgName', title: '所在部门', width: 100, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 100, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' },
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            singleSelect: true,
+            url: "/SysManagement/UserMgt_FindByPage"
+        };
+        
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+    function getQueryParms() {
+        return {
+            UserID: $.trim($("#Q_UserID").val()),
+            UserName: $.trim($("#Q_UserName").val())
+        };
+    }
+
+    function imgFormatterQuery(value, row, index) {
+        var rvalue = "<div style='vertical-align:middle;' ><input type='button' onclick=\"selectData('[0]','[1]');\" class='btn-select-item' value='选&nbsp;择' title=\"点击确定选择\"/></div>";
+        return rvalue.replace("[0]", row.ID).replace("[1]", row.UserName);
+    }
+    function selectData(id, name) { //确定选择
+        var data = { ID: id, UserName: name };
+        if (parent && parent.closeIframeForm) {
+            parent.closeIframeForm(data, "user");
+        }
+    }
+
+   
+    </script>

@@ -35,37 +35,24 @@ namespace MES.ManagementApp.Controllers
         /// 保存记录
         /// </summary>
         /// <returns></returns>
-        public ActionResult FlowConfig_Save(Mes_Sys_Supplier obj)
+        public ActionResult FlowConfig_Save(Mes_Sys_FlowConfig obj)
         {
-            string sMessage = string.Empty;
             //判断数据有效性
-            if(string.IsNullOrEmpty(obj.SupplierCode))
+            if(string.IsNullOrEmpty(obj.OptUserName))
             {
-                sMessage = "供应商编号不可为空";
-                return Json(new { IsSuccess = false, Message = sMessage },JsonRequestBehavior.AllowGet);
+                return Json(new { IsSuccess = false, Message =  "操作人员不可为空" },JsonRequestBehavior.AllowGet);
             }
-            if (string.IsNullOrEmpty(obj.SupplierName))
+            if (obj.ID <=0)
             {
-                sMessage = "供应商名称不可为空";
-                return Json(new { IsSuccess = false, Message = sMessage },JsonRequestBehavior.AllowGet);
-            }
-            if (obj.ID > 0)
-            {
-                obj.Modifier = base.CurUser.ID;
-                obj.ModifiedTime = DateTime.Now;
-            }
-            else
-            {
-                obj.Creater = base.CurUser.ID;
+                obj.Creater = base.CurUser.UserId;
                 obj.CreatedTime = DateTime.Now;
             }
-            bool result = MesSysSupplierDao.Instance.Save(obj);
-            if(!result)
+            int result = MesSysFlowConfigDao.Instance.Save(obj);
+            if (result <=0 )
             {
-                sMessage = "保存失败";
-                return Json(new { IsSuccess = false, Message =sMessage },JsonRequestBehavior.AllowGet);
+                return Json(new { IsSuccess = false, Message ="保存失败" },JsonRequestBehavior.AllowGet);
             }
-            return Json(new { IsSuccess = true, Message = sMessage },JsonRequestBehavior.AllowGet);
+            return Json(new { IsSuccess = true, Message = "" },JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

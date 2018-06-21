@@ -45,6 +45,10 @@ namespace Sys.Dao
             {
                 sql += string.Format(" AND T1.BusinessType ='{0}'", obj.BusinessType);
             }
+            if (!string.IsNullOrEmpty(obj.OptUserName))
+            {
+                sql += string.Format(" AND T1.OptUserName LIKE '%{0}%'", obj.OptUserName);
+            }
             if (!string.IsNullOrEmpty(obj.CreatedTimeStart))
             {
                 sql += string.Format(" AND T1.CreatedTime >='{0}'", obj.CreatedTimeStart);
