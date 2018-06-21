@@ -150,6 +150,7 @@
     <Compile Include="Controllers\BaseManagement\DataCollectPoint.cs" />
     <Compile Include="Controllers\BaseManagement\ProductInfo.cs" />
     <Compile Include="Controllers\BaseManagement\Stock.cs" />
+    <Compile Include="Controllers\BaseManagement\FlowConfig.cs" />
     <Compile Include="Controllers\BaseManagement\Supplier.cs" />
     <Compile Include="Controllers\BaseManagement\WorkShop.cs" />
     <Compile Include="Controllers\Common\ComboxController.cs" />
@@ -1278,6 +1279,7 @@
     <Content Include="Views\ProcessManagement\Process - 复制.cshtml" />
     <Content Include="Views\Common\SelectSaleOrderItem.cshtml" />
     <Content Include="Views\Common\ImportExcel.cshtml" />
+    <Content Include="Views\BaseManagement\FlowConfig.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
