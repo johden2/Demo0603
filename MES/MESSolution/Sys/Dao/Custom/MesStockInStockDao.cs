@@ -134,6 +134,51 @@ namespace Sys.Dao
             return this.CurDbSession.FromSql(sql).ToList<Mes_Stock_InStock>();
         }
 
+        /// <summary>
+        /// 审批进货单
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public string DoAudit(Mes_Stock_InStockApproval obj)
+        {
+            //1.先校验当前的审核人是否为配置对象，并且没有审核过
+            string sql = @"SELECT TOP 1 ID FROM dbo.Mes_Sys_FlowConfig  WITH(NOLOCK) WHERE BusinessType = '{0}' AND OptUserID = {1}";
+            sql = string.Format(sql, FlowBusinessType.A, obj.ApproverID);
+            int result = this.CurDbSession.FromSql(sql).ToScalar<int>();
+            if (result <= 0)
+            {
+                return string.Format("流程中未配置【{0}】对进货单进行审批！", obj.ApproverName);
+            }
+
+            sql = @"SELECT TOP 1 ID FROM Mes_Stock_InStockApproval WITH(NOLOCK) WHERE BillNo = '{0}' AND BillType='{1}'
+                    AND ApproverID = {2}";
+            sql = string.Format(sql, obj.BillNo, obj.BillType, obj.ApproverID);
+            result = this.CurDbSession.FromSql(sql).ToScalar<int>();
+            if (result > 0)
+            {
+                return string.Format("【{0}】已经审批过了，不允许重复审批！", obj.ApproverName);
+            }
+           
+
+            //2.保存审批记录
+            this.CurDbSession.Insert(obj);
+
+            //3.检测是否所有人已审批完，并修改状态
+            sql = @"SELECT TOP 1 ID FROM dbo.Mes_Sys_FlowConfig WITH(NOLOCK) WHERE BusinessType = '{0}'
+                AND OptUserID NOT IN (
+                 SELECT ApproverID FROM Mes_Stock_InStockApproval WITH(NOLOCK) WHERE BillNo = '{1}' AND BillType='{2}'
+                )";
+            sql = string.Format(sql, FlowBusinessType.A, obj.BillNo, obj.BillType);
+            result = this.CurDbSession.FromSql(sql).ToScalar<int>();
+            if (result <= 0) //表示所有人都已审批，可以修改进货单状态为【已审批】
+            {
+                sql = string.Format("UPDATE Mes_Stock_InStock SET AuditStatus = {0} WHERE ID = {1}", obj.InStockID, AuditEnum.Yes);
+                result = this.CurDbSession.FromSql(sql).ExecuteNonQuery();
+            }
+
+            return string.Empty;
+        }
+
         public bool DeleteExt(int id)
         {
             string sql = "DELETE FROM Mes_Stock_InStock WHERE ID ={0};";

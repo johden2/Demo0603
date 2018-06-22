@@ -13,6 +13,8 @@ namespace Sys.Model
         public string CreatedTimeStart { get; set; }
         public string CreatedTimeEnd { get; set; }
 
+        public string Memo { get; set; }
+
        public string Show_CreatedTime
         {
             get

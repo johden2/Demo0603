@@ -11,6 +11,7 @@ namespace Sys.Model
         public string CreatedTimeStart { get; set; }
         public string CreatedTimeEnd { get; set; }
 
+        public int InStockID { get; set; }
 
        public string Show_CreatedTime
         {
@@ -19,6 +20,14 @@ namespace Sys.Model
                 return TConvertHelper.FormatShortDateToString(this.CreatedTime);
             }
         }
+
+       public string Show_ApprovalStatus
+       {
+           get
+           {
+               return StatusHelper.GetConstStatus<AuditEnum>(this.ApprovalStatus);
+           }
+       }
     }
 
 }

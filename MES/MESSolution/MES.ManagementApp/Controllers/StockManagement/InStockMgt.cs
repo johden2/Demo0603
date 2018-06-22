@@ -91,6 +91,43 @@ namespace MES.ManagementApp.Controllers
             return Json(new { IsSuccess = true, Message = id.ToString() });
         }
 
+        /// <summary>
+        /// 进货单审批
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public ActionResult InStockMgt_Audit(Mes_Stock_InStockApproval obj)
+        {
+            if (obj.InStockID <= 0)
+            {
+                return Json(new { IsSuccess = false, Message = "请先选择一个进货单！" });
+            }
+            Mes_Stock_InStock dataObj = MesStockInStockDao.Instance.Find<Mes_Stock_InStock, int>(obj.InStockID);
+            if (dataObj == null)
+            {
+                return Json(new { IsSuccess = false, Message = "选择的进货单不存在，请刷新后重试！" });
+            }
+            if (dataObj.AuditStatus == AuditEnum.Yes)
+            {
+                return Json(new { IsSuccess = false, Message = "选择的进货单已审批，不允许重复审批！" });
+            }
+
+            obj.ApproverID = base.CurUser.ID;
+            obj.ApproverName = base.CurUser.UserName;
+            obj.BillNo = dataObj.BillNo;
+            obj.BillType = dataObj.BillType;
+            obj.Creater = base.CurUser.UserId;
+            obj.CreatedTime = DateTime.Now;
+
+            string message = MesStockInStockDao.Instance.DoAudit(obj);
+            if (!string.IsNullOrEmpty(message))
+            {
+                return Json(new { IsSuccess = false, Message = message });
+            }
+
+            return Json(new { IsSuccess = true, Message =""});
+        }
+
         public ActionResult InStockMgt_Delete(int ID)
         {
             if (ID <= 0)
@@ -250,6 +287,16 @@ namespace MES.ManagementApp.Controllers
         }
 
         #endregion 明细信息
+
+        #region 审核信息
+        public ActionResult InStockApproval_FindByPage(Mes_Stock_InStockApproval obj)
+        {
+            var list = MesStockInStockApprovalDao.Instance.FindByCond(obj);
+            int count = (list != null) ? list.Count : 0;
+            return Json(new { total = count, rows = list }, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion 审核信息
 
     }
 }

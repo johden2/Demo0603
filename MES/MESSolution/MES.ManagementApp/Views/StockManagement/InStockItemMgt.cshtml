@@ -11,128 +11,166 @@
 <div class="easyui-layout" fit="true">
     <div region="center">
         <div id="divMainForm" style="padding:5px;height:auto">
-            <table id="tbMainForm">
+            <table style="width:100%;" >
                 <tr>
-                    <td colspan="2">
-                        <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">保存进货单</a>
-                    </td>
-                    <td class="form-head">
-                        单据状态：
+                    <td style="width:55%;">
+                        <table id="tbMainForm">
+                            <tr>
+                                <td colspan="2">
+                                    <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">保存进货单</a>
+                                    <a id="btnAudit" class="easyui-linkbutton" iconcls="icon-ok" plain="true" style="display:none;">审核</a>
+                                </td>
+                                <td class="form-head">
+                                    单据状态：
+                                </td>
+                                <td>
+                                    <span class="sp-require"><label id="lblAuditStatus"></label></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="form-head">
+                                    <span class="sp-require">*</span>进货单号：
+                                </td>
+                                <td>
+                                    <input class="easyui-textbox" id="E_BillNo" disabled /><span class="sp-require">(生成)</span>
+                                </td>
+                                <td class="form-head">
+                                    <span class="sp-require">*</span>进货单别：
+                                </td>
+                                <td>
+                                    <input type="text" class="easyui-combobox" id="E_BillType"
+                                           data-options="valueField:'Value', textField:'Text',editable : false" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="form-head">
+                                    <span class="sp-require">*</span>进货日期：
+                                </td>
+                                <td>
+                                    <input type="text" class="easyui-datebox" id="E_InStockDate"  maxlength="50" />
+                                </td>
+                                <td class="form-head">
+                                    检验状态：
+                                </td>
+                                <td>
+                                    <input type="text"  class="easyui-combobox" id="E_CheckStatus"
+                                           data-options="valueField:'Value', textField:'Text',editable : false" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="form-head">
+                                    <span class="sp-require">*</span>销售单号：
+                                </td>
+                                <td>
+                                    <input class="easyui-textbox" id="E_SourceBillNo" disabled />
+                                    <img id="btnShowSaleOrder" class="select-icon" src="/images/select_icon.png" title="点击选择订单" />
+                                </td>
+                                <td class="form-head">
+                                    <span class="sp-require">*</span>销售单别：
+                                </td>
+                                <td>
+                                    <input class="easyui-textbox" type="hidden" id="E_SourceBillType" disabled />
+                                    <input class="easyui-textbox" id="E_Show_SourceBillType" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="form-head">
+                                    <span class="sp-require">*</span>供应商：
+                                </td>
+                                <td>
+                                    <input class="easyui-textbox" id="E_SupplierName" disabled />
+                                    <input class="easyui-textbox" type="hidden" id="E_SupplierID" />
+                                    <img id="btnShowSupplier" class="select-icon" src="/images/select_icon.png" title="点击选择供应商" />
+                                </td>
+                                <td class="form-head">
+                                    供应商单号：
+                                </td>
+                                <td>
+                                    <input class="easyui-textbox" id="E_SupBillNo" />
+                                </td>
+                            </tr>
+                           
+                            <tr>
+                                <td class="form-head">
+                                    <span class="sp-require">*</span>总进货数量：
+                                </td>
+                                <td><input class="easyui-textbox" id="E_TotalInStockNum" /></td>
+
+                                <td class="form-head">
+                                    总验收数量：
+                                </td>
+                                <td><input class="easyui-textbox" id="E_TotalAcceptNum" /></td>
+                            </tr>
+                            <tr>
+                                <td class="form-head">
+                                    单据日期：
+                                </td>
+                                <td>
+                                    <input type="text" class="easyui-datebox" id="E_BillDate" maxlength="50" />
+                                </td>
+                                <td class="form-head">
+                                    工厂：
+                                </td>
+                                <td>
+                                    <input class="easyui-textbox" id="E_Factory" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="form-head">
+                                    创建人：
+                                </td>
+                                <td>
+                                    <label id="lblCreater"></label>
+                                </td>
+                                <td class="form-head">
+                                    创建时间：
+                                </td>
+                                <td>
+                                    <label id="lblCreatedTime"></label>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                     <td>
-                        <span class="sp-require"><label id="lblAuditStatus"></label></span>
+                        <div id="dgApprovalList"></div>
                     </td>
-                    <td class="form-head">
-                        检验状态：
-                    </td>
-                    <td>
-                        <input type="text" style="width: 120px;" class="easyui-combobox" id="E_CheckStatus"
-                               data-options="valueField:'Value', textField:'Text',editable : false" />
-                    </td>
-                </tr>
-                <tr>
-                   
-                    <td class="form-head">
-                        <span class="sp-require">*</span>进货单别：
-                    </td>
-                    <td>
-                        <input type="text" class="easyui-combobox" id="E_BillType"
-                               data-options="valueField:'Value', textField:'Text',editable : false" />
-                    </td>
-                    <td class="form-head">
-                        <span class="sp-require">*</span>进货单号：
-                    </td>
-                    <td>
-                        <input class="easyui-textbox" id="E_BillNo" disabled /><span class="sp-require">(生成)</span>
-                    </td>
-                    <td class="form-head">
-                        <span class="sp-require">*</span>进货日期：
-                    </td>
-                    <td>
-                        <input type="text" class="easyui-datebox" id="E_InStockDate" style="width: 120px;" maxlength="50" />
-                    </td>
-                    <td class="form-head">
-                        创建人：
-                    </td>
-                    <td style="width:130px">
-                        <label id="lblCreater"></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="form-head">
-                        销售单号：
-                    </td>
-                    <td>
-                        <input class="easyui-textbox" id="E_SourceBillNo" disabled />
-                        <img id="btnShowSaleOrder" class="select-icon" src="/images/select_icon.png" title="点击选择订单" />
-                    </td>
-                    <td class="form-head">
-                        <span class="sp-require">*</span>销售单别：
-                    </td>
-                    <td>
-                        <input class="easyui-textbox" type="hidden" id="E_SourceBillType" disabled />
-                        <input class="easyui-textbox" id="E_Show_SourceBillType" />
-                    </td>
-                    <td class="form-head">
-                        工厂：
-                    </td>
-                    <td>
-                        <input class="easyui-textbox" id="E_Factory" style="width: 120px;" />
-                    </td>
-                    <td class="form-head">
-                        创建时间：
-                    </td>
-                    <td>
-                        <label id="lblCreatedTime"></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="form-head">
-                        <span class="sp-require">*</span>供应商：
-                    </td>
-                    <td>
-                        <input class="easyui-textbox" id="E_SupplierName" disabled />
-                        <input class="easyui-textbox" type="hidden" id="E_SupplierID" />
-                        <img id="btnShowSupplier" class="select-icon" src="/images/select_icon.png" title="点击选择供应商" />
-                    </td>
-                    <td class="form-head">
-                        供应商单号：
-                    </td>
-                    <td>
-                        <input class="easyui-textbox" id="E_SupBillNo" />
-                    </td>
-                    <td class="form-head">
-                        单据日期：
-                    </td>
-                    <td>
-                        <input type="text" class="easyui-datebox" id="E_BillDate" style="width: 120px;" maxlength="50" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="form-head">
-                        <span class="sp-require">*</span>总进货数量：
-                    </td>
-                    <td><input class="easyui-textbox" id="E_TotalInStockNum"  /></td>
-                   
-                    <td class="form-head">
-                        总验收数量：
-                    </td>
-                    <td><input class="easyui-textbox" id="E_TotalAcceptNum"  /></td>
                 </tr>
             </table>
-        </div>
+              
+</div>
         <div style="width:98%;padding-left:5px;padding-top:10px;">
             <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
             <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
             <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
         </div>
+       
         <div style="width:98%;padding-left:5px;height:320px;">
             <div id="dgList"></div>
+          
         </div>
 
       </div>
 </div>
-
+<div id="divAuditForm" class="easyui-window" closed="true" modal="true"
+     title="审核信息" style="width: 400px; height: 250px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <table id="tbAuditForm" class="tbForm">
+        <tr>
+            <td colspan="6">
+                <a id="btnPass" class="easyui-linkbutton" iconcls="icon-ok" plain="true">通过</a>
+                <a id="btnNoPass" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">不通过</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+               填写意见：
+            </td>
+            <td colspan="3">
+                <textarea rows="5" cols="30" id="Audit_Memo" maxlength="100"></textarea>
+            </td>
+        </tr>
+    </table>
+</div>
 <div id="divForm" class="easyui-window" closed="true" modal="true"
      title="进货单明细" style="width: 720px; height: 330px;display: none;" collapsible="false" minimizable="false"
      maximizable="false">
@@ -229,10 +267,16 @@
     var _OptType = 0;
     var _ID = 0;
     var _ItemOptType = 0;
+    //var _hasRight = false;
+    var _auditStatus = 0;
     $(document).ready(function () {
         _ID = "@Model.KeyID";
         _OptType = parseInt("@Model.OptType");
         $("#btnOk").click(function () { saveForm(); })
+        $("#btnAudit").click(function () { showAudit(); })
+        $("#btnPass").click(function () { doAudit(1); })
+        $("#btnNoPass").click(function () { doAudit(2); })
+
         //订单明细
         $("#btnAdd").click(function () { showItemForm(1); })
         $("#btnEdit").click(function () { showItemForm(2); })
@@ -243,6 +287,7 @@
         $("#btnShowSaleOrder").click(function () { showWinSaleOrder(); })
         $("#btnShowMaterial").click(function () { showWinProduct(); })
         $("#btnShowStock").click(function () { showWinStock(); })
+       
 
         //绑定下拉框
         common_bindCommonCombox("E_CheckStatus", { headerType: 1, statusType: "CheckStatus" });
@@ -252,17 +297,32 @@
         //加载主信息
         loadData();
 
+        initStyle();
+
         initGrid();
+
+        initApprovalList();
     });
 
+    function initStyle() {
+        //_hasRight = false;
+        $("#btnAudit").hide();
+        if (_OptType == 3 && _auditStatus == 1) { //未审核
+            //_hasRight = true;
+            $("#btnAudit").show();
+        }
+
+    }
+
     function loadData() {
-        if(_OptType == 2){
+        if (_OptType == 2 || _OptType == 3) {
             var data = { ID: _ID };
-            doPostAjaxRequest("/StockManagement/InStockMgt_Find", data, function (msg) {
+            doPostAjaxRequestBySync("/StockManagement/InStockMgt_Find", data, function (msg) {
                 if (!msg.IsSuccess) return;
                 var dataObj = $.parseJSON(msg.Message);
                 if (!dataObj) return;
 
+                _auditStatus = dataObj.AuditStatus;
                 $("#lblAuditStatus").text(dataObj.Show_AuditStatus);
                 $("#E_CheckStatus").combobox("setValue", dataObj.CheckStatus);
                 $("#E_BillType").combobox("setValue", dataObj.BillType);
@@ -324,6 +384,30 @@
         });
     }
 
+    function showAudit() {
+        $("#divAuditForm").show();
+        FormUitl.open("divAuditForm");
+        $("#Audit_Memo").val("");
+    }
+
+    //审核
+    function doAudit(status) {
+        var data = {};
+        data.Memo = $("#Audit_Memo").val();
+        data.InStockID = _ID;
+        data.ApprovalStatus = status;
+        doPostAjaxRequest("/StockManagement/InStockMgt_Audit", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                FormUitl.close("divAuditForm");
+            });
+
+        });
+    }
+
     //初始化Grid
     function initGrid() {
         var cols = [[
@@ -353,6 +437,38 @@
         }
 
         PageListObj.init();
+    }
+
+    //加载审核列表
+    function initApprovalList() {
+        if (_ID <= 0) return;
+
+        var cols = [[
+             { field: 'ApproverName', title: '审核人', width: 80, align: 'center' },
+             { field: 'Show_ApprovalStatus', title: '审核结果', width: 60, align: 'center' },
+             { field: 'Show_CreatedTime', title: '创建时间', width: 120, align: 'center' },
+             { field: 'Memo', title: '审核意见', width: 150, align: 'center' }
+        ]];
+
+        var qParms = {};
+        qParms.InStockID = _ID;
+        $("#dgApprovalList").datagrid({
+            singleSelect: true,
+            fit: true,
+            //height: 200,
+            //width:250,
+            striped: true,
+            loadMsg: '数据加载中，请稍后……',
+            collapsible: true,
+            remoteSort: false,
+            showFooter: false,
+            pagination: false,
+            rownumbers: true,
+            columns: cols,
+            queryParams: qParms, //搜索条件的json参数
+            url: "/StockManagement/InStockApproval_FindByPage"
+        });
+
     }
 
     function showItemForm(optType) {

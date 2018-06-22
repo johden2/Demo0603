@@ -38,9 +38,7 @@ namespace Sys.Dao
 
         public List<Mes_Stock_InStockApproval> FindByPage(Mes_Stock_InStockApproval obj, ref PagerBase pager)
         {
-            string sql = @"SELECT T1.* FROM Mes_Stock_InStockApproval T1 
-                        WHERE 1=1 ";
-
+            string sql = @"SELECT T1.* FROM Mes_Stock_InStockApproval T1 WHERE 1=1 ";
             if (!string.IsNullOrEmpty(obj.BillNo))
             {
                 sql += string.Format(" AND T1.BillNo ='{0}'", obj.BillNo);
@@ -69,6 +67,22 @@ namespace Sys.Dao
             pager.TotalItemCount = this.CurDbSession.FromSql(cmdCountSql).ToScalar<int>();
             //返回当前页的记录数
             return this.CurDbSession.FromSql(cmdPageSql).ToList<Mes_Stock_InStockApproval>();
+        }
+
+        public List<Mes_Stock_InStockApproval> FindByCond(Mes_Stock_InStockApproval obj)
+        {
+            string sql = @"SELECT T1.* FROM Mes_Stock_InStockApproval T1 WITH(NOLOCK) WHERE 1=1 ";
+            if (!string.IsNullOrEmpty(obj.BillNo))
+            {
+                sql += string.Format(" AND T1.BillNo ='{0}'", obj.BillNo);
+            }
+            if (!string.IsNullOrEmpty(obj.BillType))
+            {
+                sql += string.Format(" AND T1.BillType ='{0}'", obj.BillType);
+            }
+
+            sql += " ORDER BY CreatedTime DESC";
+            return this.CurDbSession.FromSql(sql).ToList<Mes_Stock_InStockApproval>();
         }
 
         public bool DeleteExt(Mes_Stock_InStockApproval obj)

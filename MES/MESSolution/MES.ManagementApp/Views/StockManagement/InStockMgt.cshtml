@@ -69,6 +69,7 @@
                 <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
                 <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
                 <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
+                <a id="btnAudit" class="easyui-linkbutton" iconcls="icon-ok" plain="true">审批</a>
             </td>
         </tr>
     </table>
@@ -88,6 +89,7 @@
         $("#btnEdit").click(function () { showForm(2); })
         $("#btnDelete").click(function () { deleteRecord(); })
         $("#btnExport").click(function () { exportExcel(); })
+        $("#btnAudit").click(function () { showForm(3); })
 
         //绑定下拉框
         common_bindCommonCombox("Q_BillType", { headerType: 1, statusType: "StockBillType" });
@@ -142,7 +144,7 @@
 
     function showForm(optType) {
         var id = 0;
-        if (optType == 2) { //修改
+        if (optType == 2 || optType == 3) { //修改
             var row = DataGridUitl.getSelectedRow("dgList");
             if (!row) return;
 
