@@ -218,6 +218,42 @@ namespace Sys.Model
         public const int B = 2;
     }
 
+    public class WorkOrderStatus
+    {
+        [CustField("释放")]
+        public const int A = 0;
+
+        [CustField("下达")]
+        public const int B = 1;
+
+        [CustField("在制")]
+        public const int C = 2;
+
+        [CustField("完工")]
+        public const int D = 3;
+
+        [CustField("关闭")]
+        public const int E = 4;
+    }
+
+    public class WorkOrderType
+    {
+        [CustField("正常工单")]
+        public const string NM = "WK10";
+
+        [CustField("返工工单")]
+        public const string FX = "WK20";
+    }
+
+    public class ActionStatus
+    {
+        [CustField("普通用料")]
+        public const int PT = 0;
+
+        [CustField("临时物料")]
+        public const int LS = 1;
+    }
+
     #endregion 订单、计划字典
 
     #region 生产相关字典
@@ -349,6 +385,26 @@ namespace Sys.Model
     #endregion 仓库管理相关字典
 
     #endregion  状态类型参数
+
+    #region  工装夹具
+    public class DeviceProperty
+    {
+        [CustField("专用")]
+        public const int SP = 1;
+        [CustField("通用")]
+        public const int TY = 2;
+    }
+
+    public class DeviceStatus
+    {
+        [CustField("在用")]
+        public const int ZY = 1;
+        [CustField("停用")]
+        public const int TY = 2;
+        [CustField("报废")]
+        public const int BF = 3;
+    }
+    #endregion
 
     #region 通用状态解析
 

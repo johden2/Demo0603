@@ -1,0 +1,482 @@
+﻿@{
+    ViewBag.Title = "工单管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+   
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td class="td-query-title">
+                工单单号：
+            </td>
+            <td>
+                <input type="text" style="width: 150px;" class="easyui-textbox" id="Q_WorkOrderNumber" />                       
+            </td>
+            <td class="td-query-title">
+                &nbsp;&nbsp;计划批号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_PlanCode" style="width: 150px;" />
+            </td>
+            <td class="td-query-title">
+                &nbsp;&nbsp;产品编码：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_MaterialProNo" style="width:200px;" />
+            </td>
+        </tr>
+        <tr>
+            <td class="td-query-title">
+                产品名称：
+            </td>
+            <td>
+                <input type="text" class="easyui-textbox" id="Q_MaterialCode" style="width:150px;" />
+            </td>
+            <td class="td-query-title">
+                &nbsp;&nbsp;工单状态：
+            </td>
+            <td>
+                <input id="Q_WorkOrderStatus" class="easyui-combobox" data-options="valueField:'Value', textField:'Text',editable : false"  style="width:150px;"/>
+            </td>
+            <td>
+                &nbsp;&nbsp;创建日期:
+            </td>            
+            <td>
+                <input type="text" class="easyui-datebox" id="Q_CreatedTimeStart" style="width:90px;" maxlength="50" />
+                至 <input type="text" class="easyui-datebox" id="Q_CreatedTimeEnd" style="width:90px;" maxlength="50" />
+            </td>
+            <td style="padding-left:10px; padding-bottom:5px" colspan="3">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>       
+        <tr>
+            <td colspan="8">
+                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+                <a id="btnGenerate" class="easyui-linkbutton" iconcls="icon-save" plain="true">下达</a>
+                <a id="btnQzComp" class="easyui-linkbutton" iconcls="icon-save" plain="true">完工</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="工单信息" style="width: 800px; height: 340px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <table id="tbForm" class="tbForm">
+        <tr>
+            <td colspan="6">
+                <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>工单单别：
+            </td>
+            <td>
+                <input id="E_WorkOrderType" class="easyui-combobox" type="text" style="width:150px;" data-options="valueField:'Value', textField:'Text',editable : false"/>
+            </td>
+            <td class="form-head">
+                <span class="sp-require">*</span>工单单号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="E_WorkOrderNumber"  type="text" style="width:150px;"/>
+            </td>
+            <td class="form-head">
+                <span class="sp-require">*</span>计划批号：
+            </td>
+            <td>
+                <input id="E_PlanCode" class="easyui-textbox" style="width:150px;"/>
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>产品编码：
+            </td>
+            <td><input class="easyui-textbox" id="E_MaterialProNo" style="width:150px;"/></td>
+            <td class="form-head">
+               产品简称：
+            </td>
+            <td><input class="easyui-textbox" id="E_MaterialCode" disabled style="width:150px;"/></td>
+            <td class="form-head">
+                产品版本：
+            </td>
+            <td><input class="easyui-textbox" id="E_Version" disabled style="width:150px;" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>工单数量：
+            </td>
+            <td><input class="easyui-textbox" id="E_WorkNum" style="width:150px;"/></td>            
+            <td class="form-head">
+                单位：
+            </td>
+            <td><input class="easyui-textbox" id="E_Unit" style="width:150px;"/></td>
+            <td class="form-head">
+                下达车间:
+            </td>
+            <td>
+                <input id="E_WorkShopCode" class="easyui-textbox" type="hidden" />
+                <input id="E_WorkShopName" class="easyui-textbox" type="text" style="width:150px;">
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>工厂：
+            </td>
+            <td><input class="easyui-textbox" id="E_FactoryCode" /></td>
+            <td class="form-head">
+                计划开始时间：
+            </td>
+            <td>
+                <input type="text" class="easyui-datebox" id="E_PlanBeginTime" style="width: 150px;" maxlength="50" />
+            </td>
+            <td class="form-head">
+                计划结束时间：
+            </td>
+            <td>
+                <input type="text" class="easyui-datebox" id="E_PlanEndTime" style="width: 150px;" maxlength="50" />
+            </td>
+        </tr>       
+</table>
+</div>
+
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    $(document).ready(function () {        
+        $("#btnQuery").click(function () { PageListObj.queryList(); })
+        $("#btnAdd").click(function () { showForm(1); })
+        $("#btnEdit").click(function () { showForm(2); })
+        $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnGenerate").click(function () { GenerateWorkOrder(); })
+        $("#btnQzComp").click(function () { QzEndWorkOrder();})
+        $("#btnOk").click(function () { saveForm(); })
+        $("#btnClose").click(function () { FormUitl.close(_divFormName); })       
+        //绑定下拉框
+        common_bindCommonCombox("Q_WorkOrderStatus", { headerType: 1, statusType: "WorkOrderStatus" });       
+        common_bindCommonCombox("E_WorkOrderType", { headerType: 1, statusType: "WorkOrderType" });
+        //绑定产品编码
+        bindMaterialProNo();
+        //绑定车间编码
+        bindWorkShop();
+        //绑定计划批号
+        bindPlanNo();
+
+        $("#E_WorkOrderType").combobox({
+            onChange: function (newValue, oldValue) {
+                GetWorkOrderNumber();
+            }
+        });
+
+        initGrid();
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'FactoryCode', title: '工厂', width: 80, align: 'center' },
+               { field: 'WorkOrderType', title: '工单类型', width: 80, align: 'center' ,hidden:true},
+               { field: 'Show_WorkOrderType', title: '工单类型', width: 80, align: 'center' },
+               { field: 'WorkOrderNumber', title: '工单号', width: 120, align: 'center' },
+               { field: 'PlanCode', title: '计划批号', width: 80, align: 'center' },
+               { field: 'SaleNo', title: '订单单号', width: 120, align: 'center' },
+               { field: 'MaterialProNo', title: '产品编码', width: 120, align: 'center' },
+               { field: 'MaterialCode', title: '产品名称', width: 120, align: 'center' },
+               { field: 'Version', title: '版本', width: 60, align: 'center' },
+               { field: 'WorkNum', title: '工单数量', width: 80, align: 'center' },
+               { field: 'Unit', title: '单位', width: 80, align: 'center' },
+               { field: 'WorkShopCode', title: '车间', width: 80, align: 'center', hidden: true },
+               { field: 'Show_WorkShopCode', title: '车间', width: 80, align: 'center' },
+               { field: 'Show_PlanBeginTime', title: '计划开始时间', width: 80, align: 'center' },
+               { field: 'Show_PlanEndTime', title: '计划结束时间', width: 80, align: 'center' },
+               { field: 'Show_ActuralBeginTime', title: '实际开始时间', width: 80, align: 'center' },
+               { field: 'Show_ActuralEndTime', title: '实际结束时间', width: 80, align: 'center' },
+               { field: 'WorkOrderStatus', title: '工单状态', width: 80, align: 'center',hidden:true },
+               { field: 'Show_WorkOrderStatus', title: '工单状态', width: 100, align: 'center' },
+               { field: 'TraceCode', title: '工艺路线编码', width: 100, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 80, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            singleSelect: true,
+            url: "/PlanManagement/WorkOrder_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+    function getQueryParms() {
+        return {
+            WorkOrderStatus: $("#Q_WorkOrderStatus").combobox('getValue'),
+            WorkOrderNumber: $.trim($("#Q_WorkOrderNumber").val()),
+            MaterialProNo: $.trim($("#Q_MaterialProNo").val()),
+            MaterialCode: $.trim($("#Q_MaterialCode").val()),
+            PlanCode: $.trim($("#Q_PlanCode").val()),
+            CreatedTimeStart: $.trim($("#Q_CreatedTimeStart").datebox('getValue')),
+            CreatedTimeEnd: $.trim($("#Q_CreatedTimeEnd").datebox('getValue'))
+        };
+    }
+
+    function bindMaterialProNo() {
+        $("#E_MaterialProNo").combogrid({
+            width: 150,
+            height: 24,
+            panelWidth: 350,
+            panelHeight: 350,
+            idField: "MaterialProNo",
+            textField: "MaterialCode",
+            delay: 500,
+            mode: "remote",
+            pagination: true,
+            rownumbers: true,
+            pageList: [10, 20, 30],
+            url: "/ProcessManagement/ProcessBomMgt_FindByPage",
+            columns: [[
+                { field: 'MaterialProNo', title: '产品编码', width: 100 },
+                { field: 'MaterialCode', title: '产品名称', width: 100 },
+                { field: 'Version', title: '版本', width: 100 }
+            ]],
+            onClickRow: function (rowIndex, rowData) {
+                $("#E_MaterialProNo").val(rowData.MaterialProNo);
+                $("#E_MaterialCode").combogrid("setText", rowData.MaterialCode);
+            },
+            onLoadError: function () {
+                $.messager.progress('close');
+                $.messager.alert('错误', "加载失败", "error");
+            }            
+        })
+    }
+
+    function GetWorkOrderNumber() {     
+        debugger;
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+       // var WorkNo = year + month + day + hour + minute + second;
+        var sWorkNo = new Date().formatStr("yyyyMMddhhmmssS");
+        $("#E_WorkOrderNumber").val(sWorkNo);
+    }
+
+    function bindPlanNo() {
+        $("#E_PlanCode").combogrid({
+            width: 150,
+            height: 24,
+            panelWidth: 650,
+            panelHeight: 350,
+            idField: "PlanCode",
+            textField: "PlanCode",
+            delay: 500,
+            mode: "remote",
+            pagination: true,
+            rownumbers: true,
+            pageList: [10, 20, 30],
+            url: "/PlanManagement/PlanMgt_FindByPage",
+            columns: [[
+               { field: 'Show_PlanStatus', title: '计划状态', width: 80, align: 'center' },
+               { field: 'PlanCode', title: '计划编号', width: 120, align: 'center' },
+               { field: 'Show_OrderType', title: '订单单别', width: 80, align: 'center' },
+               { field: 'OrderNo', title: '订单单号', width: 120, align: 'center' },
+               { field: 'MaterialProNo', title: '产品名称', width: 120, align: 'center' },
+               { field: 'Version', title: '版本', width: 60, align: 'center' },
+               { field: 'PlanNum', title: '计划数量', width: 80, align: 'center' },
+               { field: 'CompleteNum', title: '完成数量', width: 80, align: 'center' },
+               { field: 'Show_BeginTime', title: '计划开始时间', width: 100, align: 'center' },
+               { field: 'Show_EndTime', title: '计划结束时间', width: 100, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 80, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
+            ]],
+            onClickRow: function (rowIndex, rowData) {
+                $("#E_PlanCode").val(rowData.PlanCode);
+            },
+            onLoadError: function () {
+                $.messager.progress('close');
+                $.messager.alert('错误', "加载失败", "error");
+            }
+        })
+    }
+
+    function bindWorkShop() {
+        $("#E_WorkShopName").combogrid({
+            width: 150,
+            height: 24,
+            panelWidth: 350,
+            panelHeight: 350,
+            idField: "WorkShopCode",
+            textField: "WorkShopName",
+            delay: 500,
+            mode: "remote",
+            pagination: true,
+            rownumbers: true,
+            pageList: [10, 20, 30],
+            url: "/BaseManagement/WorkShop_FindByPage",
+            columns: [[
+                { field: 'WorkShopCode', title: '车间编码', width: 100 },
+                { field: 'WorkShopName', title: '车间名称', width: 100 },
+                { field: 'FactoryCode', title: '工厂', width: 100 }
+            ]],
+            onClickRow: function (rowIndex, rowData) {
+                $("#E_WorkShopName").combogrid("setText",rowData.WorkShopName);
+                $("#E_WorkShopCode").val(rowData.WorkShopCode);
+            },
+            onLoadError: function () {
+                $.messager.progress('close');
+                $.messager.alert('错误', "加载失败", "error");
+            }
+        })
+    }
+
+    function showForm(optType) {
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        _OptType = optType;
+
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#E_ID").val(row.ID);
+            $("#E_WorkOrderType").combobox('setText', row.Show_WorkOrderType);
+            $("#E_WorkOrderNumber").val(row.WorkOrderNumber);
+            $("#E_PlanCode").val(row.PlanCode);
+            $("#E_MaterialProNo").val(row.MaterialProNo);
+            $("#E_MaterialCode").val(row.MaterialCode);
+            $("#E_Version").val(row.Version);
+            $("#E_WorkNum").val(row.WorkNum);
+            $("#E_Unit").val(row.Unit);
+            $("#E_WorkShopCode").val(row.WorkShopCode);
+            $("#E_WorkShopName").combogrid('setText', row.Show_WorkShopCode);
+            $("#E_FactoryCode").val(row.FactoryCode);
+            $("#E_PlanBeginTime").datebox('setValue', row.Show_PlanBeginTime);
+            $("#E_PlanEndTime").datebox('setValue', row.Show_PlanEndTime);           
+        } 
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _OptType = optType;
+    }
+
+    function saveForm() {
+        var data = FormUitl.getFormData(_formName);
+        data.OptType = _OptType;
+        doPostAjaxRequest("/PlanManagement/WorkOrder_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        //判断工单状态，如果工单已下达、在制、完工、关闭，则不能删除
+        if (row.WorkOrderStatus != 0)
+        {
+            $.messager.alert("提示", "工单已下达，在制等状态不能删除", 'info');
+            return;
+        }
+        var data = { ID: row.ID };
+        $.messager.confirm("提示", "确定删除该计划吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/PlanManagement/WorkOrder_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    //计划下达
+    function GenerateWorkOrder() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+        $.messager.confirm("提示", "确定下达该计划吗?", function (isOk) {
+            if (!isOk) return;
+        })
+        var orderStatus = row.WorkOrderStatus;
+        if (orderStatus != 1)
+        {
+            $.messager.alert("提示", "工单已下达,不能再次下达", "info");
+            return;
+        }
+
+        var data = {WorkOrderType:row.WorkOrderType,WorkOrderNumber:row.WorkOrderNumber,Version:row.Version,WorkNum:row.WorkNum};
+
+        doPostAjaxRequest("/PlanManagement/WorkOrder_Generate", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert("提示", msg.Message, "info");
+                return;
+            }
+
+            $.messager.alert("提示",'操作成功',"info",function () {
+              $("#dgList").datagrid('load');
+            });
+        });
+    }
+
+    //计划强制结束
+    function QzEndWorkOrder() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+        $.messager.confirm("提示", "确定强制关闭当前工单吗？", function (isOk) {
+            if (!isOk) return;
+        })
+
+        var orderStatus = row.WorkOrderStatus;
+        if (orderStatus == 3 || orderStatus == 4) {            
+            $.messager.alert("提示", "当前工单已完工或关闭,不能强制关闭", "info");
+            return;
+        }
+        var data = { ID: row.ID, WorkOrderType: row.WorkOrderType, WorkOrderNumber: row.WorkOrderNumber };
+
+        doPostAjaxRequest("/PlanManagement/WorkOrder_QzClose", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert("提示", msg.Message, "info");
+                return;
+            }
+            $.messager.alert("提示", '操作成功', "info", function () {
+                $("#dgList").datagrid('load');
+            });
+        })
+    }
+
+</script>

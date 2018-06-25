@@ -30,7 +30,8 @@ namespace MES.ManagementApp.Controllers
             UserModel _CurUser = null; //移到内部了
 
             //测试时使用
-            //this.Test();
+            this.Test();
+            return true;
             
             //1.校验Session
             if (_CurUser != null && _CurUser.ID > 0) return true;
@@ -94,6 +95,8 @@ namespace MES.ManagementApp.Controllers
                 _CurUser.IsAdmin = true;
                 _CurUser.OrgID = 1;
             }
+            SessionManager.Instance.AddSession(UserKey, _CurUser);
+
         }
 
         /// <summary>

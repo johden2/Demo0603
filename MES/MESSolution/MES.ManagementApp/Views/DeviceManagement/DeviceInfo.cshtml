@@ -1,0 +1,452 @@
+﻿@{
+    ViewBag.Title = "工装夹具信息";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+    #divForm .tbForm td {
+        padding-left: 5px;
+        padding-top:5px;
+    }
+
+    .float-tree {
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        border: 1px solid #808080;
+        background-color: #DDDDDD;
+        /*height:220px;*/
+    }
+
+    .tree-close {
+        text-align: right;
+        padding-right: 10px;
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td>
+                工装夹具编码：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_DeviceCode" style="width: 150px;" />
+            </td>
+            <td>
+                &nbsp;&nbsp;工装夹具名称：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_DeviceName" style="width: 150px;" />
+            </td> 
+            <td>
+                &nbsp;&nabla;工装夹具类型:
+            </td>          
+            <td>
+                <input class="easyui-textbox" id="Q_DeviceType" type="hidden" />
+                <input class="easyui-textbox" id="Q_DeviceTypeName" style="width:150px;" />
+            </td>
+            <td>
+                &nbsp;&nbsp;工装夹具状态:
+            </td>
+            <td>
+                <input class="easyui-combobox" id="Q_DeviceStatus" data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false" />
+            </td>
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+                <a id="btnDisAble" class="easyui-linkbutton" iconcls="icon-edit" plain="true">停用</a>
+                <a id="btnDisCard" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">报废</a>
+                <a id="btnExpired" class="easyui-linkbutton" iconcls="icon-save" plain="true">到期清单</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="工装夹具信息" style="width: 800px; height: 370px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+        <table id="tbForm" class="tbForm">
+            <tr>
+                <td colspan="3">
+                    <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                    <a id="btnClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                    <input class="easyui-textbox" id="E_ID" type="hidden" clearflag="0" />
+                </td>
+            </tr>
+            <tr>
+                <td class="form-head">
+                    <span class="sp-require">*</span>工装夹具编码：
+                </td>
+                <td><input class="easyui-textbox" id="E_DeviceCode" /></td>
+                <td class="form-head">
+                    <span class="sp-require">*</span>工装夹具名称：
+                </td>
+                <td><input class="easyui-textbox" id="E_DeviceName" /></td> 
+                <td class="form-head">
+                    夹具规格尺寸：
+                </td>
+                <td><input class="easyui-textbox" id="E_DeviceSize" /></td>  
+                <td class="form-head">
+                    <span class="sp-require">*</span>工装夹具类型：
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_DeviceType" type="hidden" />
+                    <input class="easyui-textbox" id="E_DeviceTypeName" style="width:100px;" />
+                </td>                               
+            </tr>
+            <tr>
+                <td>
+                    夹具属性:
+                </td>
+                <td>
+                    <input class="easyui-combobox" id="E_DeviceProperty" data-options="valueField:'Value',textField:'Text',panelHeight:'auto',editable:false" />
+                </td>
+                <td>
+                    当前班组:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_OrgID" type="hidden"/>
+                    <input class="easyui-textbox" id="E_Show_OrgID" style="width:100px;" />
+                    <img id="btnShowOrgination" class="select-icon" src="/Images/select_icon.png" title="点击选择班组" />
+                    <div id="divTreeOrganization" class="float-tree" style="width:250px;">
+                        <div class="tree-ok">
+                            <a title="点击关闭窗口" id="btnTreeOrganizationClose">关闭</a>
+                        </div>
+                        <ul id="treeOrganization" class="ztree" style="height:180px;overflow:auto;"></ul>
+                    </div>
+                </td>
+                <td>
+                    夹具状态:
+                </td>
+                <td>
+                    <input class="easyui-textbox" id="E_DeviceStatus" type="hidden" disabled />
+                    <input class="easyui-textbox" id="E_Show_DeviceStatus" disabled />
+                </td>
+                <td>
+                    夹具投入使用时间:
+                </td>
+                <td>
+                    <input class="easyui-datebox" required="required" />
+                </td>
+            </tr>                
+            <tr>
+                <td>
+                    有效开始时间:
+                </td>
+                <td>
+                    <input class="easyui-datebox" required="required" />
+                </td>
+                <td>
+                    有效截至时间:
+                </td>
+                <td colspan="3">
+                    <input class="easyui-datebox" required="required" />
+                </td>
+            </tr>
+        </table>
+</div>
+
+<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script src="@Url.Content("~/Scripts/Common/orgtree.js?v=" + new Random().NextDouble())"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    $(document).ready(function () {       
+        $("#btnQuery").click(function () {
+            PageListObj.queryList();
+        })
+        $("#btnAdd").click(function () { showForm(1); })
+        $("#btnEdit").click(function () { showForm(2); })
+        $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnExport").click(function () { exportRecord();})
+        $("#btnOk").click(function () { saveForm(); })
+        $("#btnClose").click(function () { FormUitl.close(_divFormName); })
+        $("#btnDisAble").click(function () { disableDevice(); })
+        $("#btnDisCard").click(function () { discardDevice(); })
+        $("#btnExpired").click(function () { expiredDetail();})
+
+        //绑定Q_DeviceType
+        bindQDeviceType();
+        bindEDeviceType();
+        //加载部门结构树
+        initOrgTree();
+        //绑定Q_DeviceStatus  
+        common_bindCommonCombox("Q_DeviceStatus", { headerType: 3, statusType: "DeviceStatus" });
+        common_bindCommonCombox("E_DeviceProperty", { headerType: 3, statusType: "DeviceProperty" });
+        initGrid();
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'ID', title: 'ID', width: 100, align: 'center', hidden: true },
+               { field: 'DeviceCode', title: '工装夹具编码', width: 100, align: 'center',sortable:true,order:"asc"},
+               { field: 'DeviceName', title: '工装夹具名称', width: 100, align: 'center',sortable:true,order:"asc"},
+               { field: 'DeviceSize', title: '夹具规格尺寸', width: 160, align: 'center', sortable: true, order: "asc" },
+               { field: 'DeviceType', title: '工装夹具类型', width: 100,hidden:true},
+               { field: 'Show_DeviceType', title: '工装夹具类型', width: 100 },
+               { field: 'DeviceProperty', title: '夹具属性', width: 100,hidden:true },
+               { field: 'Show_DeviceType', title: '夹具属性', width: 100 },
+               { field: 'OrgID', title: '班组', width: 100, hidden: true },
+               { field: 'Show_OrgID', title: '班组', width: 100 },
+               { field: 'DeviceStatus', title: '工装状态', width: 100, hidden: true },
+               { field: 'Show_DeviceStatus', title: '工装状态', width: 100 },
+               { field: 'Show_AcceptTime', title: '投入使用时间', width: 100, },
+               { field: 'Show_ValidBeginTime', title: '开始有效时间', width: 150 },
+               { field: 'Show_ValidEndTime', title: '截至有效时间', width: 150 },
+               { field: 'Creater', title: '创建人', width: 100},
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150 }              
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            url: "/DeviceManagement/DeviceInfo_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+    function getQueryParms() {
+        return {
+            DeviceCode: $.trim($("#Q_DeviceCode").val()),
+            DeviceName: $.trim($("#Q_DeviceName").val()),
+            DeviceType: $.trim($("#Q_DeviceType").val()),
+            DeviceStatus: $.trim($("#Q_DeviceStatus").combobox("getValue"))
+        };
+    }
+
+    //绑定类型
+    function bindQDeviceType() {
+        var param = {
+            deviceID: 'Q_DeviceTypeName',
+        };
+        param.onClickRow = function (rowIndex, rowData) {
+            $("#Q_DeviceTypeName").combogrid("setText", rowData.DeviceTypeName);
+            $("#Q_DeviceType").val(rowData.DeviceType);
+        };
+        bindDeviceType(param);
+    }
+
+    function bindEDeviceType() {
+        var param = {
+            deviceID: 'E_DeviceTypeName',
+        };
+        param.onClickRow = function (rowIndex, rowData) {
+            $("#E_DeviceTypeName").combogrid("setText", rowData.DeviceTypeName);
+            $("#E_DeviceType").val(rowData.DeviceType);
+        }
+        bindDeviceType(param);
+    }
+
+    function bindDeviceType(param) {
+        $("#" + param.deviceID).combogrid({
+            width: 150,
+            height: 24,
+            panelWidth: 350,
+            panelHeight: 250,
+            idField: 'DeviceType',
+            textField: 'DeviceTypeName',
+            delay: 500,
+            mode: 'remote',
+            pagination: true,
+            rownumbers: true,
+            pageList: [10, 20, 30],
+            url: '/DeviceManagement/DeviceType_FindByPage',
+            columns: [[
+                { field: 'DeviceType', title: '工装夹具类型', width: 100 },
+                { field: 'DeviceTypeName', title: '工装夹具名称', width: 140 }
+            ]],
+            onClickRow:function(rowIndex,rowData) {
+                if (param.onClickRow)
+                {
+                    param.onClickRow(rowIndex, rowData);
+                }
+            },
+            onLoadError: function () {
+                $.messager.progress('close');
+                $.messager.alert('错误', "加载失败", "error");
+            }
+        })
+    }
+    //加载部门结构树
+    function initOrgTree() {
+        var param = {
+            TreeId: "treeOrganization",
+            IsCheck: 0
+        };
+
+        param.onClick = function (event, treeId, treeNode) {
+            if (!treeNode) return;
+            $("#E_OrgID").val(treeNode.ID);
+            $("#E_Show_OrgID").val(treeNode.Name);
+            $("#divTreeOrganization").hide();
+        };
+
+        param.onRightClick = function (event, treeId, treeNode) {
+            if (!treeNode) return;
+            $("#E_OrgID").val(treeNode.ID);
+            $("#E_Show_OrgID").val(treeNode.Name);
+            $("#divTreeOrganization").hide();
+        };
+
+        loadOrgTree(param);
+        
+    }
+
+  
+    function showForm(optType) {
+        //1.清理窗体数据
+        FormUitl.reset(_formName);
+        $("#E_ID").val("");
+       
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#E_ID").val(row.ID);
+            $("#E_DeviceCode").val(row.DeviceCode);
+            $("#E_DeviceName").val(row.DeviceName);
+            $("#E_DeviceSize").val(row.DeviceSize);
+            $("#E_DeviceType").combogrid("setText", row.DeviceType);
+            $("#E_DeviceTypeName").val(row.Show_DeviceType);
+            $("#E_DeviceProperty").combobox("setValue", row.DeviceProperty);
+            $("#E_OrgID").val()
+        }
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _OptType = optType;
+    }
+
+    //保存记录
+    function saveForm() {
+        var data = FormUitl.getFormData(_formName);
+        data.OptType = _OptType;
+        doPostAjaxRequest("/DeviceManagement/DeviceInfo_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ids: row.ID };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/DeviceManagement/DeviceInfo_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    function expiredDetail() {
+        var cols = [[
+              { field: 'ID', title: 'ID', width: 100, align: 'center', hidden: true },
+              { field: 'DeviceCode', title: '工装夹具编码', width: 100, align: 'center', sortable: true, order: "asc" },
+              { field: 'DeviceName', title: '工装夹具名称', width: 100, align: 'center', sortable: true, order: "asc" },
+              { field: 'DeviceSize', title: '夹具规格尺寸', width: 160, align: 'center', sortable: true, order: "asc" },
+              { field: 'DeviceType', title: '工装夹具类型', width: 100, hidden: true },
+              { field: 'Show_DeviceType', title: '工装夹具类型', width: 100 },
+              { field: 'DeviceProperty', title: '夹具属性', width: 100, hidden: true },
+              { field: 'Show_DeviceType', title: '夹具属性', width: 100 },
+              { field: 'OrgID', title: '班组', width: 100, hidden: true },
+              { field: 'Show_OrgID', title: '班组', width: 100 },
+              { field: 'DeviceStatus', title: '工装状态', width: 100, hidden: true },
+              { field: 'Show_DeviceStatus', title: '工装状态', width: 100 },
+              { field: 'Show_AcceptTime', title: '投入使用时间', width: 100, },
+              { field: 'Show_ValidBeginTime', title: '开始有效时间', width: 150 },
+              { field: 'Show_ValidEndTime', title: '截至有效时间', width: 150 },
+              { field: 'Creater', title: '创建人', width: 100 },
+              { field: 'Show_CreatedTime', title: '创建时间', width: 150 }
+        ]];
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            url: "/DeviceManagement/DeviceInfo_ExpiredDetail"
+        };
+        PageListObj.init();
+    }
+
+    //停用工装
+    function disableDevice() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ids: row.ID };
+        $.messager.confirm("提示", "确定停用当前工装:" + row.DeviceCode + "吗?", function (isOK) {
+            if (!isOK) return;
+            doPostAjaxRequest("/DeviceManagement/DeviceInfo_DisableDevice", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            })            
+        })
+    }
+
+    function discardDevice() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ids: row.ID };
+        $.messager.confirm("提示", "确定报废当前工装:" + row.DeviceCode + "吗?", function (isOK) {
+            if (!isOK) return;
+            doPostAjaxRequest("/DeviceManagement/DeviceInfo_DiscardDevice", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            })
+        })
+    }
+
+    </script>

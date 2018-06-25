@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\Common\BaseDao.cs" />
+    <Compile Include="Dao\Custom\MesPlanWorkOrderDao.cs" />
+    <Compile Include="Dao\Custom\MesPlanWorkOrderMaterialDao.cs" />
     <Compile Include="Dao\Custom\MesStockInStockApprovalDao.cs" />
     <Compile Include="Dao\Custom\MesSysFlowConfigDao.cs" />
     <Compile Include="Dao\Custom\MesPlanPlanInforDao.cs" />
@@ -82,11 +84,17 @@
     <Compile Include="Dao\Custom\MesSysStockDao.cs" />
     <Compile Include="Dao\Custom\MesSysSupplierDao.cs" />
     <Compile Include="Dao\Custom\MesSysWorkShopDao.cs" />
+    <Compile Include="Dao\Custom\MesTecDeviceInfoDao.cs" />
+    <Compile Include="Dao\Custom\MesTecDeviceOutRecordDao.cs" />
+    <Compile Include="Dao\Custom\MesTecDeviceTypeDao.cs" />
     <Compile Include="Dao\Custom\MesTecProcessBomDao.cs" />
     <Compile Include="Dao\Custom\MesTecProcessDao.cs" />
     <Compile Include="Dao\Custom\MesSysUserDao.cs" />
     <Compile Include="Dao\Custom\MesTecProductInfoDao.cs" />
     <Compile Include="Dao\Custom\MesTecTestDataPositionDao.cs" />
+    <Compile Include="Dao\Custom\MesTraInStockDao.cs" />
+    <Compile Include="Dao\Custom\MesTraOutStockDao.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Plan_WorkOrder.cs" />
     <Compile Include="Entity\AutoGen\Mes_Stock_InStockApproval.cs" />
     <Compile Include="Entity\AutoGen\Mes_Plan_Material.cs" />
     <Compile Include="Entity\AutoGen\Mes_Sys_FlowConfig.cs" />
@@ -104,6 +112,9 @@
     <Compile Include="Entity\AutoGen\Mes_Sys_Stock.cs" />
     <Compile Include="Entity\AutoGen\Mes_Sys_Supplier.cs" />
     <Compile Include="Entity\AutoGen\Mes_Sys_WorkShop.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Tec_DeviceInfo.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Tec_DeviceOutRecord.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Tec_DeviceType.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tec_ProcessBom.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tec_ProcessBomChangeLog.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tec_ProcessBomItem.cs" />
@@ -117,6 +128,12 @@
     <Compile Include="Entity\AutoGen\Mes_Sys_User.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tec_ProductInfo.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tec_TestDataPosition.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Tra_DiscardRecord.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Tra_InStock.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Tra_OutStock.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Tra_OutStockHist.cs" />
+    <Compile Include="Entity\Custom\Mes_Plan_Material.cs" />
+    <Compile Include="Entity\Custom\Mes_Plan_WorkOrder.cs" />
     <Compile Include="Entity\Custom\Mes_Sys_ProcessConfig.cs" />
     <Compile Include="Entity\Custom\Mes_Stock_InStockApproval.cs" />
     <Compile Include="Entity\Custom\Mes_Plan_PlanInfor.cs" />
@@ -135,6 +152,9 @@
     <Compile Include="Entity\Custom\Mes_Sys_Stock.cs" />
     <Compile Include="Entity\Custom\Mes_Sys_Supplier.cs" />
     <Compile Include="Entity\Custom\Mes_Sys_WorkShop.cs" />
+    <Compile Include="Entity\Custom\Mes_Tec_DeviceInfo.cs" />
+    <Compile Include="Entity\Custom\Mes_Tec_DeviceOutRecord.cs" />
+    <Compile Include="Entity\Custom\Mes_Tec_DeviceType.cs" />
     <Compile Include="Entity\Custom\Mes_Tec_ProcessBomItem.cs" />
     <Compile Include="Entity\Custom\Mes_Tec_ProcessBom.cs" />
     <Compile Include="Entity\Custom\Mes_Tec_Process.cs" />
@@ -142,6 +162,9 @@
     <Compile Include="Entity\Custom\Mes_Sys_ModuleItem.cs" />
     <Compile Include="Entity\Custom\Mes_Tec_ProductInfo.cs" />
     <Compile Include="Entity\Custom\Mes_Tec_TestDataPosition.cs" />
+    <Compile Include="Entity\Custom\Mes_Tra_DiscardRecord.cs" />
+    <Compile Include="Entity\Custom\Mes_Tra_InStock.cs" />
+    <Compile Include="Entity\Custom\Mes_Tra_OutStock.cs" />
     <Compile Include="Model\Common\ConstData.cs" />
     <Compile Include="Model\Common\CustFieldAttribute.cs" />
     <Compile Include="Model\Common\FormatCommon.cs" />

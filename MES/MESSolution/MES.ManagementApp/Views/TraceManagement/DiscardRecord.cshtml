@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "报废记录管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+    #divForm .tbForm td {
+        padding-left: 5px;
+        padding-top:5px;
+    }
+
+    .float-tree {
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        border: 1px solid #808080;
+        background-color: #DDDDDD;
+        /*height:220px;*/
+    }
+
+    .tree-close {
+        text-align: right;
+        padding-right: 10px;
+        height: 5px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td>
+                条码：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_Barcode" style="width: 150px;" />               
+            </td>
+            <td>
+                &nbsp;&nbsp;流水号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_SN" style="width: 150px;" />
+            </td>            
+            <td>
+                &nbsp;&nbsp;产品编码:
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_MaterialProNo" style="width:150px;" />
+            </td>
+            <td>
+                产品名称:
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_MaterialCode" style="width:150px;" />
+            </td>
+        </tr>
+        <tr>            
+            <td>
+                &nbsp;&nbsp;工单号:
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_WorkOrderNumber" style="width:150px;" />
+            </td>
+            <td>
+                &nbsp;&nbsp;班组:
+            </td>
+            <td>
+               &nbsp;&nbsp;开始时间:
+            </td>
+            <td>
+                <input type="text" class="easyui-datebox" id="Q_ScanTimeStart" style="width:150px;" /> 
+            </td>
+            <td>
+                &nbsp;&nbsp;结束时间:
+            </td>
+            <td>
+                <input type="text" class="easyui-datebox" id="Q_ScanTimeEnd" style="width:150px;" />
+            </td>
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">              
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-save" plain="true">导出</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<link rel="stylesheet" href="/Content/zTree_v3/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="/Content/zTree_v3/jquery.ztree.core.min.js"></script>
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script src="@Url.Content("~/Scripts/Common/orgtree.js?v=" + new Random().NextDouble())"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    $(document).ready(function () {
+        $("#btnQuery").click(function () {
+            PageListObj.queryList();
+        })       
+       
+        initGrid();
+           
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'ID', title: 'ID', width: 100, align: 'center', hidden: true },
+               { field: 'Barcode', title: '条码', width: 100, align: 'center' },
+               { field: 'SN', title: '流水号', width: 160, align: 'center' },
+               { field: 'PackSN', title: '外箱识别码', width: 160, align: 'center' },
+               { field: 'MaterialProNo', title: '产品编码', width: 90, align: 'center' },
+               { field: 'MaterialCode', title: '产品名称', width: 80, align: 'center' },
+               { field: 'WorkOrderType', title: '工单类型', width: 100, align: 'center' },
+               { field: 'WorkOrderNumber', title: '工单号', width: 100, align: 'center' },
+               { field: 'OptName', title: '操作人', width: 80, align: 'center' },
+               { field: 'OrgID', title: '班组', width: 100,hidden:true },
+               { field: 'Show_OrgID', title: '班组', width: 150 },
+               { field: 'Show_ScanTime', title: '扫描时间', width: 100 }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            url: "/StockManagement/TraInStock_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+
+    function getQueryParms() {
+        return {
+            Barcode: $.trim($("#Q_Barcode").val()),
+            SN: $.trim($("#Q_SN").val()),
+            PackSN: $.trim($("#Q_PackSN").val()),
+            MaterialProNo: $.trim($("#Q_MaterialProNo").val()),
+            MaterialCode: $.trim($("#Q_MaterialCode").val()),
+            WorkOrderNumber: $.trim($("#Q_WorkOrderNumber").val()),
+            ScanTimeStart: $.trim($("#Q_ScanTimeStart").val()),
+            ScanTimeEnd: $.trim($("#Q_ScanTimeEnd").val())
+        };
+    }
+
+
+
+    </script>

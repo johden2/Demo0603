@@ -22,13 +22,13 @@ namespace Sys.Model
     {
         #region Model
 		private int _ID;
-		private string _PlanCode;
+		private string _WorkOrderNumber;
 		private string _MaterialProNo;
 		private string _MaterialCode;
 		private string _Version;
 		private string _ProcessCode;
+		private string _SubMaterialProNo;
 		private string _SubMaterialCode;
-		private string _SubMaterialName;
 		private string _SubMaterialSize;
 		private int _Num;
 		private string _Unit;
@@ -56,14 +56,14 @@ namespace Sys.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		[Field("PlanCode")]
-		public string PlanCode
+        [Field("WorkOrderNumber")]
+        public string WorkOrderNumber
 		{
-			get{ return _PlanCode; }
+            get { return _WorkOrderNumber; }
 			set
 			{
-				this.OnPropertyValueChange("PlanCode");
-				this._PlanCode = value;
+                this.OnPropertyValueChange("WorkOrderNumber");
+                this._WorkOrderNumber = value;
 			}
 		}
 		/// <summary>
@@ -121,27 +121,27 @@ namespace Sys.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		[Field("SubMaterialCode")]
-		public string SubMaterialCode
+        [Field("SubMaterialProNo")]
+        public string SubMaterialProNo
 		{
-			get{ return _SubMaterialCode; }
+            get { return _SubMaterialProNo; }
 			set
 			{
-				this.OnPropertyValueChange("SubMaterialCode");
-				this._SubMaterialCode = value;
+                this.OnPropertyValueChange("SubMaterialProNo");
+                this._SubMaterialProNo = value;
 			}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		[Field("SubMaterialName")]
-		public string SubMaterialName
+        [Field("SubMaterialCode")]
+        public string SubMaterialCode
 		{
-			get{ return _SubMaterialName; }
+            get { return _SubMaterialCode; }
 			set
 			{
-				this.OnPropertyValueChange("SubMaterialName");
-				this._SubMaterialName = value;
+                this.OnPropertyValueChange("SubMaterialCode");
+                this._SubMaterialCode = value;
 			}
 		}
 		/// <summary>
@@ -300,13 +300,13 @@ namespace Sys.Model
         {
             return new Field[] {
 				_.ID,
-				_.PlanCode,
+				_.WorkOrderNumber,
 				_.MaterialProNo,
 				_.MaterialCode,
 				_.Version,
 				_.ProcessCode,
+				_.SubMaterialProNo,
 				_.SubMaterialCode,
-				_.SubMaterialName,
 				_.SubMaterialSize,
 				_.Num,
 				_.Unit,
@@ -326,13 +326,13 @@ namespace Sys.Model
         {
             return new object[] {
 				this._ID,
-				this._PlanCode,
+				this._WorkOrderNumber,
 				this._MaterialProNo,
 				this._MaterialCode,
 				this._Version,
 				this._ProcessCode,
+				this._SubMaterialProNo,
 				this._SubMaterialCode,
-				this._SubMaterialName,
 				this._SubMaterialSize,
 				this._Num,
 				this._Unit,
@@ -372,7 +372,7 @@ namespace Sys.Model
             /// <summary>
 			/// 
 			/// </summary>
-			public readonly static Field PlanCode = new Field("PlanCode", "Mes_Plan_Material", "");
+            public readonly static Field WorkOrderNumber = new Field("WorkOrderNumber", "Mes_Plan_Material", "");
             /// <summary>
 			/// 
 			/// </summary>
@@ -389,14 +389,16 @@ namespace Sys.Model
 			/// 
 			/// </summary>
 			public readonly static Field ProcessCode = new Field("ProcessCode", "Mes_Plan_Material", "");
+
+            public readonly static Field SubMaterialProNo = new Field("SubMaterialProNo", "Mes_Plan_Material", "");
             /// <summary>
 			/// 
 			/// </summary>
-			public readonly static Field SubMaterialCode = new Field("SubMaterialCode", "Mes_Plan_Material", "");
+			public readonly static Field SubMaterialCode = new Field("SubMaterialProNo", "Mes_Plan_Material", "");
             /// <summary>
 			/// 
 			/// </summary>
-			public readonly static Field SubMaterialName = new Field("SubMaterialName", "Mes_Plan_Material", "");
+			public readonly static Field SubMaterialName = new Field("SubMaterialCode", "Mes_Plan_Material", "");
             /// <summary>
 			/// 
 			/// </summary>
