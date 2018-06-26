@@ -61,6 +61,11 @@ namespace MES.ManagementApp.Controllers
         {
             return View();
         }
+
+        public ActionResult SelectWorkOrder()
+        {
+            return View();
+        }
   
     }
 }

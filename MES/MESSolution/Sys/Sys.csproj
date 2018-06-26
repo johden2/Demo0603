@@ -67,6 +67,7 @@
     <Compile Include="Dao\Custom\MesPlanWorkOrderDao.cs" />
     <Compile Include="Dao\Custom\MesPlanWorkOrderMaterialDao.cs" />
     <Compile Include="Dao\Custom\MesStockInStockApprovalDao.cs" />
+    <Compile Include="Dao\Custom\StockProductInStockDao.cs" />
     <Compile Include="Dao\Custom\MesSysFlowConfigDao.cs" />
     <Compile Include="Dao\Custom\MesPlanPlanInforDao.cs" />
     <Compile Include="Dao\Custom\MesPlanSaleOrderDao.cs" />
@@ -95,6 +96,8 @@
     <Compile Include="Dao\Custom\MesTraInStockDao.cs" />
     <Compile Include="Dao\Custom\MesTraOutStockDao.cs" />
     <Compile Include="Entity\AutoGen\Mes_Plan_WorkOrder.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Stock_ProductInStock.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Stock_ProductInStockItem.cs" />
     <Compile Include="Entity\AutoGen\Mes_Stock_InStockApproval.cs" />
     <Compile Include="Entity\AutoGen\Mes_Plan_Material.cs" />
     <Compile Include="Entity\AutoGen\Mes_Sys_FlowConfig.cs" />
@@ -132,7 +135,9 @@
     <Compile Include="Entity\AutoGen\Mes_Tra_InStock.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tra_OutStock.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tra_OutStockHist.cs" />
+    <Compile Include="Entity\Custom\Mes_Stock_ProductInStock.cs" />
     <Compile Include="Entity\Custom\Mes_Plan_Material.cs" />
+    <Compile Include="Entity\Custom\Mes_Stock_ProductInStockItem.cs" />
     <Compile Include="Entity\Custom\Mes_Plan_WorkOrder.cs" />
     <Compile Include="Entity\Custom\Mes_Sys_ProcessConfig.cs" />
     <Compile Include="Entity\Custom\Mes_Stock_InStockApproval.cs" />

@@ -1,0 +1,444 @@
+﻿@{
+    ViewBag.Title = "入库单明细";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+@model Sys.Model.PageModel
+
+<style type="text/css">
+    
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="divMainForm" style="padding:5px;height:auto">
+            <table id="tbMainForm">
+                <tr>
+                    <td colspan="2">
+                        <a id="btnOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">保存入库单</a>
+                        <a id="btnAudit" class="easyui-linkbutton" iconcls="icon-ok" plain="true" style="display:none;">审核</a>
+                    </td>
+                    <td class="form-head">
+                        单据状态：
+                    </td>
+                    <td>
+                        <span class="sp-require"><label id="lblAuditStatus"></label></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-head">
+                        <span class="sp-require">*</span>入库单号：
+                    </td>
+                    <td>
+                        <input class="easyui-textbox" id="E_BillNo" disabled /><span class="sp-require">(生成)</span>
+                    </td>
+                    <td class="form-head">
+                        <span class="sp-require">*</span>入库单别：
+                    </td>
+                    <td>
+                        <input type="text" class="easyui-combobox" id="E_BillType"
+                               data-options="valueField:'Value', textField:'Text',editable : false" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-head">
+                        <span class="sp-require">*</span>入库日期：
+                    </td>
+                    <td>
+                        <input type="text" class="easyui-datebox" id="E_InStockDate" maxlength="50" />
+                    </td>
+                    <td class="form-head">
+                        <span class="sp-require">*</span>总入库数量：
+                    </td>
+                    <td><input class="easyui-textbox" id="E_TotalNum" /></td>
+                    <td class="form-head">
+                        创建人：
+                    </td>
+                    <td>
+                        <label id="lblCreater"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-head">
+                        单据日期：
+                    </td>
+                    <td>
+                        <input type="text" class="easyui-datebox" id="E_BillDate" maxlength="50" />
+                    </td>
+                    <td class="form-head">
+                        工厂：
+                    </td>
+                    <td>
+                        <input class="easyui-textbox" id="E_Factory" />
+                    </td>
+                    <td class="form-head">
+                        创建时间：
+                    </td>
+                    <td>
+                        <label id="lblCreatedTime"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-head">
+                        备注：
+                    </td>
+                    <td colspan="3">
+                        <textarea rows="3" cols="55" id="E_Memo" maxlength="500"></textarea>
+                    </td>
+                </tr>
+            </table>
+              
+    </div>
+        <div style="width:98%;padding-left:5px;padding-top:10px;">
+            <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+            <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+            <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+        </div>
+       
+        <div style="width:98%;padding-left:5px;height:320px;">
+            <div id="dgList"></div>
+          
+        </div>
+
+      </div>
+</div>
+<div id="divAuditForm" class="easyui-window" closed="true" modal="true"
+     title="审核信息" style="width: 400px; height: 250px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <table id="tbAuditForm" class="tbForm">
+        <tr>
+            <td colspan="6">
+                <a id="btnPass" class="easyui-linkbutton" iconcls="icon-ok" plain="true">通过</a>
+                <a id="btnNoPass" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">不通过</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+               填写意见：
+            </td>
+            <td colspan="3">
+                <textarea rows="5" cols="30" id="Audit_Memo" maxlength="100"></textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="divForm" class="easyui-window" closed="true" modal="true"
+     title="入库单明细" style="width: 720px; height: 330px;display: none;" collapsible="false" minimizable="false"
+     maximizable="false">
+    <table id="tbForm" class="tbForm">
+        <tr>
+            <td colspan="6">
+                <a id="btnItemOk" class="easyui-linkbutton" iconcls="icon-ok" plain="true">确定</a>
+                <a id="btnItemClose" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">关闭</a>
+                <input class="easyui-textbox" id="EI_ID" type="hidden" clearflag="0" />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>行号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="EI_ResNum" disabled style="width:60px;" />
+                <span class="sp-require">(生成)</span>
+            </td>
+            <td class="form-head">
+                <span class="sp-require">*</span>入库数量：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Num" /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>工单单号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="EI_WorkOrderNumber" disabled />
+                <img id="btnShowWorkOrder" class="select-icon" src="/images/select_icon.png" title="点击选择工单" />
+            </td>
+            <td class="form-head">
+                <span class="sp-require">*</span>工单单别：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Show_WorkOrderType" disabled />
+                <input type="hidden" id="EI_WorkOrderType"  />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                <span class="sp-require">*</span>物料编码：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="EI_MaterialProNo" disabled />
+            </td>
+            <td class="form-head">
+                产品简称：
+            </td>
+            <td><input class="easyui-textbox" id="EI_MaterialCode" disabled /></td>
+            <td class="form-head">
+                版本：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Version" style="width: 90px;" disabled /></td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                单位：
+            </td>
+            <td><input class="easyui-textbox" id="EI_Unit" style="width: 90px;" disabled /></td>
+            <td class="form-head">
+                仓库：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="EI_StockName" disabled />
+                <input class="easyui-textbox" type="hidden" id="EI_StockID" />
+                <img id="btnShowStock" class="select-icon" src="/images/select_icon.png" title="点击选择仓库" />
+            </td>
+        </tr>
+        <tr>
+            <td class="form-head">
+                备注：
+            </td>
+            <td colspan="3">
+                <textarea rows="5" cols="55" id="EI_Memo" maxlength="500"></textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    var _ID = 0;
+    var _ItemOptType = 0;
+    //var _hasRight = false;
+    var _auditStatus = 0;
+    $(document).ready(function () {
+        _ID = "@Model.KeyID";
+        _OptType = parseInt("@Model.OptType");
+        $("#btnOk").click(function () { saveForm(); })
+        $("#btnAudit").click(function () { showAudit(); })
+        $("#btnPass").click(function () { doAudit(1); })
+        $("#btnNoPass").click(function () { doAudit(2); })
+
+        //订单明细
+        $("#btnAdd").click(function () { showItemForm(1); })
+        $("#btnEdit").click(function () { showItemForm(2); })
+        $("#btnDelete").click(function () { deleteItemRecord(); })
+        $("#btnItemOk").click(function () { saveItemForm(); })
+        $("#btnItemClose").click(function () { FormUitl.close(_divFormName); })
+        $("#btnShowWorkOrder").click(function () { showWinWorkOrder(); })
+        $("#btnShowStock").click(function () { showWinStock(); })
+       
+
+        //绑定下拉框
+        common_bindCommonCombox("E_BillType", { headerType: 1, statusType: "PStockBillType" });
+
+        //加载主信息
+        loadData();
+
+        //initStyle();
+
+        initGrid();
+    });
+
+    function initStyle() {
+        //_hasRight = false;
+        $("#btnAudit").hide();
+        if (_OptType == 3 && _auditStatus == 1) { //未审核
+            //_hasRight = true;
+            $("#btnAudit").show();
+        }
+
+    }
+
+    function loadData() {
+        if (_OptType == 2 || _OptType == 3) {
+            var data = { ID: _ID };
+            doPostAjaxRequestBySync("/StockManagement/ProductInStockMgt_Find", data, function (msg) {
+                if (!msg.IsSuccess) return;
+                var dataObj = $.parseJSON(msg.Message);
+                if (!dataObj) return;
+
+                _auditStatus = dataObj.AuditStatus;
+                $("#lblAuditStatus").text(dataObj.Show_AuditStatus);
+                $("#E_BillType").combobox("setValue", dataObj.BillType);
+                $("#E_BillNo").val(dataObj.BillNo);
+                $("#E_InStockDate").datebox('setValue', dataObj.Show_InStockDate);
+                $("#E_BillDate").datebox('setValue', dataObj.Show_BillDate);
+                $("#E_TotalNum").val(dataObj.TotalNum);
+                $("#E_Factory").val(dataObj.Factory);
+                $("#lblCreater").text(dataObj.Creater);
+                $("#lblCreatedTime").text(dataObj.Show_CreatedTime);
+                $("#E_Memo").val(dataObj.Memo);
+            });
+        }
+    }
+
+    //保存主订单
+    function saveForm() {
+        var data = FormUitl.getFormData("tbMainForm");
+        data.OptType = _OptType;
+        data.ID = _ID;
+        doPostAjaxRequest("/StockManagement/ProductInStockMgt_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info");
+            if (_OptType == 1) {//新增完成后，变为修改
+                //_ID = msg.Message;
+                //_OptType = 2;
+            }
+        });
+    }
+
+    function showAudit() {
+        $("#divAuditForm").show();
+        FormUitl.open("divAuditForm");
+        $("#Audit_Memo").val("");
+    }
+
+    //审核
+    function doAudit(status) {
+        var data = {};
+        data.Memo = $("#Audit_Memo").val();
+        data.InStockID = _ID;
+        data.ApprovalStatus = status;
+        doPostAjaxRequest("/StockManagement/ProductInStockMgt_Audit", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                FormUitl.close("divAuditForm");
+            });
+
+        });
+    }
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'ResNum', title: '行号', width: 70, align: 'center' },
+               { field: 'MaterialProNo', title: '产品编码', width: 120, align: 'center' },
+               { field: 'Version', title: '版本', width: 80, align: 'center' },
+               { field: 'Num', title: '入库数量', width: 80, align: 'center' },
+               { field: 'Unit', title: '计量单位', width: 80, align: 'center' },
+               { field: 'Show_WorkOrderType', title: '工单单别', width: 80, align: 'center' },
+               { field: 'WorkOrderNumber', title: '工单单号', width: 120, align: 'center' },
+               { field: 'StockName', title: '仓库', width: 100, align: 'center' }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            singleSelect: true,
+            url: "/StockManagement/ProductInStockItemMgt_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return {
+                ProductInStockID: _ID
+            };
+        }
+
+        PageListObj.init();
+    }
+
+    //关闭弹出iframe窗口
+    function closeIframeForm(data, typeName) {
+        if (typeName == "stock") {
+            $('#ifmStockDiv').dialog("close");
+            $("#EI_StockID").val(data.StockID);
+            $("#EI_StockName").val(data.StockName);
+        } else if (typeName == "workorder") { //工单
+            $('#ifmWorkOrderDiv').dialog("close");
+            $("#EI_WorkOrderNumber").val(data.WorkOrderNumber);
+            $("#EI_WorkOrderType").val(data.WorkOrderType);
+            $("#EI_Show_WorkOrderType").val(data.Show_WorkOrderType);
+            $("#EI_MaterialProNo").val(data.MaterialProNo);
+            $("#EI_MaterialCode").val(data.MaterialCode);
+            $("#EI_Version").val(data.Version);
+            $("#EI_Unit").val(data.Unit);
+        }
+    }
+
+    function showItemForm(optType) {
+        //1.清理窗体数据
+        FormUitl.resetMain(_formName, "EI_");
+        $("#EI_ID").val("");
+
+        //2.加载窗体数据
+        if (optType == 2) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            $("#EI_ID").val(row.ID);
+            $("#EI_ResNum").val(row.ResNum);
+            $("#EI_MaterialProNo").val(row.MaterialProNo);
+            $("#EI_MaterialCode").val(row.MaterialCode);
+            $("#EI_Version").val(row.Version);
+            $("#EI_Unit").val(row.Unit);
+            $("#EI_WorkOrderNumber").val(row.WorkOrderNumber);
+            $("#EI_WorkOrderType").val(row.WorkOrderType);
+            $("#EI_Show_WorkOrderType").val(row.Show_WorkOrderType);
+            $("#EI_Num").val(row.Num);
+            $("#EI_StockName").val(row.StockName);
+            $("#EI_StockID").val(row.StockID);
+            $("#EI_Memo").val(row.Memo);
+        }
+
+        //3.显示窗体
+        $('#' + _divFormName).show();
+        FormUitl.open(_divFormName);
+        _ItemOptType = optType;
+    }
+
+    //保存明细
+    function saveItemForm() {
+        var data = {};
+        data.OptType = _ItemOptType;
+        data.ProductInStockID = _ID;
+        data.ID = $("#EI_ID").val();
+        data.ResNum = $("#EI_ResNum").val();
+        data.MaterialProNo = $("#EI_MaterialProNo").val();
+        data.MaterialCode = $("#EI_MaterialCode").val();
+        data.Version = $("#EI_Version").val();
+        //data.MaterialSize = $("#EI_MaterialSize").val();
+        data.Unit = $("#EI_Unit").val();
+        data.WorkOrderNumber = $("#EI_WorkOrderNumber").val();
+        data.WorkOrderType = $("#EI_WorkOrderType").val();
+        data.Num = $("#EI_Num").val();
+        data.StockID = $("#EI_StockID").val();
+        doPostAjaxRequest("/StockManagement/ProductInStockItemMgt_Save", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+            $.messager.alert('提示', '操作成功！', "info", function () {
+                $('#dgList').datagrid('reload'); //刷新列表
+            });
+        });
+    }
+
+    //删除记录
+    function deleteItemRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ID: row.ID };
+        $.messager.confirm("提示", "确定删除该数据吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/StockManagement/ProductInStockItemMgt_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('reload');
+                });
+            });
+        });
+    }
+
+</script>

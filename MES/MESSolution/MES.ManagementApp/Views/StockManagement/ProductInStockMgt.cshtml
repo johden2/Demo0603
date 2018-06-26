@@ -1,0 +1,174 @@
+﻿@{
+    ViewBag.Title = "入库单管理";
+    Layout = "~/Views/Shared/_Layout_Non.cshtml";
+}
+
+<style type="text/css">
+   
+
+</style>
+
+<div class="easyui-layout" fit="true">
+    <div region="center">
+        <div id="dgList"></div>
+    </div>
+</div>
+<div id="divQuery" style="padding:5px;height:auto">
+    <table id="tbQuery">
+        <tr>
+            <td class="td-query-title">
+                入库单别：
+            </td>
+            <td>
+                <input type="text" style="width: 120px;" class="easyui-combobox" id="Q_BillType"
+                       data-options="valueField:'Value', textField:'Text',editable : false" />
+            </td>
+            <td class="td-query-title">
+                入库单号：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="Q_BillNo" style="width: 150px;" />
+            </td>
+            
+        </tr>
+        <tr>
+            
+            <td class="td-query-title">
+                单据状态：
+            </td>
+            <td>
+                <input type="text" style="width: 120px;" class="easyui-combobox" id="Q_AuditStatus"
+                       data-options="valueField:'Value', textField:'Text',editable : false" />
+            </td>
+            <td class="td-query-title">
+                入库日期：
+            </td>
+            <td>
+                <input type="text" class="easyui-datebox" id="Q_InStockDateStart" style="width:90px;" maxlength="50" />
+                ~ <input type="text" class="easyui-datebox" id="Q_InStockDateEnd" style="width:90px;" maxlength="50" />
+            </td>
+            <td style="padding-left:10px; padding-bottom:5px" colspan="2">
+                <a id="btnQuery" class="easyui-linkbutton" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <a id="btnAdd" class="easyui-linkbutton" iconcls="icon-add" plain="true">新增</a>
+                <a id="btnEdit" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+                <a id="btnDelete" class="easyui-linkbutton" iconcls="icon-cancel" plain="true">删除</a>
+                <a id="btnExport" class="easyui-linkbutton" iconcls="icon-excel" plain="true">导出</a>
+                <a id="btnAudit" class="easyui-linkbutton" iconcls="icon-ok" plain="true">审批</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<link href="/Scripts/artDialog4.1/skins/best.css" rel="stylesheet" />
+<script src="/Scripts/artDialog4.1/artDialog.js"></script>
+<script src="/Scripts/artDialog4.1/plugins/iframeTools.js"></script>
+<script src="/Scripts/Common/common_search.js?v=4"></script>
+<script type="text/javascript">
+    var _divFormName = "divForm";
+    var _formName = "tbForm";
+    var _OptType = 0;
+    $(document).ready(function () {
+        $("#btnQuery").click(function () { PageListObj.queryList(); })
+        $("#btnAdd").click(function () { showForm(1); })
+        $("#btnEdit").click(function () { showForm(2); })
+        $("#btnDelete").click(function () { deleteRecord(); })
+        $("#btnExport").click(function () { exportExcel(); })
+        $("#btnAudit").click(function () { showForm(3); })
+
+        //绑定下拉框
+        common_bindCommonCombox("Q_BillType", { headerType: 1, statusType: "PStockBillType" });
+        common_bindCommonCombox("Q_AuditStatus", { headerType: 1, statusType: "AuditEnum" });
+
+        initGrid();
+    });
+
+    //初始化Grid
+    function initGrid() {
+        var cols = [[
+               { field: 'Show_AuditStatus', title: '单据状态', width: 100, align: 'center' },
+               { field: 'Show_BillType', title: '入库单别', width: 100, align: 'center' },
+               { field: 'BillNo', title: '入库单号', width: 130, align: 'center' },
+               { field: 'Show_InStockDate', title: '入库日期', width: 100, align: 'center' },
+               { field: 'TotalNum', title: '总入库数量', width: 100, align: 'center' },
+               { field: 'Factory', title: '工厂', width: 120, align: 'center' },
+               { field: 'Creater', title: '创建人', width: 100, align: 'center' },
+               { field: 'Show_CreatedTime', title: '创建时间', width: 150, align: 'center' }
+        ]];
+
+        //设置动态列
+        PageListObj.GridProperties = {
+            columns: cols,
+            singleSelect: true,
+            url: "/StockManagement/ProductInStockMgt_FindByPage"
+        };
+
+        PageListObj.getQueryParms = function () {
+            return getQueryParms();
+        }
+
+        PageListObj.init();
+    }
+    function getQueryParms() {
+        return {
+            BillType: $("#Q_BillType").combobox("getValue"),
+            BillNo: $.trim($("#Q_BillNo").val()),
+            AuditStatus: $("#Q_AuditStatus").combobox("getValue"),
+            InStockDateStart: $.trim($("#Q_InStockDateStart").val()),
+            InStockDateEnd: $.trim($("#Q_InStockDateEnd").val())
+        };
+    }
+
+    function showForm(optType) {
+        var id = 0;
+        if (optType == 2 || optType == 3) { //修改
+            var row = DataGridUitl.getSelectedRow("dgList");
+            if (!row) return;
+
+            id = row.ID;
+        }
+        var url = "StockManagement/ProductInStockItemMgt?OptType=" + optType + "&ID=" + id;
+        //调用common_control.js中显示tab页的方法
+        showTabIframe("入库单明细", url);
+    }
+
+    function deleteRecord() {
+        var row = DataGridUitl.getSelectedRow("dgList");
+        if (!row) return;
+
+        var data = { ID: row.ID };
+        $.messager.confirm("提示", "确定删除该入库单吗？", function (isOK) {
+            if (!isOK) return;
+
+            doPostAjaxRequest("/StockManagement/ProductInStockMgt_Delete", data, function (msg) {
+                if (!msg.IsSuccess) {
+                    $.messager.alert('提示', msg.Message, "info");
+                    return;
+                }
+
+                $.messager.alert('提示', '操作成功！', "info", function () {
+                    $('#dgList').datagrid('load');
+                });
+            });
+        });
+    }
+
+    //导出Excel
+    function exportExcel() {
+        var data = getQueryParms();
+        doPostAjaxRequest("/StockManagement/ProductInStockMgt_Export", data, function (msg) {
+            if (!msg.IsSuccess) {
+                $.messager.alert('提示', msg.Message, "info");
+                return;
+            }
+
+            var url = "/Web/ExportWeb.aspx?BusinessType=ProductInStockMgt&IsExport=1&FileName=" + msg.Message;
+            art.dialog.open(url, { title: '导出信息', height: 300, width: 450 }, false);
+         
+        });
+    }
+
+</script>

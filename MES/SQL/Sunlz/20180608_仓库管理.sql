@@ -180,14 +180,36 @@ GO
 GO
 
 
+/*-----3.生产入库单-------------------------------------------*/
+
+ALTER TABLE Mes_Stock_ProductInStock DROP COLUMN FactoryCode;
+ALTER TABLE Mes_Stock_ProductInStock DROP COLUMN BillDate;
+ALTER TABLE Mes_Stock_ProductInStock  ADD Factory NVARCHAR(50);
+ALTER TABLE Mes_Stock_ProductInStock  ADD BillDate DATETIME;
 
 
+ALTER TABLE Mes_Stock_ProductInStockItem DROP COLUMN PlanNo;
+ALTER TABLE Mes_Stock_ProductInStockItem DROP COLUMN StockCode;
+ALTER TABLE Mes_Stock_ProductInStockItem DROP COLUMN AlibraryCode;
+--ALTER TABLE Mes_Stock_ProductInStockItem  ADD WorkOrderType varchar(20);
+ALTER TABLE Mes_Stock_ProductInStockItem  ADD WorkOrderNumber varchar(50);
+ALTER TABLE Mes_Stock_ProductInStockItem  ADD StockID INT;
+ALTER TABLE Mes_Stock_ProductInStockItem  ADD ProductInStockID INT;
+ALTER TABLE Mes_Stock_ProductInStockItem  ADD StockID INT;
+ALTER TABLE Mes_Stock_ProductInStockItem  ADD AlibraryID INT;
+ALTER TABLE Mes_Stock_ProductInStockItem  ADD Version VARCHAR(20);
 
-
-
-
-
-
-
+EXECUTE sp_addextendedproperty N'MS_Description', N'生产入库单明细表', N'user', N'dbo',
+				N'table', N'Mes_Stock_ProductInStockItem', N'column', N'BillNo' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'入库单单别(1-成品生产入库单;2-半成品入库单)', N'user', N'dbo',
+				N'table', N'Mes_Stock_ProductInStockItem', N'column', N'BillType' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'入库单单号', N'user', N'dbo',
+			N'table', N'Mes_Stock_ProductInStockItem', N'column', N'BillNo' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'工单单别', N'user', N'dbo',
+			N'table', N'Mes_Stock_ProductInStockItem', N'column', N'WorkOrderType' 
+	EXECUTE sp_addextendedproperty N'MS_Description', N'工单单号', N'user', N'dbo',
+			N'table', N'Mes_Stock_ProductInStockItem', N'column', N'WorkOrderNumber'
+	EXECUTE sp_addextendedproperty N'MS_Description', N'入库单ID', N'user', N'dbo',
+			N'table', N'Mes_Stock_ProductInStockItem', N'column', N'ProductInStockID'
 
 

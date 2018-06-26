@@ -802,6 +802,33 @@ function showWinPlan(param) {
     });
 }
 
+//选择工单
+function showWinWorkOrder(param) {
+    var width = 700;
+    var height = 370;
+    if (param && param.Width) {
+        width = param.Width;
+    }
+    if (param && param.Height) {
+        height = param.Height;
+    }
+    var url = "/Common/SelectWorkOrder";
+    var content = '<iframe id="ifmWorkOrder" src="' + url + '"width=100%" height="100%" frameborder="0" scrolling="no"></iframe>';
+    var boarddiv = '<div id="ifmWorkOrderDiv" title="工单选择"></div>'//style="overflow:hidden;"可以去掉滚动条  
+    $(document.body).append(boarddiv);
+    $('#ifmWorkOrderDiv').show();
+    var win = $('#ifmWorkOrderDiv').dialog({
+        content: content,
+        width: width,
+        height: height,
+        modal: false,
+        title: "工单选择",
+        onClose: function () {
+            $(this).dialog('destroy');
+            $(this).remove();
+        }
+    });
+}
 
 
 /*

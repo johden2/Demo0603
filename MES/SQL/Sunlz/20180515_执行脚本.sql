@@ -94,6 +94,11 @@ INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTim
 VALUES('0405','出库条码记录','StockManagement/TraOutStock',0,'admin',GETDATE(),'0405',2,5,2)
 
 INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
+VALUES('0406','生产入库单','StockManagement/ProductInStockMgt',0,'admin',GETDATE(),'0406',2,6,2)
+
+--UPDATE Mes_Sys_ModuleItem SET WebRoute = 'StockManagement/ProductInStockMgt' WHERE WebRoute = 'StockManagement/ProductInStock'
+
+INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
 VALUES('05','工装夹具',NULL,0,'admin',GETDATE(),'05',1,5,2)
 INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
 VALUES('0501','工装夹具类型','DeviceManagement/DeviceType',0,'admin',GETDATE(),'0501',2,1,2)
@@ -138,10 +143,6 @@ ALTER TABLE Mes_Tec_ProcessBomItem DROP COLUMN ProcessCode
 ALTER TABLE Mes_Tec_ProcessBomItem ADD ProcessID INT
 EXECUTE sp_addextendedproperty N'MS_Description', N'工艺ID', N'user', N'dbo',
 			N'table', N'Mes_Tec_ProcessBomItem', N'column', N'ProcessID' 
-
-
-
-
 
 
 

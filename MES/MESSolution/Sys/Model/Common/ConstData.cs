@@ -382,6 +382,24 @@ namespace Sys.Model
         public const int B = 2;
     }
 
+    /// <summary>
+    /// 生产入库单单别
+    /// </summary>
+    public class PStockBillType
+    {
+        /// <summary>
+        /// 成品入库单
+        /// </summary>
+        [CustField("成品入库单")]
+        public const int A = 1;
+
+        /// <summary>
+        /// 半成品入库单
+        /// </summary>
+        [CustField("半成品入库单")]
+        public const int B = 2;
+    }
+
     #endregion 仓库管理相关字典
 
     #endregion  状态类型参数
