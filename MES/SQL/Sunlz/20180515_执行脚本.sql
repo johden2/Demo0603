@@ -109,6 +109,8 @@ VALUES('0503','工装夹具领用','DeviceManagement/DeviceOutRecord',0,'admin',GETDAT
 
 INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
 VALUES('0111','流程配置','BaseManagement/FlowConfig',0,'admin',GETDATE(),'0111',2,9,2)
+INSERT INTO Mes_Sys_ModuleItem(Code,MenuName,WebRoute,NotShow,Creater,CreatedTime,ModuleCode,[Level],SortNo,UseType)
+VALUES('0112','条码管理','BaseManagement/BarcodeInfo',0,'admin',GETDATE(),'0111',2,10,2)
 
 
 --(3)修改员工资料表

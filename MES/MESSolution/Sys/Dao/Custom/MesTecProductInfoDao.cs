@@ -143,7 +143,12 @@ namespace Sys.Dao
             return false;
         }
 
-        //样品导入
+        /// <summary>
+        /// 导入物料信息
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="resultList"></param>
+        /// <returns></returns>
         public bool Import(List<Mes_Tec_ProductInfo> list, IList<ImportMessageModel> resultList)
         {
             try

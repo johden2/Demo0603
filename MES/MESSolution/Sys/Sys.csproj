@@ -67,6 +67,7 @@
     <Compile Include="Dao\Custom\MesPlanWorkOrderDao.cs" />
     <Compile Include="Dao\Custom\MesPlanWorkOrderMaterialDao.cs" />
     <Compile Include="Dao\Custom\MesStockInStockApprovalDao.cs" />
+    <Compile Include="Dao\Custom\SourceBarcodeDao.cs" />
     <Compile Include="Dao\Custom\StockProductInStockDao.cs" />
     <Compile Include="Dao\Custom\MesSysFlowConfigDao.cs" />
     <Compile Include="Dao\Custom\MesPlanPlanInforDao.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Entity\AutoGen\Mes_Tec_ProductInfo.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tec_TestDataPosition.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tra_DiscardRecord.cs" />
+    <Compile Include="Entity\AutoGen\Mes_Tra_SourceBarcode.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tra_InStock.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tra_OutStock.cs" />
     <Compile Include="Entity\AutoGen\Mes_Tra_OutStockHist.cs" />
@@ -169,6 +171,7 @@
     <Compile Include="Entity\Custom\Mes_Tec_TestDataPosition.cs" />
     <Compile Include="Entity\Custom\Mes_Tra_DiscardRecord.cs" />
     <Compile Include="Entity\Custom\Mes_Tra_InStock.cs" />
+    <Compile Include="Entity\Custom\Mes_Tra_SourceBarcode.cs" />
     <Compile Include="Entity\Custom\Mes_Tra_OutStock.cs" />
     <Compile Include="Model\Common\ConstData.cs" />
     <Compile Include="Model\Common\CustFieldAttribute.cs" />

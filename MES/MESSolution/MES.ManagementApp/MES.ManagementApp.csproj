@@ -148,6 +148,7 @@
     <Compile Include="Controllers\BaseManagement\BaseManagementController.cs" />
     <Compile Include="Controllers\BaseManagement\Customer.cs" />
     <Compile Include="Controllers\BaseManagement\DataCollectPoint.cs" />
+    <Compile Include="Controllers\BaseManagement\BarcodeInfo.cs" />
     <Compile Include="Controllers\BaseManagement\ProductInfo.cs" />
     <Compile Include="Controllers\BaseManagement\Stock.cs" />
     <Compile Include="Controllers\BaseManagement\FlowConfig.cs" />
@@ -1300,6 +1301,7 @@
     <Content Include="Views\StockManagement\ProductInStockMgt.cshtml" />
     <Content Include="Views\StockManagement\ProductInStockItemMgt.cshtml" />
     <Content Include="Views\Common\SelectWorkOrder.cshtml" />
+    <Content Include="Views\BaseManagement\BarcodeInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

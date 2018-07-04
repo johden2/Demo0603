@@ -69,6 +69,10 @@ namespace MES.ManagementApp.Controllers
                 {
                     errorList = this.Import_ProductInfo(dataTable);
                 }
+                else if (businessType == "BarcodeInfo") //条码导入
+                {
+                    errorList = this.Import_BarcodeInfo(dataTable);
+                }
 
                 ViewBag.ErrorMessage = "导入成功";
             }
@@ -108,6 +112,10 @@ namespace MES.ManagementApp.Controllers
                     break;
                 case "ProductInfo":
                     templateUrl = "/Document/Template/ProductInfo.xls";
+                    paramKey = Request.Params["ParamKey"];
+                    break;
+                case "BarcodeInfo":
+                    templateUrl = "/Document/Template/BarcodeInfo.xls";
                     paramKey = Request.Params["ParamKey"];
                     break;
                 default:
@@ -424,5 +432,83 @@ namespace MES.ManagementApp.Controllers
 
         #endregion End 产品信息导入
 
+        #region Begin 条码信息导入
+        private IList<ImportMessageModel> Import_BarcodeInfo(DataTable dtData)
+        {
+            IList<ImportMessageModel> resultList = new List<ImportMessageModel>();
+            //提示用户导入消息有错，但不影响数据导入
+            IList<ImportMessageModel> msgList = new List<ImportMessageModel>();
+            List<Mes_Tra_SourceBarcode> dataList = new List<Mes_Tra_SourceBarcode>();
+            int rowIndex = 0; //第1行是行头
+            DateTime time = DateTime.Now;
+            ImportMessageModel errorObj = null;
+            string batchNo = DateTime.Now.ToString("yyMMddHHmmss");
+            if (dtData != null && dtData.Rows.Count > 0)
+            {
+                Mes_Tra_SourceBarcode itemObj = null;
+                foreach (DataRow row in dtData.Rows)
+                {
+                    rowIndex++;
+                    itemObj = new Mes_Tra_SourceBarcode();
+                    itemObj.CreatedTime = time;
+                    itemObj.Creater = curUserId;
+                    itemObj.PackSN = batchNo;
+                    //存样品信息
+                    errorObj = BarcodeInfo_FormatRow(row, itemObj, rowIndex);
+                    if (errorObj != null) //记录行错误信息
+                    {
+                        resultList.Add(errorObj);
+                        continue;
+                    }
+
+                    //检测条码是否重复
+                    if (SourceBarcodeDao.Instance.IsExist(itemObj.Barcode))
+                    {
+                        resultList.Add(new ImportMessageModel() { RowData = string.Format(ReadErrorMessage, rowIndex), RowMessage = string.Format("条码【{0}】已经存在", itemObj.Barcode) });
+                    }
+                    if (dataList.Exists(p => p.Barcode == itemObj.Barcode))
+                    {
+                        resultList.Add(new ImportMessageModel() { RowData = string.Format(ReadErrorMessage, rowIndex), RowMessage = string.Format("条码【{0}】重复导入", itemObj.Barcode) });
+                    }
+
+                    dataList.Add(itemObj);
+                }
+            }
+
+
+            //如果校验有错误，直接返回错误信息
+            if (resultList.Count > 0) return resultList;
+            //2.校验成功执行导入
+            SourceBarcodeDao.Instance.Import(dataList, resultList);
+            if (resultList.Count == 0)
+            {
+                resultList.Add(new ImportMessageModel { RowData = "导入成功", RowMessage = "数据已成功导入" });
+            }
+
+            return resultList;
+
+        }
+
+        private ImportMessageModel BarcodeInfo_FormatRow(DataRow row, Mes_Tra_SourceBarcode itemObj, int rowIndex)
+        {
+            ImportMessageModel errorObj = null;
+
+            try
+            {
+                itemObj.Barcode = TConvertHelper.FormatDBString(row["条码"]);
+                if (string.IsNullOrEmpty(itemObj.Barcode))
+                {
+                    return new ImportMessageModel() { RowData = string.Format(ReadErrorMessage, rowIndex), RowMessage = "条码不能为空" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ImportMessageModel() { RowData = string.Format(ReadErrorMessage, rowIndex), RowMessage = ex.Message };
+            }
+
+            return errorObj;
+        }
+
+        #endregion End 条码信息导入
     }
 }
