@@ -143,6 +143,20 @@ namespace Sys.Dao
             return false;
         }
 
+        //样品导入
+        public bool Import(List<Mes_Tec_ProductInfo> list, IList<ImportMessageModel> resultList)
+        {
+            try
+            {
+                int result = this.CurDbSession.Insert<Mes_Tec_ProductInfo>(list);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                resultList.Add(new ImportMessageModel { RowData = "导入失败", RowMessage = "导入出错，错误信息：" + ex.Message });
+            }
+            return false;
+        }
 
 
 

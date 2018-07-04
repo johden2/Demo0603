@@ -54,16 +54,20 @@ namespace MES.ManagementApp.Controllers
             try
             {
                 DataTable dataTable = null;
+                dataTable = ExcelHelper.ReadData(fileName, ref message);
+                System.IO.File.Delete(fileName);
+                if (dataTable == null || dataTable.Rows.Count == 0 || !string.IsNullOrEmpty(message))
+                {
+                    ViewBag.ErrorMessage = "转换Excel错误,错误消息为：" + (string.IsNullOrEmpty(message) ? "没有读取到需要导入的数据" : message);
+                    return View("ImportExcel");
+                }
                 if (businessType == "TecProcessBom") //配套明细表
                 {
-                     dataTable = ExcelHelper.ReadData(fileName, ref message);
-                    System.IO.File.Delete(fileName);
-                    if (dataTable == null || dataTable.Rows.Count == 0 || !string.IsNullOrEmpty(message))
-                    {
-                        ViewBag.ErrorMessage = "转换Excel错误,错误消息为：" + (string.IsNullOrEmpty(message) ? "没有读取到需要导入的数据" : message);
-                        return View("ImportExcel");
-                    }
                     errorList = this.Import_TecProcessBom(dataTable);
+                }
+                else if (businessType == "ProductInfo") //产品信息
+                {
+                    errorList = this.Import_ProductInfo(dataTable);
                 }
 
                 ViewBag.ErrorMessage = "导入成功";
@@ -100,6 +104,10 @@ namespace MES.ManagementApp.Controllers
             {
                 case "TecProcessBom":
                     templateUrl = "/Document/Template/TecProcessBom.xls";
+                    paramKey = Request.Params["ParamKey"];
+                    break;
+                case "ProductInfo":
+                    templateUrl = "/Document/Template/ProductInfo.xls";
                     paramKey = Request.Params["ParamKey"];
                     break;
                 default:
@@ -317,6 +325,104 @@ namespace MES.ManagementApp.Controllers
         }
 
         #endregion End 配套明细表导入
+
+        #region Begin 产品信息导入
+        private IList<ImportMessageModel> Import_ProductInfo(DataTable dtData)
+        {
+            IList<ImportMessageModel> resultList = new List<ImportMessageModel>();
+            //提示用户导入消息有错，但不影响数据导入
+            IList<ImportMessageModel> msgList = new List<ImportMessageModel>();
+            List<Mes_Tec_ProductInfo> productAllList = null;
+            List<Mes_Tec_ProductInfo> dataList = new List<Mes_Tec_ProductInfo>();
+            int rowIndex = 0; //第1行是行头
+            DateTime time = DateTime.Now;
+            ImportMessageModel errorObj = null;
+
+            if (dtData != null && dtData.Rows.Count > 0)
+            {
+                productAllList = MesTecProductInfoDao.Instance.FindAll<Mes_Tec_ProductInfo>();
+                Mes_Tec_ProductInfo productObj = null;
+                foreach (DataRow row in dtData.Rows)
+                {
+                    rowIndex++;
+                    productObj = new Mes_Tec_ProductInfo();
+                    productObj.CreatedTime = time;
+                    productObj.Creater = curUserId;
+                    //存样品信息
+                    errorObj = ProductInfo_FormatRow(row, productObj, rowIndex);
+                    if (errorObj != null) //记录行错误信息
+                    {
+                        resultList.Add(errorObj);
+                        continue;
+                    }
+
+                    //检测物料编码是否重复，不允许重复
+                    if(productAllList.Exists(p => p.MaterialProNo == productObj.MaterialProNo))
+                    {
+                        resultList.Add(new ImportMessageModel() { RowData = string.Format(ReadErrorMessage, rowIndex), RowMessage = string.Format("物料编码【{0}】已经存在", productObj.MaterialProNo) });
+                    }
+                    if (dataList.Exists(p => p.MaterialProNo == productObj.MaterialProNo))
+                    {
+                        resultList.Add(new ImportMessageModel() { RowData = string.Format(ReadErrorMessage, rowIndex), RowMessage = string.Format("物料编码【{0}】重复导入", productObj.MaterialProNo) });
+                    }
+
+                    dataList.Add(productObj);
+                }
+            }
+
+
+            //如果校验有错误，直接返回错误信息
+            if (resultList.Count > 0) return resultList;
+            //2.校验成功执行导入
+            MesTecProductInfoDao.Instance.Import(dataList, resultList);
+            if (resultList.Count == 0)
+            {
+                resultList.Add(new ImportMessageModel { RowData = "导入成功", RowMessage = "数据已成功导入" });
+            }
+
+            return resultList;
+
+        }
+
+        private ImportMessageModel ProductInfo_FormatRow(DataRow row, Mes_Tec_ProductInfo itemObj, int rowIndex)
+        {
+            ImportMessageModel errorObj = null;
+
+            try
+            {
+                //导入样品
+                string sTemp = "";
+                itemObj.MaterialProNo = TConvertHelper.FormatDBString(row["物料编码"]);
+                itemObj.MaterialCode = TConvertHelper.FormatDBString(row["物料名称"]);
+                sTemp = TConvertHelper.FormatDBString(row["物料分类"]);
+                if (!string.IsNullOrEmpty(sTemp))
+                {
+                    itemObj.MaterialClass = StatusHelper.GetStatusByDescription<MaterialClassStatus>(sTemp);
+                }
+                sTemp = TConvertHelper.FormatDBString(row["批次属性"]);
+                if (!string.IsNullOrEmpty(sTemp))
+                {
+                    itemObj.TraceProperty = TConvertHelper.FormatDBInt(StatusHelper.GetStatusByDescription<MaterialClassStatus>(sTemp));
+                }
+                itemObj.MaterialSize = TConvertHelper.FormatDBString(row["规格尺寸"]);
+                itemObj.Unit = TConvertHelper.FormatDBString(row["单位"]);
+                itemObj.PackNumber = TConvertHelper.FormatDBInt(row["每箱数量"]);
+                itemObj.Memo = TConvertHelper.FormatDBString(row["备注"]);
+                //itemObj.CreatedTime = DateTime.Now;
+                if (string.IsNullOrEmpty(itemObj.MaterialProNo) || string.IsNullOrEmpty(itemObj.MaterialCode))
+                {
+                    return new ImportMessageModel() { RowData = string.Format(ReadErrorMessage, rowIndex), RowMessage = "物料编码、物料名称不能为空" };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ImportMessageModel() { RowData = string.Format(ReadErrorMessage, rowIndex), RowMessage = ex.Message };
+            }
+
+            return errorObj;
+        }
+
+        #endregion End 产品信息导入
 
     }
 }
